@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "vertigo",
+      "name": "Vertigo",
+      "genre": "Reggae-pop · Island grooves",
+      "color": "#69d3aa",
+      "monogram": "V",
+      "description": "Warm reggae-pop, laid-back rhythms and sunlit melodic hooks",
+      "prompts": [
+        {
+          "id": "vertigo-1",
+          "title": "Island Core",
+          "category": "Core",
+          "text": "Minimal reggae-pop with warm modern island energy and a subtle reggaeton pulse. Intimate, confident male lead, warm offbeat guitar chops, rounded melodic bass, rim clicks, hand percussion and restrained dembow accents. Verses stay airy and personal; choruses open into memorable uplifting melodies. Gentle dub echoes, organic textures, clear vocal focus, spacious studio mix. No trap drops, oversized EDM builds or generic tropical-house clichés.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "vertigo-2",
+          "title": "Sunset Drive",
+          "category": "Upbeat",
+          "text": "Dance-forward reggae-pop with sunny island bounce and understated reggaeton swing. Crisp syncopated guitar, rolling bass, shakers, congas and tight contemporary percussion drive an infectious groove. Smooth melodic male vocal, catchy call-and-response phrasing, bright layered chorus, tasteful dub delays. Feel-good energy without sugary pop, polished but organic studio production.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "vertigo-3",
+          "title": "Tides at Night",
+          "category": "Slow Burn",
+          "text": "Emotional minimal reggae-pop with atmospheric island production and restrained reggaeton influence. Intimate male vocal, muted guitar skanks, deep rounded bass, sparse percussion, airy pads and soft dub echoes. Bittersweet verses build toward a wide, hopeful melodic chorus. Honest, reflective, warm and coastal, with subtle dynamics rather than an EDM drop.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "vertigo-4",
+          "title": "Coastal Deep House",
+          "category": "Electronic",
+          "text": "Warm island deep house blending a mellow four-on-the-floor pulse with reggae guitar chops, soft shakers, gentle tropical percussion and smooth melodic bass. Airy synth atmosphere, restrained vocal fragments, patient transitions and a relaxed sunrise-to-sunset mood. Spacious, elegant, hypnotic, never festival EDM.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "after-dark",
+      "name": "After Dark",
+      "genre": "Acid jazz · Trap · Metal",
+      "color": "#bc9ae8",
+      "monogram": "A",
+      "description": "Smoky saxophone, nocturnal beats and explosive guitars",
+      "prompts": [
+        {
+          "id": "after-dark-1",
+          "title": "Noir Fusion Core",
+          "category": "Core",
+          "text": "Fusion of acid jazz, heavy trap and melodic groove metal. Smoky tenor saxophone, warm Rhodes electric piano, expressive jazz chords, deep punchy 808 sub bass, crisp trap hats and spacious nocturnal percussion. Distorted guitar grooves rise in the hooks without covering the jazz. Intimate rhythmic verses shift toward powerful melodic and aggressive metal vocals. Cinematic, immersive late-night atmosphere; polished studio production, not a live performance.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-2",
+          "title": "Midnight Slow Burn",
+          "category": "Slow Burn",
+          "text": "Dark, hypnotic acid-jazz trap-metal slow burn. Loose jazz drums, brushed ghost notes, lazy smoky sax, shimmering Rhodes, deep sub bass and restrained trap hi-hats. Close-mic spoken and melodic vocal delivery, patient tension, distant guitar textures that gradually sharpen into a heavy groove. Moody neon-night introspection; no bright pop gloss.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-3",
+          "title": "Sax and Steel",
+          "category": "Heavy",
+          "text": "Aggressive acid-jazz trap-metal with a prominent gritty tenor sax riff trading lines with down-tuned groove guitars. Thick 808s, syncopated live kick, sharp trap percussion, warm Rhodes stabs, explosive rhythm shifts and a massive heavy chorus. Alternate confident low-register rap with controlled harsh vocal bursts. Modern polished mix, deep bass and dramatic contrast.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-4",
+          "title": "Neon Cipher",
+          "category": "Hip-Hop",
+          "text": "Cinematic noir rap built on smoky jazz sax, Rhodes chords, dusty drum texture and modern trap sub bass. Precise crisp hats, sparse guitar dissonance, lyrical rhythmic male lead and a hypnotic nighttime pulse. Keep the arrangement spacious and moody; allow one intense distorted-guitar lift in the final section.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "loose-change",
+      "name": "Loose Change",
+      "genre": "Funk-pop · Soulful rhythm",
+      "color": "#f0b96c",
+      "monogram": "L",
+      "description": "Elastic basslines, charm and catchy pop melodies",
+      "prompts": [
+        {
+          "id": "loose-change-1",
+          "title": "Funk-Pop Core",
+          "category": "Core",
+          "text": "Modern funk-pop with elastic melodic bass guitar, tight pocket drums, crisp rhythm guitar, playful keyboard stabs and warm retro-soul accents. Charismatic male lead vocals with confident conversational phrasing, bright memorable hooks, layered harmonies and danceable syncopation. Clean, polished and human studio production; energetic without feeling novelty or cartoonish.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "loose-change-2",
+          "title": "Retro Pocket",
+          "category": "Retro",
+          "text": "Vintage-inspired funk with dry punchy drums, percussive slap and fingerstyle bass, wah guitar, clavinet and sparse brass accents. Tight rhythmic male lead, smooth soulful chorus and little instrumental turnarounds. Analog warmth and authentic band groove with modern low-end control.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "loose-change-3",
+          "title": "Downtown Funk",
+          "category": "Upbeat",
+          "text": "Up-tempo funk-pop with crisp disco-leaning rhythm guitar, deep bouncing bass, snappy drums and colorful synth stabs. Rhythmic confident vocals, uplifting melodic hooks and an easy head-nod dance floor drive. Bright but tasteful, polished radio-ready mix with real groove and no oversized EDM drop.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "loose-change-4",
+          "title": "After Hours Groove",
+          "category": "Slow Burn",
+          "text": "Late-night smooth funk-pop. Rounded bass, mellow electric piano, soft muted guitar, restrained drums, subtle analog keys and a relaxed pocket. Soulful expressive male vocal, understated harmonies and a chorus that glides rather than shouts. Warm urban atmosphere and sophisticated minimal production.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "ever-after",
+      "name": "Ever After Project",
+      "genre": "Industrial art rock · Dark alternative",
+      "color": "#8f95b7",
+      "monogram": "E",
+      "description": "Psychological tension, hypnotic bass and restrained menace",
+      "prompts": [
+        {
+          "id": "ever-after-1",
+          "title": "Underworld Core",
+          "category": "Core",
+          "text": "Dark modern alternative metal and industrial art rock with hypnotic bass, dry mechanical percussion, dissonant guitar textures, subterranean synth pulses and tense atmospheric detail. Intimate brooding male vocal, clipped restrained verses and controlled bursts of rage. Psychological, dirty, claustrophobic and elegant without romantic gothic melodrama, fantasy orchestration or ballad softness.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-2",
+          "title": "Subterranean Pulse",
+          "category": "Slow Burn",
+          "text": "Minimal industrial art-rock slow burn with a repeating bass figure, distant metallic impacts, fractured electronic rhythm, spare dissonant guitar and cold low drones. Close, dry, unsettling male vocal gradually intensifies from a whisper to a sharp cathartic release. Avoid sweeping strings, sentimental melodies and theatrical gothic cliché.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-3",
+          "title": "Machine Heart",
+          "category": "Heavy",
+          "text": "Groove-driven industrial alternative metal with grinding guitar, pulsing synth bass, sharp programmed accents, dense live drums and dark hypnotic repetition. Dry sinister verses, layered half-spoken vocals and a raw explosive chorus. Modern controlled menace, heavy low end and spatial tension rather than ornate gothic drama.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-4",
+          "title": "Haunted Marionette",
+          "category": "Experimental",
+          "text": "Unsettling art-rock soundscape built around a detuned upright piano, eerie waltz motion, warped music-box fragments, pizzicato violin, scraping strings, creaking wood, toy percussion, faint chains and subsonic drones. Quiet breathy theatrical vocals and deeply psychological unease. No romantic gothic beauty or traditional anthemic metal chorus.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "pillars",
+      "name": "Pillars",
+      "genre": "Urban hip-hop · Soul",
+      "color": "#7bb6dc",
+      "monogram": "P",
+      "description": "Street-level resilience, bold rhythm and grounded hooks",
+      "prompts": [
+        {
+          "id": "pillars-1",
+          "title": "Urban Soul Core",
+          "category": "Core",
+          "text": "Grounded urban hip-hop with hard punchy drums, deep rounded bass, soulful minor-key samples, atmospheric piano and occasional warm guitar or organ. Confident believable male rap verses, strong rhythmic pocket and memorable melodic hooks. Lyrics-forward arrangement, resilient street-level character, premium tight studio mix. Avoid shiny pop clichés.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2",
+          "title": "Boom-Bap Foundations",
+          "category": "90s",
+          "text": "Classic 90s East Coast boom-bap with thick kicks, dry cracking snares, dusty piano loops, chopped soul accents and warm bass. Direct street storytelling rap vocals, restrained sung hook, subtle vinyl patina and an honest neighborhood atmosphere. No trap rolls or oversized cinematic trailer drums.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-3",
+          "title": "Resilience Anthem",
+          "category": "Anthem",
+          "text": "Modern inspirational street hip-hop with weighty live-feeling drums, rich low bass, piano chords and a subtle soaring soulful vocal layer. Gritty controlled rap delivery and a confident melodic chorus. Patient builds and grounded emotion, motivational without preachy or sentimental writing.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "state-of-tension",
+      "name": "State of Tension",
+      "genre": "Rap metal · Street groove",
+      "color": "#de797d",
+      "monogram": "S",
+      "description": "RA × early nu-metal × gritty East Coast rap energy",
+      "prompts": [
+        {
+          "id": "state-of-tension-1",
+          "title": "Signature Core",
+          "category": "Core",
+          "text": "Groove-heavy urban rap metal merging raw East Coast hip-hop bounce, early-2000s nu-metal guitar weight and melodic alternative-metal choruses. Deep tight kick, dry snare, thick bass locked to syncopated down-tuned riffs, sparse ominous piano and gritty street atmosphere. Aggressive precise male rap verses, rough melodic hook with real edge, impactful rhythmic stops. Studio-clean punch but raw attitude. Keep electronics restrained and the rap central.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-2",
+          "title": "Concrete Warfare",
+          "category": "Heavy",
+          "text": "Full-aggression rap metal around 106 BPM. Crushing syncopated down-tuned riffs, relentless punchy live drums, heavy bass and stark urban hip-hop rhythm. Fierce rapid-fire male rap verses, sharp explosive transitions, shouted accents and a huge gritty melodic nu-metal chorus. Dense guitars, commanding low end, intense precision and no unnecessary synth gloss.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-3",
+          "title": "Pressure After Dark",
+          "category": "Slow Burn",
+          "text": "Dark slow-burning street rap metal. A deep boom-bap kick, dry snare, sparse hi-hats, low-register piano and thick distorted bass establish an ominous half-time pocket. Intimate controlled rap verses accumulate pressure as syncopated guitar textures enter; the chorus bursts into a heavy emotional alternative-metal lift. Cinematic but raw, brooding and rhythm-first.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-4",
+          "title": "Five Boroughs",
+          "category": "90s",
+          "text": "90s New York street-rap energy fused with heavy alternative-rock groove. Dusty boom-bap drums, grimy bassline, scratch accents, tight chopped guitar riffs and minimal threatening piano. Confident rhythmic male rap lead, call-and-response grit and a muscular melodic refrain. Keep the swagger grounded and the production tough rather than glossy.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-5",
+          "title": "Blues and Concrete",
+          "category": "Blues",
+          "text": "Gritty Southern blues attitude collides with NYC hip-hop and groove-heavy nu-metal. Dirty blues guitar riffs, expressive bends, sparse slide accents, thick bass and dry head-nod drums. Swaggering aggressive rap verses, soulful tension in the guitar work and a hard melodic hook with heavy riff payoffs. Raw, muscular and smoky, with no jam-band looseness.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-6",
+          "title": "Digital Uprising",
+          "category": "EDM",
+          "text": "Rap metal fused with industrial electronic drive around 104 BPM. Distorted synth bass, dark pulsing sequencers, mechanical percussion and driving electronic risers interlock with heavy syncopated guitars and thick hip-hop drums. Aggressive rap-led verses and an explosive melodic nu-metal chorus, with a controlled electronic drop that strengthens the riff instead of replacing it.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-7",
+          "title": "Early 2000s Impact",
+          "category": "Nu-Metal",
+          "text": "Heavy early-2000s nu-metal energy: detuned stop-start guitars, chest-hitting bass, hard live drums, restrained turntable texture and tense eerie verses. Rhythmic streetwise rap vocals alternate with urgent rough-edged melodic singing. Big emotionally charged chorus, thick layered guitar dynamics, raw grit and no modern pop-trap sheen.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "enter-the-end",
+      "name": "Enter The End",
+      "genre": "Groove metalcore · Alternative metal",
+      "color": "#ed8e77",
+      "monogram": "X",
+      "description": "Low-tuned guitars, tribal percussion and vocal dynamics",
+      "prompts": [
+        {
+          "id": "enter-the-end-1",
+          "title": "ETE Core",
+          "category": "Core",
+          "text": "Groove-heavy modern metalcore with downtuned syncopated guitars, thick distorted bass, explosive live drums, double-kick bursts and subtle tribal or Latin-inspired percussion. Male vocals shift between gritty rhythmic delivery, powerful clean tenor and controlled harsh screams. Dark alternative-metal atmosphere, hard-driving verses and enormous melodic choruses. Deep articulate low end, sharp guitar attack and occasional expressive guitar solo. No short gimmicky scream-only breakdowns.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-2",
+          "title": "No Mercy",
+          "category": "Heavy",
+          "text": "Full-force modern metalcore with relentless aggressive down-tuned guitar riffs, thick distorted bass, hard-hitting live drums, fast double-kick runs and urgent tribal percussion. Controlled vicious screams, gritty rhythm-led verse delivery and a forceful clean male chorus. Tight low-end punch, evolving heavy instrumental breaks and an expressive lead-guitar solo. No trap or electronic gloss.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-3",
+          "title": "Pressure System",
+          "category": "Slow Burn",
+          "text": "Dark groove-metalcore slow burn built from pulsing low guitar, deep bass, tom-driven percussion and dissonant atmosphere. Verses feel claustrophobic with restrained gritty male vocals, then pressure surges through syncopated riffs, live drums and urgent clean-sung hooks. Gradually increase density until a long instrumental release and emotive guitar solo. No cheap sudden scream breakdown.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-4",
+          "title": "Evil Disco",
+          "category": "Experimental",
+          "text": "Sinister disco pulse fused with modern groove metalcore. Four-on-the-floor kick and tight syncopated funk bass beneath menacing downtuned guitar riffs, eerie minor-key synth accents, crisp live drums and tribal percussion. Gritty male rhythmic vocals shift into dark powerful clean hooks and selective harsh screams. Grotesque dance-floor tension with legitimate metal weight; never novelty or campy.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-5",
+          "title": "Nightmare Industrial",
+          "category": "Industrial",
+          "text": "Nightmarish industrial metalcore with mechanical beats, grinding low guitars, corrupted synth textures, thick bass, unsettling ambience and tight human drum attacks. Claustrophobic rhythmic male lead, distorted whispered layers, explosive controlled harsh vocals and dark melodic choruses. Build eerie tension through repetition and abrasive detail; cold cinematic studio mix, no crowd sound.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-6",
+          "title": "Tribal Storm",
+          "category": "Groove",
+          "text": "Groove-forward metalcore with huge down-tuned rhythmic guitars, powerful live kick and snare, rolling toms, Latin-inspired hand percussion and thick bass. Controlled rhythmic verses, strong clean male tenor and selectively aggressive accents. Low-slung hypnotic movement, massive chorus and prominent guitar-led instrumental section, not nonstop blast beats.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "4th-movement",
+      "name": "4th Movement",
+      "genre": "String quartet · Hip-hop · Trap",
+      "color": "#cfb681",
+      "monogram": "4",
+      "description": "Violins, viola and cello over urban beats and 808s",
+      "prompts": [
+        {
+          "id": "4th-movement-1",
+          "title": "Quartet Core",
+          "category": "Core",
+          "text": "Cinematic string-quartet hip-hop led by expressive violins, rich viola counterlines, warm cello ostinatos and minor-key piano over punchy drums and deep 808 sub bass. Strings carry the hooks with agile riffs, pizzicato, emotional swells and dramatic rests. Gritty but refined urban rap delivery, modern trap and boom-bap hybrid pocket, high-definition studio mix. Keep the quartet prominent, never background wallpaper.",
+          "favorite": true,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-2",
+          "title": "Sinister Trap",
+          "category": "Trap",
+          "text": "Dark aggressive quartet trap with sharp staccato violin ostinatos, low cello repetitions, tense viola harmonies, minor piano stabs and ominous orchestral stops. Booming slightly distorted 808, intricate hats, hard snare and confident low-register rap. Cinematic danger with disciplined string writing and heavy street swagger.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-3",
+          "title": "Future Chamber",
+          "category": "EDM",
+          "text": "Modern quartet hip-hop meets melodic future bass. Expressive violin lead and cello ostinatos anchor pulsing synth sub bass, crisp trap drums, atmospheric pads and carefully sidechained electronic lifts. String motifs remain recognizable through the drop; emotionally charged rap verses and a sweeping cinematic hook. No generic festival supersaw overload.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-4",
+          "title": "Low Strings",
+          "category": "Slow Burn",
+          "text": "Patient cinematic hip-hop slow burn with intimate cello melody, soft viola layers, sparse expressive violin, felt piano, dusty boom-bap drums and deep rounded bass. Reflective streetwise male rap, delicate tension and a gradual string swell into a controlled soulful hook. Spacious, human and restrained.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-5",
+          "title": "Street Symphony",
+          "category": "90s",
+          "text": "Hard 90s East Coast rap with gritty boom-bap kick and crisp snare, ominous minor-key piano, low cello bass and cutting violin motifs. Tight acoustic string quartet drives the beat with repeating ostinatos and dramatic stops; raw confident street storytelling vocals, thick low end and no EDM effects.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-6",
+          "title": "Sleigh Bell Cipher",
+          "category": "Christmas",
+          "text": "Christmas hip-hop fused with a cinematic string quartet: agile violin melodies, warm cello groove, rich viola harmonies and minor piano under hard crisp trap drums and deep 808s. Sleigh bells and light chimes weave through the rhythm instead of taking over. Playful confident rap storytelling, festive atmosphere with real street credibility and no cartoon vocals.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "4th-movement-7",
+          "title": "Christmas Crunk",
+          "category": "Christmas",
+          "text": "4th Movement Christmas crunk anthem fusion: aggressive string quartet over huge Southern crunk drums, stomping kicks, snapping snares, booming 808 bass, chant-ready rhythms, sharp violin riffs, low cello ostinatos and dramatic orchestral hits. Layer sleigh bells and jingle percussion into the beat. Bold high-energy verses, forceful group chant hook and a hard celebratory groove; playful but not corny.",
+          "favorite": false,
+          "origin": "reconstructed"
+        }
+      ]
+    }
+  ]
+}
