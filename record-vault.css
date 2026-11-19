@@ -606,3 +606,19 @@ body.vault-v3 {
   .vault-v3 .group-card {transition:none;}
   .vault-v3 .mockup-add-prompt {transition:none;}
 }
+
+/* Contextual toolbar: Home shows menu/search, group shows back/favorites/more. */
+.vault-v3 .site-header .mockup-back-button,
+.vault-v3 .site-header .mockup-favorites-button {display:none;}
+.vault-v3[data-vault-page="group"] .site-header .mockup-menu-button,
+.vault-v3[data-vault-page="group"] .site-header .mockup-search-button {display:none;}
+.vault-v3[data-vault-page="group"] .site-header .mockup-back-button,
+.vault-v3[data-vault-page="group"] .site-header .mockup-favorites-button,
+.vault-v3[data-vault-page="group"] .site-header .mockup-settings-button {display:grid;}
+.vault-v3[data-vault-page="group"] .site-header .mockup-back-button {margin-right:auto;}
+.vault-v3[data-vault-page="group"] .site-header .mockup-favorites-button {margin-left:auto;}
+@media(max-width:560px) {
+  .vault-v3[data-vault-page="group"] .site-header .mockup-settings-button {display:grid;}
+  .vault-v3[data-vault-page="group"] .mockup-back {display:none;}
+  .vault-v3[data-vault-page="group"] .site-header #installButton:not([hidden]) {display:none;}
+}
