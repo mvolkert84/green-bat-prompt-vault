@@ -288,3 +288,321 @@ body.vault-v3 {
 @media(prefers-reduced-motion:reduce) {
   .vault-v3 .group-card {transition:none;}
 }
+
+
+/* Record Vault v4: fidelity pass against user-approved mobile mockups */
+/* Home: editorial black-and-brass cover archive. Group: real stacked crate geometry. */
+/* Keep all functional controls accessible; display-only vinyl flourishes do not play audio. */
+.vault-v3 {--green:#b2d07b;--surface:#171813;--line:#594a31;}
+.vault-v3 .app-shell {max-width:1200px;}
+.vault-v3 .site-header {
+  position:sticky;top:0;z-index:15;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;min-height:69px;height:69px;
+  padding:9px clamp(12px,3vw,24px);background:#080907f7;
+  border-bottom:1px solid #493d29;box-shadow:0 8px 22px #000a;
+}
+.vault-v3 .site-header::after {display:none;}
+.vault-v3 .site-header .brand {
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;justify-content:center;align-items:center;gap:7px;
+  width:max-content;max-width:55%;margin:0;min-width:0;
+}
+.vault-v3 .site-header .brand-logo {
+  width:43px;height:43px;max-width:43px;object-fit:cover;
+  border:0;border-radius:0;background:transparent;box-shadow:none;
+}
+.vault-v3 .site-header .brand-badge {
+  display:block;font:900 11px/1.15 "Arial Narrow",Arial,sans-serif;
+  letter-spacing:.14em;color:#a8d476;white-space:nowrap;
+}
+.vault-v3 .site-header .brand-badge::before {
+  content:"GREEN BAT";display:block;color:#a7d77c;font-size:13px;
+  letter-spacing:.1em;padding-bottom:1px;
+}
+.vault-v3 .site-header .icon-button {
+  flex:none;width:37px;height:37px;border:0;border-radius:8px;
+  background:transparent;color:#d7c5a4;
+}
+.vault-v3 .site-header .icon-button svg {width:22px;height:22px;}
+.vault-v3 .site-header .mockup-menu-button {margin-right:auto;}
+.vault-v3 .site-header .mockup-search-button {margin-left:auto;}
+.vault-v3 .site-header .mockup-settings-button {width:32px;height:32px;}
+.vault-v3 .site-header #installButton:not([hidden]) {width:32px;height:32px;}
+.vault-v3 .vault-masthead.mockup-masthead {
+  padding:26px 14px 20px;margin:0 0 9px;border:0;border-radius:0;
+  background:#080a08;box-shadow:none;overflow:hidden;
+}
+.vault-v3 .vault-masthead.mockup-masthead::before {
+  background:radial-gradient(ellipse at 84% 56%,#5f593b2d,transparent 45%);
+}
+.vault-v3 .vault-masthead.mockup-masthead::after {
+  display:block;right:-125px;top:20px;width:275px;height:275px;
+  border:1px solid #a28b614a;border-radius:50%;opacity:.65;
+  background:
+    radial-gradient(circle,#141911 0 13px,#927947 14px 17px,#080a08 18px 23px,transparent 24px),
+    repeating-radial-gradient(circle,#080b09 0 3px,#6e6250 4px 5px,#0c0d0a 6px 9px);
+  box-shadow:0 0 32px #0009,inset 0 0 40px #0008;
+}
+.vault-v3 .mockup-masthead .vault-eyebrow {color:#897c65;letter-spacing:.22em;font-size:9px;}
+.vault-v3 .mockup-masthead .vault-title {
+  font:700 clamp(32px,5.7vw,49px)/1.04 Georgia,"Times New Roman",serif;
+  margin:15px 0 14px;max-width:325px;letter-spacing:-.028em;
+  text-shadow:0 2px 6px #000;
+  color:#f3e9d5;position:relative;z-index:2;
+}
+.vault-v3 .mockup-masthead .vault-tagline {
+  position:relative;z-index:2;margin:0 0 23px;
+  font:italic 16px/1.25 Georgia,"Times New Roman",serif;
+  color:#d8cbb4;
+}
+.vault-v3 .mockup-masthead .vault-tabs {display:grid;grid-template-columns:1fr 1fr;gap:9px;width:min(100%,440px);position:relative;z-index:2;}
+.vault-v3 .mockup-masthead .vault-tab {
+  justify-content:center;min-height:44px;padding:9px 10px;border-radius:10px;
+  border:1px solid #5b5037;background:#0f120d;color:#dacfbc;
+  font-size:12px;font-weight:800;letter-spacing:.01em;
+}
+.vault-v3 .mockup-masthead .vault-tab.active {
+  background:linear-gradient(180deg,#546b39,#223d1e);border:2px solid #8fb66d;
+  color:#f4edcf;box-shadow:inset 0 0 0 2px #0c130a96,0 0 10px #7baa4023;
+}
+.vault-v3 .vault-compact-toolbar {display:flex;align-items:center;gap:10px;margin:0 0 8px;}
+.vault-v3 .vault-compact-toolbar .search-box {height:40px;min-width:0;}
+.vault-v3 .vault-small-add {
+  flex:none;width:40px;height:40px;border:1px solid #77704f;border-radius:10px;
+  background:linear-gradient(#353b28,#1d261a);font-size:22px;color:#c9e7a0;
+}
+.vault-v3 .section-bar.mockup-section-bar {margin:17px 0 14px;scroll-margin-top:90px;}
+.vault-v3 .section-bar.mockup-section-bar h2 {
+  color:#efe4cc;font:700 clamp(20px,3vw,26px) Georgia,serif;
+}
+.vault-v3 .section-bar.mockup-section-bar .section-note {font-size:11px;color:#ada285;}
+/* The home-page covers are just album sleeves: not utility cards with an extra information panel. */
+.vault-v3 .group-grid.mockup-sleeve-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+.vault-v3 .mockup-group-card {
+  position:relative;display:block;min-width:0;min-height:0;padding:0;margin:0;
+  background:none;border:0;box-shadow:none;overflow:visible;
+}
+.vault-v3 .mockup-group-card:hover {box-shadow:none;transform:translateY(-2px);}
+.vault-v3 .mockup-sleeve {
+  position:relative;width:100%;height:auto;aspect-ratio:1/1;
+  border:2px solid #8e7350;border-radius:9px;overflow:hidden;
+  background-color:#151713;
+  box-shadow:inset 0 0 0 4px #15100b,0 2px 2px #000,0 7px 15px #0009;
+}
+.vault-v3 .mockup-sleeve::before,.vault-v3 .mockup-sleeve::after {display:none;}
+.vault-v3 .mockup-sleeve img {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.vault-v3 .mockup-sleeve .record-rings {
+  position:absolute;inset:13% -13% -13% 18%;border-radius:50%;
+  background:repeating-radial-gradient(circle,#0b0d0b 0 11px,#6e805846 12px 18px,#0b0d0b 19px 28px);
+}
+.vault-v3 .mockup-sleeve .sleeve-art-label {display:none;}
+.vault-v3 .mockup-sleeve .sleeve-art-title {
+  position:absolute;z-index:2;top:10%;bottom:auto;left:10%;right:7%;
+  font:900 clamp(17px,5vw,31px)/.97 Impact,"Arial Narrow",Arial,sans-serif;
+  color:#e8d0a7;text-shadow:0 2px 6px #000e,1px 2px 2px #000;
+  text-transform:uppercase;letter-spacing:.025em;overflow-wrap:break-word;
+}
+.vault-v3 .mockup-sleeve.vertigo .sleeve-art-title {font-style:italic;transform:rotate(-5deg);font-size:clamp(20px,6vw,37px);}
+.vault-v3 .mockup-sleeve.state-of-tension .sleeve-art-title {max-width:80%;}
+.vault-v3 .mockup-sleeve.enter-the-end .sleeve-art-title {max-width:67%;}
+.vault-v3 .mockup-sleeve .custom-sleeve-caption {
+  display:block;position:absolute;z-index:2;bottom:0;left:0;right:0;padding:22px 8px 10px;
+  color:#f5ecd7;font:800 13px/1.1 "Arial Narrow",Arial,sans-serif;
+  background:linear-gradient(0deg,#000d,transparent);
+  text-shadow:0 1px 4px #000;
+}
+.vault-v3 .mockup-sleeve .sleeve-aging {
+  position:absolute;z-index:3;inset:0;pointer-events:none;
+  border:3px solid #d1ae7b3b;border-radius:7px;
+  box-shadow:inset 0 0 15px #0009,inset 0 0 1px 3px #3021144d;
+  background:
+    linear-gradient(137deg,#f1ca8f22 0 1%,transparent 2% 96%,#fff7c42b 99%),
+    repeating-linear-gradient(86deg,transparent 0 16px,#c9b2870b 17px 18px,transparent 19px 37px);
+}
+.vault-v3 .mockup-group-card .sleeve-favorite-indicator {
+  position:absolute;bottom:8px;right:9px;z-index:4;
+  display:block;font-size:25px;color:#ecd5a3;line-height:1;
+  text-shadow:0 2px 3px #000,0 0 5px #000;pointer-events:none;
+}
+.vault-v3 .mockup-group-card .sleeve-favorite-indicator:not(:empty) {filter:drop-shadow(0 2px 2px #000);}
+.vault-v3 .featured-section {margin-top:29px;}
+/* Large vertical staged record crate, layered sleeves visible behind selected front cover. */
+.vault-v3 .mockup-back {display:block;max-width:610px;margin:0 auto;color:#b5bc8d;font-size:12px;}
+.vault-v3 .mockup-crate-shell {
+  width:min(100%,610px);margin:0 auto 9px;overflow:hidden;
+  background:#090a08;border:1px solid #4e3926;border-radius:9px 9px 14px 14px;
+  box-shadow:0 12px 31px #000b;
+}
+.vault-v3 .crate-stage {
+  position:relative;height:clamp(242px,76vw,425px);overflow:hidden;
+  background:radial-gradient(ellipse at 50% 75%,#3a2c1d 0,#14130e 46%,#090907 82%);
+}
+.vault-v3 .stack-record {
+  position:absolute;left:50%;width:77%;height:86%;top:0;
+  border:2px solid #997952;border-radius:8px 8px 0 0;
+  background:
+    repeating-linear-gradient(95deg,#ad93626e 0 1px,transparent 2px 9px),
+    radial-gradient(ellipse at 50% 25%,#25231b,#0b0b09 72%);
+  box-shadow:0 2px 2px #000b,inset 0 0 0 3px #301f14;
+  transform:translateX(-50%);
+}
+.vault-v3 .stack-record-four {top:5px;width:70%;z-index:1;transform:translateX(-50%) rotate(1.3deg);}
+.vault-v3 .stack-record-three {top:12px;width:74%;z-index:2;transform:translateX(-50%) rotate(-1deg);}
+.vault-v3 .stack-record-two {top:21px;width:77%;z-index:3;transform:translateX(-50%) rotate(1.1deg);}
+.vault-v3 .stack-record-one {top:30px;width:80%;z-index:4;transform:translateX(-50%) rotate(-1deg);}
+.vault-v3 .crate-main-cover {position:absolute;z-index:6;top:46px;left:8.5%;width:83%;aspect-ratio:1;}
+.vault-v3 .crate-main-cover .mockup-sleeve {
+  height:100%;border-radius:8px;box-shadow:0 0 0 3px #1a120b,0 8px 22px #000e,inset 0 0 0 4px #281c15;
+}
+.vault-v3 .crate-main-cover .mockup-sleeve .sleeve-art-title {font-size:clamp(25px,7vw,51px);top:10%;}
+.vault-v3 .crate-main-cover .mockup-sleeve.enter-the-end .sleeve-art-title {font-size:clamp(25px,6.5vw,50px);}
+.vault-v3 .crate-side {position:absolute;z-index:7;top:74px;bottom:38px;width:13%;background:
+  linear-gradient(90deg,#1f1208dd,#714321b5,#25170aee),
+  url('./assets/crate-wood.svg');border:1px solid #6f4d2d;
+}
+.vault-v3 .crate-side-left {left:0;clip-path:polygon(0 22%,95% 0,100% 100%,0 100%);}
+.vault-v3 .crate-side-right {right:0;clip-path:polygon(5% 0,100% 22%,100% 100%,0 100%);}
+.vault-v3 .crate-front-wood {
+  position:absolute;z-index:8;left:-1%;right:-1%;bottom:0;height:clamp(47px,14vw,78px);
+  background:
+    linear-gradient(180deg,#a0733a3b 0 4px,#22140977 5px 8px,transparent 9px),
+    url('./assets/crate-wood.svg') center / cover;
+  border-top:6px ridge #896038;border-bottom:4px solid #1c130b;
+  box-shadow:0 -8px 12px #000d,inset 0 5px 10px #130d06bf;
+}
+.vault-v3 .crate-front-title {
+  position:absolute;bottom:6px;left:15px;right:12px;z-index:9;pointer-events:none;
+}
+.vault-v3 .crate-front-title h1 {
+  color:#e9dec4;font:700 clamp(23px,6.2vw,40px)/1.08 Georgia,"Times New Roman",serif;
+  margin:0;text-shadow:0 2px 6px #000;
+}
+.vault-v3 .crate-details {padding:15px 13px 16px;background:#0a0c09;}
+.vault-v3 .crate-tags {display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.vault-v3 .crate-tag {
+  padding:5px 11px 6px;border:1px solid #819a61;border-radius:999px;
+  color:#d4deac;font:700 11px/1.2 "Segoe UI",Arial,sans-serif;
+  background:#11190f;box-shadow:inset 0 0 0 1px #40583467;
+}
+.vault-v3 .crate-details>p {font-size:13px;line-height:1.53;color:#d1cbbc;margin:0 0 10px;}
+.vault-v3 .crate-meta-bar {display:flex;justify-content:space-between;gap:12px;align-items:center;}
+.vault-v3 .crate-meta-bar span {color:#988f7e;font-size:10px;line-height:1.3;}
+.vault-v3 .crate-edit-button {
+  min-height:31px;border:1px solid #645b42;border-radius:8px;
+  background:#1b1b15;color:#c4b998;font-weight:750;font-size:11px;padding:6px 10px;
+}
+.vault-v3 .mockup-prompts-heading,.vault-v3 .mockup-track-list,.vault-v3 .mockup-add-prompt,
+.vault-v3 .mockup-search-panel {max-width:610px;margin-left:auto;margin-right:auto;}
+.vault-v3 .mockup-prompts-heading {
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:16px;margin-bottom:11px;
+}
+.vault-v3 .mockup-prompts-heading h2 {font-size:17px;line-height:1.1;color:#efe6d7;margin:0;font-weight:800;}
+.vault-v3 .mockup-prompts-heading h2 span {color:#d4cabb;font-weight:600;}
+.vault-v3 .preset-search-toggle {border:0;background:none;color:#adab8c;font-size:11px;font-weight:700;padding:8px 0;}
+.vault-v3 .mockup-search-panel {padding:4px 0 10px;}
+.vault-v3 .mockup-search-panel .toolbar {margin:0 0 8px;}
+.vault-v3 .mockup-search-panel .search-box {height:40px;}
+.vault-v3 .mockup-search-panel .filter-row {margin:0;padding:0 0 4px;}
+/* Tight, real soundboard rows: View acts as an expand control, never as fake playback. */
+.vault-v3 .prompt-stack.mockup-track-list {
+  display:flex;flex-direction:column;gap:6px;
+}
+.vault-v3 .mockup-track-list .mockup-preset {
+  position:relative;background:linear-gradient(#191b15,#0f110d);
+  border:1px solid #4b4935;border-radius:11px;box-shadow:inset 0 1px #ffffff0c,0 4px 10px #0008;
+}
+.vault-v3 .mockup-track-list .mockup-preset::before {display:none;}
+.vault-v3 .mockup-preset-row {display:flex;align-items:center;gap:9px;padding:9px 10px;min-height:54px;}
+.vault-v3 .preset-reveal {
+  flex:none;display:grid;place-items:center;width:34px;height:34px;
+  border:2px solid #759654;border-radius:8px;background:#10180d;color:#b9df86;
+  font-size:17px;line-height:1;padding-left:3px;box-shadow:inset 0 0 0 2px #0c100a;
+}
+.vault-v3 .preset-reveal:hover {background:#293d23;}
+.vault-v3 .preset-name {min-width:0;flex:1;}
+.vault-v3 .preset-name h3 {font-weight:800;color:#f1e8d8;font-size:13px;margin:0;line-height:1.25;overflow-wrap:anywhere;}
+.vault-v3 .preset-name>span {display:block;color:#9f997e;font-size:10px;margin-top:3px;}
+.vault-v3 .preset-star {
+  width:30px;height:34px;flex:none;border:0;background:none;font-size:25px;
+  color:#ded1b2;line-height:1;box-shadow:none;
+}
+.vault-v3 .preset-star.selected {color:#efc85c;background:none;border:0;}
+.vault-v3 .preset-copy {
+  flex:none;min-width:51px;min-height:34px;padding:5px 9px;
+  background:#111611;color:#f0e9d8;border:2px solid #78965c;border-radius:8px;
+  font-size:11px;font-weight:800;box-shadow:inset 0 0 0 2px #273b2480;
+}
+.vault-v3 .preset-copy:hover {background:#2e4b25;}
+.vault-v3 .mockup-expanded {font-size:12px;line-height:1.6;padding:12px 14px;color:#e2d6bd;}
+.vault-v3 .preset-category {font-size:10px;color:#a9b88d;letter-spacing:.12em;text-transform:uppercase;padding-bottom:7px;}
+.vault-v3 .preset-expanded-actions {margin-top:12px;}
+.vault-v3 .mockup-add-prompt {
+  display:block;width:100%;min-height:52px;margin-top:18px;margin-bottom:22px;
+  background:linear-gradient(180deg,#58743c,#2a4b25);
+  border:2px solid #8fae63;border-radius:13px;color:#f4efdf;
+  font-size:14px;font-weight:850;box-shadow:inset 0 1px #a4c77377,0 5px 16px #0009;
+}
+.vault-v3 .mockup-add-prompt:hover {filter:brightness(1.14);}
+.vault-v3 .bottom-nav {
+  display:flex;justify-content:space-around;gap:1px;max-width:none;left:0;right:0;
+  bottom:0;transform:none;height:72px;border:0;border-top:1px solid #56462c;
+  border-radius:0;background:#0c100ded;
+}
+.vault-v3 .bottom-nav button {min-width:0;flex:1;font-size:9px;color:#cabda4;gap:5px;}
+.vault-v3 .bottom-nav button.active {color:#a1d475;}
+.vault-v3 .bottom-nav svg {width:22px;height:22px;}
+.vault-v3 .vault-menu-options {display:grid;gap:7px;}
+.vault-v3 .vault-menu-options .btn {justify-content:flex-start;width:100%;min-height:43px;}
+@media(min-width:610px) {
+  .vault-v3 .group-grid.mockup-sleeve-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .vault-v3 .mockup-sleeve .sleeve-art-title {font-size:clamp(21px,3.8vw,33px);}
+  .vault-v3 .vault-compact-toolbar {max-width:580px;}
+  .vault-v3 .mockup-masthead .vault-title {max-width:580px;}
+  .vault-v3 .mockup-masthead .vault-tabs {width:430px;}
+  .vault-v3 .mockup-prompts-heading h2 {font-size:19px;}
+}
+@media(min-width:950px) {
+  .vault-v3 .group-grid.mockup-sleeve-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:21px;}
+  .vault-v3 .vault-masthead.mockup-masthead {margin-top:12px;border-radius:14px;border:1px solid #4b3d2d;padding:27px 35px;}
+  .vault-v3 .site-header .mockup-settings-button {display:grid;}
+  .vault-v3 .site-header .brand-logo {width:49px;height:49px;max-width:none;}
+  .vault-v3 .site-header .brand-badge {font-size:12px;}
+  .vault-v3 .bottom-nav {left:50%;right:auto;bottom:14px;transform:translateX(-50%);
+    max-width:540px;height:62px;border:1px solid #705b3f;border-radius:15px;}
+  .vault-v3 .mockup-masthead .vault-title {font-size:54px;}
+  .vault-v3 .crate-stage {height:420px;}
+  .vault-v3 .crate-main-cover {width:74%;left:13%;top:40px;}
+  .vault-v3 .crate-front-wood {height:78px;}
+}
+@media(max-width:560px) {
+  .vault-v3 .site-header .mockup-settings-button {display:none;}
+  .vault-v3 .site-header #installButton:not([hidden]) {position:absolute;right:55px;top:17px;}
+  .vault-v3 .mockup-masthead .vault-eyebrow {display:none;}
+  .vault-v3 .vault-masthead.mockup-masthead {padding-top:19px;}
+  .vault-v3 .vault-masthead.mockup-masthead::after {width:235px;height:235px;right:-125px;top:8px;}
+  .vault-v3 .crate-details {padding:11px 11px 15px;}
+  .vault-v3 .crate-tags {gap:5px;}
+  .vault-v3 .crate-tag {font-size:10px;padding:5px 9px;}
+  .vault-v3 .preset-name>span {display:none;}
+}
+@media(max-width:355px) {
+  .vault-v3 .site-header .brand-badge {font-size:9px;}
+  .vault-v3 .site-header .brand-logo {width:37px;height:37px;}
+  .vault-v3 .mockup-sleeve .sleeve-art-title {font-size:16px;}
+  .vault-v3 .mockup-sleeve.vertigo .sleeve-art-title {font-size:21px;}
+  .vault-v3 .crate-stage {height:240px;}
+  .vault-v3 .crate-main-cover {top:39px;}
+  .vault-v3 .mockup-preset-row {gap:6px;padding:7px;}
+  .vault-v3 .preset-reveal {width:30px;height:30px;}
+  .vault-v3 .preset-star {width:24px;font-size:21px;}
+  .vault-v3 .preset-copy {min-width:48px;padding-inline:7px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .vault-v3 .group-card {transition:none;}
+  .vault-v3 .mockup-add-prompt {transition:none;}
+}
