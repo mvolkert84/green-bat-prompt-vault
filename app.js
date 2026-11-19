@@ -192,7 +192,7 @@ function renderHome() {
     main.innerHTML =
       '<button type="button" class="back mockup-back" data-go="home">← &nbsp; Back to Record Vault</button>' +
       '<section class="mockup-crate-shell" style="--accent:' + color(g.color) + '">' +
-        '<div class="crate-stage" role="img" aria-label="' + escapeHTML(g.name) + ' record sleeve displayed in a wooden crate">' +
+        '<div class="crate-stage" aria-label="' + escapeHTML(g.name) + ' record sleeve displayed in a wooden crate">' +
           '<div class="stack-record stack-record-four" aria-hidden="true"></div>' +
           '<div class="stack-record stack-record-three" aria-hidden="true"></div>' +
           '<div class="stack-record stack-record-two" aria-hidden="true"></div>' +
@@ -245,6 +245,7 @@ function renderFavorites() {
   }
 
   function render() {
+    if (document.body) document.body.dataset.vaultPage = page;
     if (page === 'group') renderGroup();
     else if (page === 'favorites') renderFavorites();
     else renderHome();
