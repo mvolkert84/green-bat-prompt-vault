@@ -94,18 +94,29 @@
   }
 
 
-// User-uploaded group artwork always overrides the illustrated sample sleeve.
-  const sampleSleeves = new Set(['vertigo','state-of-tension','enter-the-end','4th-movement','after-dark','loose-change','ever-after','pillars']);
+  const printedSleeves = new Map([
+    ['vertigo', 'Vertigo'], ['state-of-tension', 'State of Tension'],
+    ['enter-the-end', 'Enter the End'], ['4th-movement', '4th Movement'],
+    ['after-dark', 'After Dark'], ['loose-change', 'Loose Change'],
+    ['ever-after', 'Ever After Project'], ['pillars', 'Pillars']
+  ]);
+
+  const featuredSleeves = ['vertigo', 'state-of-tension', 'enter-the-end', '4th-movement'];
+  function sleeveRank(id) {
+    const index = featuredSleeves.indexOf(id);
+    return index === -1 ? featuredSleeves.length : index;
+  }
+
   function groupThumbMarkup(g, large = false) {
     const custom = Boolean(g.artwork);
-    const artwork = custom ? g.artwork : sampleSleeves.has(g.id) ? './assets/sleeves/' + g.id + '.svg' : '';
-    const safeId = String(g.id || '').replace(/[^a-z0-9-]/gi,'');
-    const art = artwork ? '<img src="' + artwork + '" alt="' + escapeHTML(g.name) + ' album sleeve artwork" loading="' + (large ? 'eager' : 'lazy') + '">' : '<span class="record-rings" aria-hidden="true"></span>';
-    return '<div class="sleeve-art mockup-sleeve ' + safeId + (custom?' custom-cover':'') +
-      '" style="--accent:' + color(g.color) + '">' + art +
-      '<span class="sleeve-art-label">GREEN BAT MUSIC · ARCHIVE</span>' +
-      (custom ? '<span class="custom-sleeve-caption">' + escapeHTML(g.name) + '</span>' : '<span class="sleeve-art-title">' + escapeHTML(g.name) + '</span>') +
-      '<span class="sleeve-aging" aria-hidden="true"></span></div>';
+    const printed = printedSleeves.has(g.id) && !custom;
+    const sleeve = printed ? (large && g.id === 'vertigo' ? 'vertigo-crate' : g.id) : 'blank-sleeve';
+    const artwork = g.artwork || './assets/vault/' + sleeve + '.webp';
+    const showTitle = !printed || g.name.toLowerCase() !== printedSleeves.get(g.id).toLowerCase();
+    return `<div class="sleeve-art mockup-sleeve ${custom ? 'custom-cover' : ''} ${sleeve === 'vertigo-crate' ? 'vertigo-crate-art' : ''}" style="--accent:${color(g.color)}">
+      <img src="${escapeHTML(artwork)}" alt="" loading="${large ? 'eager' : 'lazy'}" decoding="async">
+      ${showTitle ? `<span class="${custom || printed ? 'custom-sleeve-caption' : 'sleeve-art-title'}">${escapeHTML(g.name)}</span>` : ''}
+    </div>`;
   }
 
   function groupCard(g) {
@@ -129,7 +140,7 @@ function promptCard(p, showGroup = false) {
     return '<article class="prompt-card mockup-preset" style="--track-accent:' + accent + '">' +
       '<div class="mockup-preset-row">' +
         '<button type="button" class="preset-reveal" data-expand="' + pid + '" aria-expanded="' + open +
-          '" aria-label="' + (open ? 'Hide' : 'View') + ' full prompt: ' + escapeHTML(p.title) + '">▶</button>' +
+          '" aria-label="' + (open ? 'Hide' : 'View') + ' full prompt: ' + escapeHTML(p.title) + '"><span aria-hidden="true"></span></button>' +
         '<div class="preset-name">' +
           '<h3>' + escapeHTML(p.title) + '</h3>' +
           '<span>' + (showGroup ? escapeHTML(p.groupName) + ' · ' : '') + escapeHTML(p.category) + '</span>' +
@@ -154,11 +165,11 @@ function promptCard(p, showGroup = false) {
 function renderHome() {
     const q = query.toLowerCase().trim();
     const matched = data.groups.filter(g => [g.name,g.genre,g.description,...g.prompts.map(p=>p.title+' '+p.text)]
-      .join(' ').toLowerCase().includes(q));
+      .join(' ').toLowerCase().includes(q))
+      .sort((a, b) => sleeveRank(a.id) - sleeveRank(b.id));
     const favs = allPrompts().filter(p=>p.favorite).slice(0,6);
     main.innerHTML =
       '<section class="hero vault-masthead mockup-masthead">' +
-        '<span class="vault-eyebrow">THE UNDERGROUND RECORD VAULT</span>' +
         '<h1 class="vault-title">Green Bat<br>Prompt Vault</h1>' +
         '<p class="vault-tagline">Every sound. One vault.</p>' +
         '<nav class="vault-tabs" aria-label="Vault sections">' +
@@ -190,26 +201,21 @@ function renderHome() {
     const matched = g.prompts.filter(p=>(category==='All'||p.category===category)&&matchesPrompt({...p,groupName:g.name},q));
     const tags = [...new Set(g.prompts.map(p=>p.category))].slice(0,3);
     main.innerHTML =
-      '<button type="button" class="back mockup-back" data-go="home">← &nbsp; Back to Record Vault</button>' +
+      '<div class="group-layout">' +
       '<section class="mockup-crate-shell" style="--accent:' + color(g.color) + '">' +
-        '<div class="crate-stage" aria-label="' + escapeHTML(g.name) + ' record sleeve displayed in a wooden crate">' +
-          '<div class="stack-record stack-record-four" aria-hidden="true"></div>' +
-          '<div class="stack-record stack-record-three" aria-hidden="true"></div>' +
-          '<div class="stack-record stack-record-two" aria-hidden="true"></div>' +
-          '<div class="stack-record stack-record-one" aria-hidden="true"></div>' +
-          '<div class="crate-side crate-side-left" aria-hidden="true"></div>' +
-          '<div class="crate-side crate-side-right" aria-hidden="true"></div>' +
+        '<div class="crate-stage">' +
           '<div class="crate-main-cover">' + groupThumbMarkup(g,true) + '</div>' +
           '<div class="crate-front-wood" aria-hidden="true"></div>' +
-          '<div class="crate-front-title"><h1>' + escapeHTML(g.name) + '</h1></div>' +
         '</div>' +
         '<div class="crate-details">' +
+          '<h1>' + escapeHTML(g.name) + '</h1>' +
           '<div class="crate-tags">' + tags.map(t=>'<span class="crate-tag">'+escapeHTML(t)+'</span>').join('') + '</div>' +
           '<p>' + escapeHTML(g.description || g.genre) + '</p>' +
-          '<div class="crate-meta-bar"><span>' + escapeHTML(g.genre) + '</span>' +
+          '<div class="crate-meta-bar"><span>' + escapeHTML(g.description ? g.genre : '') + '</span>' +
             '<button type="button" class="crate-edit-button" data-edit-group="' + escapeHTML(g.id) + '" aria-label="Edit ' + escapeHTML(g.name) + ' artwork and details">Edit sleeve</button></div>' +
         '</div>' +
       '</section>' +
+      '<section class="group-soundboard" aria-label="Saved prompts">' +
       '<div class="mockup-prompts-heading">' +
         '<h2>Prompts <span>(' + g.prompts.length + ')</span></h2>' +
         '<button type="button" class="preset-search-toggle" data-action="toggle-group-search" aria-expanded="' + groupSearchOpen + '">⌕ &nbsp;Search / Filters</button>' +
@@ -222,7 +228,7 @@ function renderHome() {
         matched.map(p=>promptCard({...p,groupColor:g.color})).join('') +
       '</section>' +
       (matched.length?'':'<div class="empty-state"><h3>No prompts found</h3><p>Change the search or filters.</p></div>') +
-      '<button type="button" class="mockup-add-prompt" data-action="add-prompt">＋ &nbsp; Add Prompt</button>';
+      '<button type="button" class="mockup-add-prompt" data-action="add-prompt">＋ &nbsp; Add Prompt</button></section></div>';
   }
 
 function renderFavorites() {
@@ -405,7 +411,7 @@ function renderFavorites() {
       case 'show-groups':
         if(!modal.hidden)closeModal();
         if(page!=='home')navigate('home');
-        document.getElementById('musicGroupsHeading')?.scrollIntoView({behavior:'smooth',block:'start'});
+        document.getElementById('musicGroupsHeading')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
         document.querySelectorAll('.bottom-nav button').forEach(btn=>btn.classList.remove('active'));
         document.getElementById('nav-groups')?.classList.add('active');
         break;

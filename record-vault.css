@@ -1,624 +1,295 @@
-
-/* Green Bat Music — Underground Record Vault v3
-   Decorative sleeve/record details use CSS; nothing here pretends audio is available.
-   Preserve the existing buttons, forms, mobile grid, offline storage and accessibility.
-*/
-:root { color-scheme:dark; }
-html { background:#080907; }
+/* The record, sleeve materials and crate are raster artwork. Layout and controls stay live. */
+:root {
+  --serif: Georgia, 'Times New Roman', serif;
+  background: #080705;
+}
 body.vault-v3 {
-  --bg:#0d0d0a; --surface:#191712; --surface2:#241f18; --surface3:#30291e;
-  --line:#55432d; --text:#f2e9d8; --muted:#b8ac94; --green:#a5cf70;
-  --dim:#8d9e63; --shadow:0 20px 48px #0009;
-  color:var(--text); background:
-    radial-gradient(ellipse 56rem 19rem at 52% -9rem,#8a593c45,transparent 76%),
-    radial-gradient(ellipse 40rem 26rem at 105% 18rem,#42603b1c,transparent 75%),
-    repeating-linear-gradient(90deg,transparent 0 50px,#fff1 51px,transparent 52px 73px),
-    #0c0c09;
+  --bg: #0b0906;
+  --surface: #191510;
+  --surface2: #211b12;
+  --line: #5b4a32;
+  --text: #f1e2c9;
+  --muted: #c0af92;
+  --green: #b0cb76;
+  background: var(--bg);
 }
-.vault-v3 .app-shell {max-width:1190px;}
+.vault-v3 .app-shell { max-width: 1160px; padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+.vault-v3 main { padding-inline: clamp(12px, 3.4vw, 34px); }
 .vault-v3 .site-header {
-  border-bottom:1px solid #7360417b; min-height:72px; height:74px;
-  background:linear-gradient(180deg,#191611f5,#0b0b09f2);
-  box-shadow:0 12px 28px #0009; padding-block:10px;
+  min-height: 60px;
+  padding: 5px 12px;
+  gap: 0;
+  background: #0b0906f5;
+  border: 0;
 }
-.vault-v3 .site-header::after{
-  content:""; position:absolute;left:4%;right:4%;bottom:0;height:1px;
-  background:linear-gradient(90deg,transparent,#99805b9b,transparent);pointer-events:none;
+.site-header .brand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: none;
+  padding: 0;
 }
-.vault-v3 .brand {gap:10px;}
-.vault-v3 .brand-logo {width:50px;height:50px;max-width:none;object-fit:cover;border-radius:12px;border:1px solid #a0c46e30;box-shadow:none;}
-.vault-v3 .brand-badge {
-  display:block;border:0;background:none;padding:0;color:#d8d0bd;
-  font-size:10px;letter-spacing:.23em;font-weight:800;
+.site-header .brand-logo {
+  width: auto;
+  height: 48px;
+  max-width: min(54vw, 205px);
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  mix-blend-mode: screen;
 }
-.vault-v3 .brand-badge::before {
-  content:"GREEN BAT MUSIC";display:block;color:var(--green);font-size:11px;
-  letter-spacing:.15em;padding-bottom:4px;
+.site-header .icon-button { width: 44px; height: 44px; background: none; border: 0; }
+.site-header .icon-button svg { width: 24px; height: 24px; }
+.site-header .mockup-menu-button, .site-header .mockup-back-button { margin-right: auto; }
+.site-header .mockup-back-button, .site-header .mockup-favorites-button,
+.site-header .mockup-settings-button { display: none; }
+[data-vault-page="group"] .site-header .mockup-back-button,
+[data-vault-page="group"] .site-header .mockup-favorites-button,
+[data-vault-page="group"] .site-header .mockup-settings-button { display: grid; }
+[data-vault-page="group"] .site-header :is(.mockup-menu-button,.mockup-search-button,#installButton) {
+  display: none;
 }
-.vault-v3 .icon-button {border-color:#53432d;background:#211c16;color:#dfd1b8;}
-.vault-v3 .icon-button:hover {border-color:#a19b75;}
-.vault-v3 main {padding:0 clamp(16px,4vw,35px);}
-.vault-v3 .hero {padding:0;}
-.vault-v3 .vault-masthead {
-  position:relative;isolation:isolate;overflow:hidden;
-  border:1px solid #6c5236; border-top:0; border-radius:0 0 22px 22px;
-  margin:0 0 22px;padding:24px 24px 21px;
-  background:
-    linear-gradient(115deg,#16150ff2 2%,#1b1b13db 55%,#0b0c09bb),
-    repeating-linear-gradient(100deg,#ffffff08 0 1px,transparent 1px 7px);
-  box-shadow:0 15px 34px #0008,inset 0 1px #ccb9871f;
+[data-vault-page="group"] .site-header .brand-logo { max-width: min(205px, calc(100vw - 204px)); }
+
+.mockup-masthead {
+  position: relative;
+  isolation: isolate;
+  padding: 22px 9px 12px;
+  color: var(--text);
 }
-.vault-v3 .vault-masthead::before {
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(ellipse at 80% 20%,#a17c3a22,transparent 43%);
+.mockup-masthead::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -9px;
+  right: calc(-1 * clamp(12px, 3.4vw, 34px));
+  width: 53%;
+  height: calc(100% + 94px);
+  background: url('./assets/vault/vinyl.webp') left top / auto 100% no-repeat;
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
-.vault-v3 .vault-masthead::after {
-  content:"";position:absolute;right:-67px;top:-65px;width:244px;height:244px;z-index:-1;
-  border-radius:50%;opacity:.4;transform:rotate(-15deg);
-  background:
-    radial-gradient(circle at 50% 50%,#889e6722 0 13px,#080807 14px 33px,transparent 34px),
-    repeating-radial-gradient(circle,#050706 0 3px,#41463b 4px 5px,#070908 6px 9px);
-  box-shadow:0 0 0 1px #ad99523e,0 24px 42px #0008;
+.mockup-masthead .vault-title {
+  color: var(--text);
+  font: 700 clamp(32px, 8.7vw, 58px)/1.01 var(--serif);
+  letter-spacing: -.035em;
+  margin: 3px 0 8px;
+  text-shadow: 0 2px 8px #000;
 }
-.vault-v3 .vault-eyebrow {color:#bcab84;letter-spacing:.24em;font-size:10px;font-weight:800;}
-.vault-v3 .vault-title {
-  font:700 clamp(29px,5vw,47px)/1.04 Georgia,"Times New Roman",serif;
-  letter-spacing:-.035em;margin:12px 0 5px;max-width:520px;color:#f2e7d0;
-  text-shadow:0 1px 1px #000d;
+.mockup-masthead .vault-tagline {
+  margin: 0 0 22px;
+  color: var(--text);
+  font: italic clamp(16px, 4.5vw, 21px)/1.25 var(--serif);
 }
-.vault-v3 .vault-title span {display:block;color:#b4d985;}
-.vault-v3 .vault-tagline {
-  margin:8px 0 18px;color:#c2bc9f;font:italic 16px/1.2 Georgia,serif;
+.vault-tabs { display: grid; grid-template-columns: 1.24fr 1fr; gap: 9px; width: min(100%, 460px); }
+.vault-tab, .mockup-add-prompt {
+  color: #fff0d7;
+  min-height: 44px;
+  padding: 6px;
+  border: 1px solid #6a5232;
+  border-radius: 12px;
+  background: #17130d url('./assets/vault/track-finish.webp') center / 100% 100%;
+  font: 700 clamp(14px, 4vw, 18px)/1.2 var(--serif);
+  box-shadow: inset 0 0 0 2px #09080280, 0 4px 9px #000a;
+  text-shadow: 0 1px 4px #000;
 }
-.vault-v3 .vault-tabs {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.vault-v3 .vault-tab {
-  border:1px solid #786d4e; background:#171711de;color:#e0d5c1;
-  padding:10px 14px;border-radius:12px;font-size:12px;font-weight:800;min-height:40px;
-  display:inline-flex;gap:8px;align-items:center;
+.vault-tab.active, .mockup-add-prompt {
+  border-color: #879f56;
+  background: #344416 url('./assets/vault/green-finish.webp') center / 100% 100%;
 }
-.vault-v3 .vault-tab.active {background:linear-gradient(180deg,#627d41,#3e5932);color:#f7ffe8;border-color:#94b168;box-shadow:inset 0 1px #d1e3a75c;}
-.vault-v3 .vault-stats {margin-left:auto;color:#c6b494;font-size:11px;letter-spacing:.04em;}
-.vault-v3 .statline {display:none;}
-.vault-v3 .toolbar {margin:0 0 16px;}
-.vault-v3 .search-box {
-  height:44px;border-radius:12px;background:#181915;border:1px solid #5b513a;
-  box-shadow:inset 0 1px #d1c3a611;
+.vault-compact-toolbar { position: relative; display: flex; gap: 8px; margin-bottom: 12px; }
+.vault-compact-toolbar .search-box { min-width: 0; }
+.vault-small-add {
+  min-width: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--green);
+  font-size: 22px;
 }
-.vault-v3 .search-box svg {stroke:#9caa80;}
-.vault-v3 .search-box input {color:#f1e7d5;}
-.vault-v3 .search-box input::placeholder {color:#988f7f;}
-.vault-v3 .btn {background:#29261f;border-color:#625039;color:#e9dfc9;border-radius:10px;font-size:12px;}
-.vault-v3 .btn.primary {
-  background:linear-gradient(180deg,#c1dd88,#7fa458);border-color:#b5d384;
-  color:#1d2717;box-shadow:inset 0 1px #fff8,0 2px 8px #0008;
+.mockup-section-bar { position: relative; margin: 10px 8px 12px; scroll-margin-top: 70px; }
+.mockup-section-bar h2, .featured-section h2 { font: 700 clamp(24px, 6.1vw, 34px)/1.1 var(--serif); }
+.mockup-section-bar .section-note { color: var(--muted); text-shadow: 0 2px 4px #000; }
+.group-grid.mockup-sleeve-grid { position: relative; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mockup-sleeve-grid .group-card {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #19130b;
+  box-shadow: 0 5px 10px #000b;
 }
-.vault-v3 .btn.primary:hover {filter:brightness(1.08);}
-.vault-v3 .btn.danger {background:#36201c;border-color:#955b50;color:#ffd5ce;}
-.vault-v3 .section-bar {margin:14px 0 11px;}
-.vault-v3 .section-bar h2 {
-  font:600 clamp(19px,2.7vw,24px) Georgia,serif;color:#eadfc8;letter-spacing:-.015em;
+.mockup-sleeve { position: relative; width: 100%; aspect-ratio: 1 / .955; overflow: hidden; border-radius: 8px; }
+.mockup-sleeve img { width: 100%; height: 100%; object-fit: fill; }
+.custom-cover {
+  border: 2px solid #927451;
+  background: #15110c url('./assets/vault/blank-sleeve.webp') center / cover;
 }
-.vault-v3 .section-note {color:#a89f89;font-size:11px;}
-/* Compact collectible record sleeves */
-.vault-v3 .group-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-.vault-v3 .group-card {
-  min-height:0;padding:0;display:block;border-radius:13px;
-  overflow:visible;background:transparent;border:0;box-shadow:none;
-  text-align:left;transition:transform .17s ease,filter .17s ease;
+.custom-cover img { object-fit: contain; }
+.sleeve-art-title, .custom-sleeve-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  text-shadow: 0 2px 5px #000;
 }
-.vault-v3 .group-card:hover {border:0;box-shadow:none;transform:translateY(-3px);filter:brightness(1.08);}
-.vault-v3 .group-card:focus-visible {outline:2px solid var(--green);outline-offset:5px;}
-.vault-v3 .group-card .monogram {display:none;}
-.vault-v3 .sleeve-art {
-  position:relative;isolation:isolate;aspect-ratio:1 / 1;overflow:hidden;
-  border:1px solid #99825f;border-radius:9px;
-  background:
-    radial-gradient(ellipse at 42% 22%,color-mix(in srgb,var(--accent) 44%,#20231b),transparent 65%),
-    linear-gradient(145deg,#363328,#13150d 76%);
-  box-shadow:inset 0 0 0 4px #0d0d0d72,0 4px 0 #0008,0 10px 20px #0009;
+.sleeve-art-title { top: 9%; padding: 0 9%; font: 800 clamp(15px, 4vw, 26px)/1.05 system-ui; text-transform: uppercase; }
+.custom-sleeve-caption {
+  bottom: 0;
+  padding: 10px 28px 7px 7px;
+  background: linear-gradient(transparent, #050403e8);
+  font: 700 13px/1.1 var(--serif);
 }
-.vault-v3 .sleeve-art::before {
-  content:"";position:absolute;width:88%;aspect-ratio:1;border-radius:50%;
-  left:25%;top:11%;opacity:.85;z-index:-1;
-  background:repeating-radial-gradient(circle at center,#0b0c09 0 8px,color-mix(in srgb,var(--accent) 50%,#25251c) 10px 12px,#0a0d0b 13px 22px);
-  box-shadow:0 0 35px #000b,inset 0 0 35px #0008;
+.sleeve-favorite-indicator {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  color: #f1dab6;
+  text-shadow: 0 1px 4px #000, 0 0 3px #000;
+  font-size: 23px;
+  line-height: 1;
+  pointer-events: none;
 }
-.vault-v3 .sleeve-art::after {
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    repeating-linear-gradient(86deg,#ffffff0b 0 1px,transparent 2px 18px),
-    linear-gradient(180deg,#0000 20%,#0009 100%);
-  mix-blend-mode:screen;opacity:.52;
+.group-layout { max-width: 600px; margin: auto; }
+.mockup-crate-shell { min-width: 0; }
+.crate-stage {
+  position: relative;
+  isolation: isolate;
+  margin-inline: calc(-1 * clamp(12px, 3.4vw, 34px));
+  aspect-ratio: 501 / 349;
+  overflow: hidden;
+  background: #0c0805 url('./assets/vault/crate-back.webp') center / 100% 100% no-repeat;
 }
-.vault-v3 .sleeve-art img {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-.vault-v3 .sleeve-art:not(:has(img)) .record-rings {
-  position:absolute;inset:15% -10% -22% 27%;border-radius:50%;opacity:.7;
-  background:repeating-radial-gradient(circle at 50% 50%,transparent 0 15px,#9cbd8740 16px 17px,transparent 18px 28px);
+.crate-main-cover {
+  position: absolute;
+  top: 17%;
+  left: 10.8%;
+  width: 80.4%;
+  height: 65%;
+  overflow: hidden;
+  border-radius: 7px 7px 0 0;
+  box-shadow: 0 -2px 7px #000b;
 }
-.vault-v3 .sleeve-art.state-of-tension {background:linear-gradient(135deg,#642d26,#1b1412 72%);}
-.vault-v3 .sleeve-art.enter-the-end {background:radial-gradient(ellipse at 52% 50%,#876342,#241911 58%,#080808 95%);}
-.vault-v3 .sleeve-art.fourth-movement {background:linear-gradient(140deg,#4d3a24,#101c17);}
-.vault-v3 .sleeve-art.after-dark {background:linear-gradient(130deg,#3b223d,#11121a);}
-.vault-v3 .sleeve-art.loose-change {background:linear-gradient(130deg,#775331,#11130e);}
-.vault-v3 .sleeve-art.ever-after-project {background:linear-gradient(130deg,#533147,#141118);}
-.vault-v3 .sleeve-art.pillars {background:linear-gradient(130deg,#4f503c,#151612);}
-.vault-v3 .sleeve-art-title {
-  position:absolute;left:11px;right:9px;bottom:12px;z-index:1;
-  font:900 clamp(12px,3.1vw,24px)/.98 "Arial Narrow",Impact,Arial,sans-serif;
-  text-transform:uppercase;letter-spacing:.045em;color:#f5e2b8;
-  text-shadow:0 2px 10px #000,0 2px 3px #000;
+.crate-main-cover .mockup-sleeve { min-height: 100%; }
+.crate-main-cover :is(.custom-cover,.vertigo-crate-art) { aspect-ratio: auto; height: 95%; min-height: 0; }
+.crate-front-wood {
+  position: absolute;
+  inset: 0;
+  background: url('./assets/vault/crate-front.webp') center / 100% 100%;
+  pointer-events: none;
 }
-.vault-v3 .sleeve-art-label {position:absolute;left:10px;top:10px;font-size:8px;color:#efdfbc;letter-spacing:.14em;opacity:.85;z-index:1;}
-.vault-v3 .group-copy {padding:10px 1px 3px;}
-.vault-v3 .group-copy h3 {font:700 15px/1.2 Georgia,serif;color:#f0e3ca;margin:0 0 3px;}
-.vault-v3 .group-copy p {color:#ae9f87;font-size:11px;line-height:1.35;margin:0 0 4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
-.vault-v3 .group-copy .smallcount {color:#a7bc80;font-size:9px;letter-spacing:.11em;}
-.vault-v3 .featured-section {margin-top:29px;}
-.vault-v3 .featured-row {display:flex;gap:9px;overflow-x:auto;padding:2px 0 12px;scroll-snap-type:x mandatory;}
-.vault-v3 .featured-card {flex:0 0 185px;background:#1c1a15;border:1px solid #655439;border-radius:10px;padding:13px;}
-.vault-v3 .featured-card .mini {color:#c4ac70;letter-spacing:.11em;}
-.vault-v3 .info-strip {background:#1a1e16;border:1px solid #596349;color:#c8c6a7;}
-.vault-v3 .info-strip strong {color:#dceabc;}
-/* Record crate group view */
-.vault-v3 .back {padding:17px 0 12px;color:#bbd58c;font-size:12px;}
-.vault-v3 .crate-hero {
-  position:relative;overflow:hidden;display:flex;align-items:center;gap:19px;
-  padding:17px 18px 19px;margin-bottom:23px;border:1px solid #776044;border-radius:15px;
-  background:
-    linear-gradient(180deg,#2d2218c9,#17140f 85%),
-    repeating-linear-gradient(90deg,#8d663315 0 2px,transparent 2px 14px);
-  box-shadow:0 9px 35px #0009,inset 0 1px #d9b57940;
+.crate-details {
+  padding: 4px 12px 0;
+  background: linear-gradient(#0b090600, #0b0906 66px), url('./assets/vault/walnut.webp') center top / 100% 52px no-repeat;
 }
-.vault-v3 .crate-hero::after {
-  content:"";height:9px;position:absolute;left:0;right:0;bottom:0;
-  background:repeating-linear-gradient(90deg,#4b311d 0 22px,#3c291d 22px 23px,#24180f 23px 24px);
-  border-top:1px solid #927550;
+.crate-details h1 { margin: 0 0 8px; font: 700 clamp(29px, 8vw, 45px)/1.07 var(--serif); text-shadow: 0 2px 4px #000; }
+.crate-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.crate-tag {
+  padding: 3px 9px;
+  border: 1px solid #738849;
+  border-radius: 999px;
+  color: var(--text);
+  background: #1c2511;
+  font: 13px/1.2 var(--serif);
 }
-.vault-v3 .crate-art {position:relative;flex:none;width:124px;aspect-ratio:1;}
-.vault-v3 .crate-art::before {
-  content:"";position:absolute;inset:3% -12% 7% 15%;border-radius:50%;
-  background:repeating-radial-gradient(circle,#151512 0 3px,#62604d 4px 5px,#0e1110 6px 10px);
-  box-shadow:5px 6px 17px #000d;
+.crate-details p { margin: 7px 0 0; color: #e3d3b8; font: italic 15px/1.3 var(--serif); }
+.crate-meta-bar, .mockup-prompts-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.crate-meta-bar { color: var(--muted); font-size: 11px; }
+.crate-edit-button, .preset-search-toggle {
+  min-height: 44px;
+  flex-shrink: 0;
+  color: var(--muted);
+  padding: 0 1px;
+  border: 0;
+  background: none;
+  font: 14px var(--serif);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.vault-v3 .crate-art .sleeve-art {position:relative;width:100%;height:100%;aspect-ratio:1;transform:rotate(-3deg);}
-.vault-v3 .crate-metadata {min-width:0;}
-.vault-v3 .crate-overline {color:#b7a57e;font-size:9px;letter-spacing:.23em;font-weight:900;}
-.vault-v3 .crate-metadata h1 {font:700 clamp(25px,4vw,38px)/1.03 Georgia,serif;margin:8px 0;color:#f3e8d6;}
-.vault-v3 .crate-metadata .genre {color:#b8cf8c;font-size:11px;line-height:1.45;margin-bottom:8px;font-weight:700;}
-.vault-v3 .crate-metadata p {color:#c4b9a3;font-size:12px;line-height:1.55;margin:5px 0;}
-.vault-v3 .crate-count {color:#d5c195;font-size:10px;letter-spacing:.12em;font-weight:800;margin-top:10px;}
-.vault-v3 .crate-heading {display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 13px;}
-.vault-v3 .crate-heading h2 {font:700 clamp(21px,3vw,28px) Georgia,serif;margin:0;}
-.vault-v3 .crate-heading small {color:#9b8c71;font-size:10px;letter-spacing:.14em;}
-.vault-v3 .filter-row {padding:2px 0 13px;margin:0 0 7px;}
-.vault-v3 .filter-chip {
-  background:#161711;border:1px solid #64543c;color:#cbbd9e;
-  min-height:34px;border-radius:9px;padding:7px 12px;font-size:11px;
+.group-soundboard { min-width: 0; }
+.mockup-prompts-heading { padding-inline: 3px; }
+.mockup-prompts-heading h2 { margin: 0; font: 700 21px/1.15 var(--serif); }
+.mockup-search-panel .toolbar { margin-bottom: 9px; }
+.mockup-search-panel .filter-row { margin: 0 0 8px; }
+.filter-chip { min-height: 44px; background: var(--surface); color: var(--text); }
+.filter-chip.active { background: #30391b; border-color: #8ca35b; color: var(--text); }
+.prompt-stack.mockup-track-list { display: flex; align-items: stretch; gap: 5px; }
+.mockup-preset {
+  border: 1px solid #423624;
+  border-radius: 9px;
+  background: #1b1610 url('./assets/vault/track-finish.webp') center / 100% 100%;
+  box-shadow: 0 2px 8px #0008;
 }
-.vault-v3 .filter-chip.active {background:#667d4a;border-color:#abc47f;color:#fff9e9;}
-.vault-v3 .footer-note {color:#927f61;}
-/* The signature prompt soundboard — readable text + real Copy, Favorite, View, Edit controls */
-.vault-v3 .prompt-stack {display:flex;flex-direction:column;gap:9px;}
-.vault-v3 .prompt-card {
-  position:relative;border:1px solid #5e5039;border-radius:13px;
-  background:
-    linear-gradient(92deg,#28251c,#171815 60%),
-    repeating-linear-gradient(90deg,transparent 0 2px,#ffffff05 3px 4px);
-  box-shadow:inset 0 1px #c8b18017,0 5px 14px #0005;overflow:hidden;
+.mockup-preset-row { display: flex; align-items: center; gap: 4px; padding: 2px 5px; }
+.preset-reveal, .preset-copy, .preset-star {
+  display: grid;
+  place-items: center;
+  flex: none;
+  position: relative;
+  min-width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
 }
-.vault-v3 .prompt-card::before {
-  content:"";position:absolute;inset:0 auto 0 0;width:3px;
-  background:linear-gradient(#b7cc7a,#50673a);
+.preset-reveal::before, .preset-copy::before {
+  content: '';
+  position: absolute;
+  inset: 5px 3px;
+  border: 1px solid #839854;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px #313a1c96;
+  pointer-events: none;
 }
-.vault-v3 .prompt-main {padding:12px 13px 10px 15px;}
-.vault-v3 .track-row {display:flex;align-items:center;gap:12px;}
-.vault-v3 .track-disc {
-  width:46px;height:46px;flex:none;border-radius:50%;position:relative;
-  border:1px solid #9c97794c;
-  background:
-    radial-gradient(circle at 50% 50%,#1c1b17 0 4px,var(--track-accent,#567e52) 5px 12px,#131411 13px 15px,transparent 16px),
-    repeating-radial-gradient(circle at 50% 50%,#0b0c0b 0 2px,#48493f 3px 4px,#0b0b09 5px 7px);
-  box-shadow:0 3px 9px #000c;
+.preset-reveal span { width: 8px; height: 8px; border: solid var(--green); border-width: 0 2px 2px 0; transform: translateY(-2px) rotate(45deg); }
+.preset-reveal[aria-expanded="true"] span { transform: translateY(2px) rotate(225deg); }
+.preset-name { min-width: 0; flex: 1; padding: 4px 2px; }
+.preset-name h3 { margin: 0; font: 700 15px/1.15 var(--serif); overflow-wrap: anywhere; }
+.preset-name > span { color: var(--muted); font-size: 10px; line-height: 1.2; display: block; margin-top: 2px; overflow-wrap: anywhere; }
+.preset-star { font-size: 23px; }
+.preset-star.selected { color: #edbd50; background: none; }
+.preset-copy { min-width: 60px; font: 700 14px var(--serif); }
+.preset-copy:hover::before, .preset-reveal:hover::before { background: #8fab4b2e; }
+.mockup-expanded { background: #100e09; color: var(--text); padding: 12px; }
+.preset-category { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+.preset-expanded-actions { margin-top: 9px; }
+.preset-expanded-actions .btn { min-height: 44px; }
+.mockup-add-prompt { display: block; width: 100%; margin: 14px 0 20px; }
+.vault-v3 .bottom-nav { height: calc(62px + env(safe-area-inset-bottom)); gap: 0; background: #100e09f5; border-color: var(--line); }
+.vault-v3 .bottom-nav button { flex: 1; min-width: 0; color: var(--text); font: 700 12px var(--serif); }
+.vault-v3 .bottom-nav button.active { color: var(--green); }
+[data-vault-page="group"] .bottom-nav { display: none; }
+[data-vault-page="group"] .app-shell { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+[data-vault-page="group"] .toast { bottom: calc(20px + env(safe-area-inset-bottom)); }
+.vault-menu-options { display: grid; gap: 8px; }
+.vault-menu-options .btn { justify-content: flex-start; min-height: 44px; }
+.vault-v3 :is(.modal,.artwork-editor,.artwork-preview,.field input,.field select,.field textarea,.setting-card,.empty-state,.close-btn) {
+  background: var(--surface);
+  border-color: var(--line);
 }
-.vault-v3 .track-heading {flex:1;min-width:0;}
-.vault-v3 .track-heading .micro {display:block;color:#bbad87;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;font-weight:800;}
-.vault-v3 .track-heading h3 {margin:0;font-size:14px;font-weight:800;line-height:1.2;color:#f2e5d0;}
-.vault-v3 .track-subtitle {font-size:11px;line-height:1.4;color:#abac9c;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:4px;}
-.vault-v3 .star {width:34px;height:34px;border-color:#62533b;background:#151610;color:#c4b58e;flex:none;}
-.vault-v3 .star.selected {background:#44371d;color:#f8ce67;border-color:#927c47;}
-.vault-v3 .track-actions {
-  display:flex;gap:7px;align-items:center;flex-wrap:wrap;
-  padding:9px 0 0 58px;
+.vault-v3 :is(.field > span,.field-note,.footer-note,.artwork-placeholder) { color: var(--muted); }
+.vault-v3 .toast { background: #272c17; color: var(--text); border-color: #7b8d52; white-space: normal; }
+@media (min-width: 610px) {
+  .vault-v3 .site-header { min-height: 69px; padding-inline: 24px; }
+  .group-grid.mockup-sleeve-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+  .crate-stage { margin-inline: 0; border-radius: 8px 8px 0 0; }
+  .mockup-masthead::before { width: 52%; right: 0; }
 }
-.vault-v3 .track-actions .btn {min-height:34px;font-size:11px;padding:6px 11px;}
-.vault-v3 .track-actions .track-copy {margin-left:auto;min-width:78px;}
-.vault-v3 .track-actions .track-copy::before {content:"▣";font-size:12px;}
-.vault-v3 .track-actions .char-count {display:none;}
-.vault-v3 .origin-note {font-size:9px;color:#93866b;padding-top:8px;}
-.vault-v3 .expanded-text {
-  white-space:pre-wrap;background:#0d100d;color:#e5dccd;
-  padding:14px 16px;font:12px/1.65 "Segoe UI",Arial,sans-serif;
-  border-top:1px solid #5b4a31;
-}
-.vault-v3 .empty-state {background:#171811;border-color:#7b6643;}
-.vault-v3 .empty-state p {color:#bcad92;}
-/* Cabinet controls, personal backups and editor */
-.vault-v3 .bottom-nav {background:#11140ff4;border-top:1px solid #6e5739;box-shadow:0 -7px 25px #000c;}
-.vault-v3 .bottom-nav button {color:#b4a88c;}
-.vault-v3 .bottom-nav button.active {color:#b9da8c;}
-.vault-v3 .toast {background:#29381e;border-color:#a2b778;color:#f4f9e7;}
-.vault-v3 .modal-scrim {background:#050503df;}
-.vault-v3 .modal {background:linear-gradient(180deg,#2c251c,#171713);border:1px solid #7f6445;box-shadow:0 -20px 60px #000b;}
-.vault-v3 .modal-head h2 {font-family:Georgia,serif;color:#f2e6d4;}
-.vault-v3 .field>span {color:#d1c2a5;}
-.vault-v3 .field input,.vault-v3 .field textarea,.vault-v3 .field select {background:#111310;border-color:#715e41;color:#e8e0cb;}
-.vault-v3 .setting-card,.vault-v3 .artwork-editor {background:#1a1b16;border-color:#62523a;}
-.vault-v3 .setting-card p,.vault-v3 .field-note {color:#beb199;}
-.vault-v3 .artwork-preview {background:#161711;border-color:#6f5b3f;}
-.vault-v3 .close-btn {background:#3b3326;color:#e8daba;}
-.vault-v3 .back:hover,.vault-v3 .btn:hover,.vault-v3 .vault-tab:hover {filter:brightness(1.1);}
-.vault-v3 :focus-visible {outline:2px solid #c4e397;outline-offset:3px;}
-@media(min-width:620px) {
-  .vault-v3 .vault-masthead {padding:28px 34px;}
-  .vault-v3 .group-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
-  .vault-v3 .group-copy h3 {font-size:17px;}
-  .vault-v3 .crate-art {width:180px;}
-  .vault-v3 .crate-hero {gap:28px;padding:22px 28px;}
-  .vault-v3 .prompt-stack {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
-  .vault-v3 .featured-row {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;}
-  .vault-v3 .featured-card {flex:none;min-width:0;}
-}
-@media(min-width:960px) {
-  .vault-v3 .group-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:23px;}
-  .vault-v3 .vault-masthead {margin-top:14px;border-top:1px solid #6c5236;border-radius:17px;}
-  .vault-v3 .vault-masthead::after {right:20px;top:-80px;width:310px;height:310px;}
-  .vault-v3 .crate-hero {margin-top:6px;}
-  .vault-v3 .prompt-stack {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-  .vault-v3 .bottom-nav {border-color:#6e5739;}
-}
-@media(max-width:390px) {
-  .vault-v3 .vault-masthead {padding:20px 18px;}
-  .vault-v3 .vault-stats {width:100%;margin-left:0;padding-top:3px;}
-  .vault-v3 .group-grid {gap:10px;}
-  .vault-v3 .sleeve-art-title {font-size:clamp(12px,4vw,17px);}
-  .vault-v3 .crate-art {width:104px;}
-  .vault-v3 .crate-hero {padding:12px 11px;gap:12px;}
-  .vault-v3 .crate-metadata h1 {font-size:24px;}
-}
-@media(prefers-reduced-motion:reduce) {
-  .vault-v3 .group-card {transition:none;}
+@media (min-width: 900px) {
+  body.vault-v3 { background: linear-gradient(90deg, #08070592, #0b0906 16% 84%, #08070592), url('./assets/vault/room.webp') center / cover fixed; }
+  .vault-v3 .app-shell { background: #0b0906; }
+  .group-grid.mockup-sleeve-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+  .group-layout { max-width: none; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: 24px; padding-top: 13px; align-items: start; }
+  .mockup-masthead { padding: 26px 16px 15px; }
+  .mockup-masthead::before { width: 45%; height: 137%; top: -15px; }
+  .vault-v3 .bottom-nav { width: min(560px, 100%); bottom: 10px; border-radius: 14px; border: 1px solid var(--line); }
 }
 
-
-/* Record Vault v4: fidelity pass against user-approved mobile mockups */
-/* Home: editorial black-and-brass cover archive. Group: real stacked crate geometry. */
-/* Keep all functional controls accessible; display-only vinyl flourishes do not play audio. */
-.vault-v3 {--green:#b2d07b;--surface:#171813;--line:#594a31;}
-.vault-v3 .app-shell {max-width:1200px;}
-.vault-v3 .site-header {
-  position:sticky;top:0;z-index:15;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;min-height:69px;height:69px;
-  padding:9px clamp(12px,3vw,24px);background:#080907f7;
-  border-bottom:1px solid #493d29;box-shadow:0 8px 22px #000a;
-}
-.vault-v3 .site-header::after {display:none;}
-.vault-v3 .site-header .brand {
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  display:flex;justify-content:center;align-items:center;gap:7px;
-  width:max-content;max-width:55%;margin:0;min-width:0;
-}
-.vault-v3 .site-header .brand-logo {
-  width:43px;height:43px;max-width:43px;object-fit:cover;
-  border:0;border-radius:0;background:transparent;box-shadow:none;
-}
-.vault-v3 .site-header .brand-badge {
-  display:block;font:900 11px/1.15 "Arial Narrow",Arial,sans-serif;
-  letter-spacing:.14em;color:#a8d476;white-space:nowrap;
-}
-.vault-v3 .site-header .brand-badge::before {
-  content:"GREEN BAT";display:block;color:#a7d77c;font-size:13px;
-  letter-spacing:.1em;padding-bottom:1px;
-}
-.vault-v3 .site-header .icon-button {
-  flex:none;width:37px;height:37px;border:0;border-radius:8px;
-  background:transparent;color:#d7c5a4;
-}
-.vault-v3 .site-header .icon-button svg {width:22px;height:22px;}
-.vault-v3 .site-header .mockup-menu-button {margin-right:auto;}
-.vault-v3 .site-header .mockup-search-button {margin-left:auto;}
-.vault-v3 .site-header .mockup-settings-button {width:32px;height:32px;}
-.vault-v3 .site-header #installButton:not([hidden]) {width:32px;height:32px;}
-.vault-v3 .vault-masthead.mockup-masthead {
-  padding:26px 14px 20px;margin:0 0 9px;border:0;border-radius:0;
-  background:#080a08;box-shadow:none;overflow:hidden;
-}
-.vault-v3 .vault-masthead.mockup-masthead::before {
-  background:radial-gradient(ellipse at 84% 56%,#5f593b2d,transparent 45%);
-}
-.vault-v3 .vault-masthead.mockup-masthead::after {
-  display:block;right:-125px;top:20px;width:275px;height:275px;
-  border:1px solid #a28b614a;border-radius:50%;opacity:.65;
-  background:
-    radial-gradient(circle,#141911 0 13px,#927947 14px 17px,#080a08 18px 23px,transparent 24px),
-    repeating-radial-gradient(circle,#080b09 0 3px,#6e6250 4px 5px,#0c0d0a 6px 9px);
-  box-shadow:0 0 32px #0009,inset 0 0 40px #0008;
-}
-.vault-v3 .mockup-masthead .vault-eyebrow {color:#897c65;letter-spacing:.22em;font-size:9px;}
-.vault-v3 .mockup-masthead .vault-title {
-  font:700 clamp(32px,5.7vw,49px)/1.04 Georgia,"Times New Roman",serif;
-  margin:15px 0 14px;max-width:325px;letter-spacing:-.028em;
-  text-shadow:0 2px 6px #000;
-  color:#f3e9d5;position:relative;z-index:2;
-}
-.vault-v3 .mockup-masthead .vault-tagline {
-  position:relative;z-index:2;margin:0 0 23px;
-  font:italic 16px/1.25 Georgia,"Times New Roman",serif;
-  color:#d8cbb4;
-}
-.vault-v3 .mockup-masthead .vault-tabs {display:grid;grid-template-columns:1fr 1fr;gap:9px;width:min(100%,440px);position:relative;z-index:2;}
-.vault-v3 .mockup-masthead .vault-tab {
-  justify-content:center;min-height:44px;padding:9px 10px;border-radius:10px;
-  border:1px solid #5b5037;background:#0f120d;color:#dacfbc;
-  font-size:12px;font-weight:800;letter-spacing:.01em;
-}
-.vault-v3 .mockup-masthead .vault-tab.active {
-  background:linear-gradient(180deg,#546b39,#223d1e);border:2px solid #8fb66d;
-  color:#f4edcf;box-shadow:inset 0 0 0 2px #0c130a96,0 0 10px #7baa4023;
-}
-.vault-v3 .vault-compact-toolbar {display:flex;align-items:center;gap:10px;margin:0 0 8px;}
-.vault-v3 .vault-compact-toolbar .search-box {height:40px;min-width:0;}
-.vault-v3 .vault-small-add {
-  flex:none;width:40px;height:40px;border:1px solid #77704f;border-radius:10px;
-  background:linear-gradient(#353b28,#1d261a);font-size:22px;color:#c9e7a0;
-}
-.vault-v3 .section-bar.mockup-section-bar {margin:17px 0 14px;scroll-margin-top:90px;}
-.vault-v3 .section-bar.mockup-section-bar h2 {
-  color:#efe4cc;font:700 clamp(20px,3vw,26px) Georgia,serif;
-}
-.vault-v3 .section-bar.mockup-section-bar .section-note {font-size:11px;color:#ada285;}
-/* The home-page covers are just album sleeves: not utility cards with an extra information panel. */
-.vault-v3 .group-grid.mockup-sleeve-grid {
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
-}
-.vault-v3 .mockup-group-card {
-  position:relative;display:block;min-width:0;min-height:0;padding:0;margin:0;
-  background:none;border:0;box-shadow:none;overflow:visible;
-}
-.vault-v3 .mockup-group-card:hover {box-shadow:none;transform:translateY(-2px);}
-.vault-v3 .mockup-sleeve {
-  position:relative;width:100%;height:auto;aspect-ratio:1/1;
-  border:2px solid #8e7350;border-radius:9px;overflow:hidden;
-  background-color:#151713;
-  box-shadow:inset 0 0 0 4px #15100b,0 2px 2px #000,0 7px 15px #0009;
-}
-.vault-v3 .mockup-sleeve::before,.vault-v3 .mockup-sleeve::after {display:none;}
-.vault-v3 .mockup-sleeve img {
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-}
-.vault-v3 .mockup-sleeve .record-rings {
-  position:absolute;inset:13% -13% -13% 18%;border-radius:50%;
-  background:repeating-radial-gradient(circle,#0b0d0b 0 11px,#6e805846 12px 18px,#0b0d0b 19px 28px);
-}
-.vault-v3 .mockup-sleeve .sleeve-art-label {display:none;}
-.vault-v3 .mockup-sleeve .sleeve-art-title {
-  position:absolute;z-index:2;top:10%;bottom:auto;left:10%;right:7%;
-  font:900 clamp(17px,5vw,31px)/.97 Impact,"Arial Narrow",Arial,sans-serif;
-  color:#e8d0a7;text-shadow:0 2px 6px #000e,1px 2px 2px #000;
-  text-transform:uppercase;letter-spacing:.025em;overflow-wrap:break-word;
-}
-.vault-v3 .mockup-sleeve.vertigo .sleeve-art-title {font-style:italic;transform:rotate(-5deg);font-size:clamp(20px,6vw,37px);}
-.vault-v3 .mockup-sleeve.state-of-tension .sleeve-art-title {max-width:80%;}
-.vault-v3 .mockup-sleeve.enter-the-end .sleeve-art-title {max-width:67%;}
-.vault-v3 .mockup-sleeve .custom-sleeve-caption {
-  display:block;position:absolute;z-index:2;bottom:0;left:0;right:0;padding:22px 8px 10px;
-  color:#f5ecd7;font:800 13px/1.1 "Arial Narrow",Arial,sans-serif;
-  background:linear-gradient(0deg,#000d,transparent);
-  text-shadow:0 1px 4px #000;
-}
-.vault-v3 .mockup-sleeve .sleeve-aging {
-  position:absolute;z-index:3;inset:0;pointer-events:none;
-  border:3px solid #d1ae7b3b;border-radius:7px;
-  box-shadow:inset 0 0 15px #0009,inset 0 0 1px 3px #3021144d;
-  background:
-    linear-gradient(137deg,#f1ca8f22 0 1%,transparent 2% 96%,#fff7c42b 99%),
-    repeating-linear-gradient(86deg,transparent 0 16px,#c9b2870b 17px 18px,transparent 19px 37px);
-}
-.vault-v3 .mockup-group-card .sleeve-favorite-indicator {
-  position:absolute;bottom:8px;right:9px;z-index:4;
-  display:block;font-size:25px;color:#ecd5a3;line-height:1;
-  text-shadow:0 2px 3px #000,0 0 5px #000;pointer-events:none;
-}
-.vault-v3 .mockup-group-card .sleeve-favorite-indicator:not(:empty) {filter:drop-shadow(0 2px 2px #000);}
-.vault-v3 .featured-section {margin-top:29px;}
-/* Large vertical staged record crate, layered sleeves visible behind selected front cover. */
-.vault-v3 .mockup-back {display:block;max-width:610px;margin:0 auto;color:#b5bc8d;font-size:12px;}
-.vault-v3 .mockup-crate-shell {
-  width:min(100%,610px);margin:0 auto 9px;overflow:hidden;
-  background:#090a08;border:1px solid #4e3926;border-radius:9px 9px 14px 14px;
-  box-shadow:0 12px 31px #000b;
-}
-.vault-v3 .crate-stage {
-  position:relative;height:clamp(242px,76vw,425px);overflow:hidden;
-  background:radial-gradient(ellipse at 50% 75%,#3a2c1d 0,#14130e 46%,#090907 82%);
-}
-.vault-v3 .stack-record {
-  position:absolute;left:50%;width:77%;height:86%;top:0;
-  border:2px solid #997952;border-radius:8px 8px 0 0;
-  background:
-    repeating-linear-gradient(95deg,#ad93626e 0 1px,transparent 2px 9px),
-    radial-gradient(ellipse at 50% 25%,#25231b,#0b0b09 72%);
-  box-shadow:0 2px 2px #000b,inset 0 0 0 3px #301f14;
-  transform:translateX(-50%);
-}
-.vault-v3 .stack-record-four {top:5px;width:70%;z-index:1;transform:translateX(-50%) rotate(1.3deg);}
-.vault-v3 .stack-record-three {top:12px;width:74%;z-index:2;transform:translateX(-50%) rotate(-1deg);}
-.vault-v3 .stack-record-two {top:21px;width:77%;z-index:3;transform:translateX(-50%) rotate(1.1deg);}
-.vault-v3 .stack-record-one {top:30px;width:80%;z-index:4;transform:translateX(-50%) rotate(-1deg);}
-.vault-v3 .crate-main-cover {position:absolute;z-index:6;top:46px;left:8.5%;width:83%;aspect-ratio:1;}
-.vault-v3 .crate-main-cover .mockup-sleeve {
-  height:100%;border-radius:8px;box-shadow:0 0 0 3px #1a120b,0 8px 22px #000e,inset 0 0 0 4px #281c15;
-}
-.vault-v3 .crate-main-cover .mockup-sleeve .sleeve-art-title {font-size:clamp(25px,7vw,51px);top:10%;}
-.vault-v3 .crate-main-cover .mockup-sleeve.enter-the-end .sleeve-art-title {font-size:clamp(25px,6.5vw,50px);}
-.vault-v3 .crate-side {position:absolute;z-index:7;top:74px;bottom:38px;width:13%;background:
-  linear-gradient(90deg,#1f1208dd,#714321b5,#25170aee),
-  url('./assets/crate-wood.svg');border:1px solid #6f4d2d;
-}
-.vault-v3 .crate-side-left {left:0;clip-path:polygon(0 22%,95% 0,100% 100%,0 100%);}
-.vault-v3 .crate-side-right {right:0;clip-path:polygon(5% 0,100% 22%,100% 100%,0 100%);}
-.vault-v3 .crate-front-wood {
-  position:absolute;z-index:8;left:-1%;right:-1%;bottom:0;height:clamp(47px,14vw,78px);
-  background:
-    linear-gradient(180deg,#a0733a3b 0 4px,#22140977 5px 8px,transparent 9px),
-    url('./assets/crate-wood.svg') center / cover;
-  border-top:6px ridge #896038;border-bottom:4px solid #1c130b;
-  box-shadow:0 -8px 12px #000d,inset 0 5px 10px #130d06bf;
-}
-.vault-v3 .crate-front-title {
-  position:absolute;bottom:6px;left:15px;right:12px;z-index:9;pointer-events:none;
-}
-.vault-v3 .crate-front-title h1 {
-  color:#e9dec4;font:700 clamp(23px,6.2vw,40px)/1.08 Georgia,"Times New Roman",serif;
-  margin:0;text-shadow:0 2px 6px #000;
-}
-.vault-v3 .crate-details {padding:15px 13px 16px;background:#0a0c09;}
-.vault-v3 .crate-tags {display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
-.vault-v3 .crate-tag {
-  padding:5px 11px 6px;border:1px solid #819a61;border-radius:999px;
-  color:#d4deac;font:700 11px/1.2 "Segoe UI",Arial,sans-serif;
-  background:#11190f;box-shadow:inset 0 0 0 1px #40583467;
-}
-.vault-v3 .crate-details>p {font-size:13px;line-height:1.53;color:#d1cbbc;margin:0 0 10px;}
-.vault-v3 .crate-meta-bar {display:flex;justify-content:space-between;gap:12px;align-items:center;}
-.vault-v3 .crate-meta-bar span {color:#988f7e;font-size:10px;line-height:1.3;}
-.vault-v3 .crate-edit-button {
-  min-height:31px;border:1px solid #645b42;border-radius:8px;
-  background:#1b1b15;color:#c4b998;font-weight:750;font-size:11px;padding:6px 10px;
-}
-.vault-v3 .mockup-prompts-heading,.vault-v3 .mockup-track-list,.vault-v3 .mockup-add-prompt,
-.vault-v3 .mockup-search-panel {max-width:610px;margin-left:auto;margin-right:auto;}
-.vault-v3 .mockup-prompts-heading {
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  margin-top:16px;margin-bottom:11px;
-}
-.vault-v3 .mockup-prompts-heading h2 {font-size:17px;line-height:1.1;color:#efe6d7;margin:0;font-weight:800;}
-.vault-v3 .mockup-prompts-heading h2 span {color:#d4cabb;font-weight:600;}
-.vault-v3 .preset-search-toggle {border:0;background:none;color:#adab8c;font-size:11px;font-weight:700;padding:8px 0;}
-.vault-v3 .mockup-search-panel {padding:4px 0 10px;}
-.vault-v3 .mockup-search-panel .toolbar {margin:0 0 8px;}
-.vault-v3 .mockup-search-panel .search-box {height:40px;}
-.vault-v3 .mockup-search-panel .filter-row {margin:0;padding:0 0 4px;}
-/* Tight, real soundboard rows: View acts as an expand control, never as fake playback. */
-.vault-v3 .prompt-stack.mockup-track-list {
-  display:flex;flex-direction:column;gap:6px;
-}
-.vault-v3 .mockup-track-list .mockup-preset {
-  position:relative;background:linear-gradient(#191b15,#0f110d);
-  border:1px solid #4b4935;border-radius:11px;box-shadow:inset 0 1px #ffffff0c,0 4px 10px #0008;
-}
-.vault-v3 .mockup-track-list .mockup-preset::before {display:none;}
-.vault-v3 .mockup-preset-row {display:flex;align-items:center;gap:9px;padding:9px 10px;min-height:54px;}
-.vault-v3 .preset-reveal {
-  flex:none;display:grid;place-items:center;width:34px;height:34px;
-  border:2px solid #759654;border-radius:8px;background:#10180d;color:#b9df86;
-  font-size:17px;line-height:1;padding-left:3px;box-shadow:inset 0 0 0 2px #0c100a;
-}
-.vault-v3 .preset-reveal:hover {background:#293d23;}
-.vault-v3 .preset-name {min-width:0;flex:1;}
-.vault-v3 .preset-name h3 {font-weight:800;color:#f1e8d8;font-size:13px;margin:0;line-height:1.25;overflow-wrap:anywhere;}
-.vault-v3 .preset-name>span {display:block;color:#9f997e;font-size:10px;margin-top:3px;}
-.vault-v3 .preset-star {
-  width:30px;height:34px;flex:none;border:0;background:none;font-size:25px;
-  color:#ded1b2;line-height:1;box-shadow:none;
-}
-.vault-v3 .preset-star.selected {color:#efc85c;background:none;border:0;}
-.vault-v3 .preset-copy {
-  flex:none;min-width:51px;min-height:34px;padding:5px 9px;
-  background:#111611;color:#f0e9d8;border:2px solid #78965c;border-radius:8px;
-  font-size:11px;font-weight:800;box-shadow:inset 0 0 0 2px #273b2480;
-}
-.vault-v3 .preset-copy:hover {background:#2e4b25;}
-.vault-v3 .mockup-expanded {font-size:12px;line-height:1.6;padding:12px 14px;color:#e2d6bd;}
-.vault-v3 .preset-category {font-size:10px;color:#a9b88d;letter-spacing:.12em;text-transform:uppercase;padding-bottom:7px;}
-.vault-v3 .preset-expanded-actions {margin-top:12px;}
-.vault-v3 .mockup-add-prompt {
-  display:block;width:100%;min-height:52px;margin-top:18px;margin-bottom:22px;
-  background:linear-gradient(180deg,#58743c,#2a4b25);
-  border:2px solid #8fae63;border-radius:13px;color:#f4efdf;
-  font-size:14px;font-weight:850;box-shadow:inset 0 1px #a4c77377,0 5px 16px #0009;
-}
-.vault-v3 .mockup-add-prompt:hover {filter:brightness(1.14);}
-.vault-v3 .bottom-nav {
-  display:flex;justify-content:space-around;gap:1px;max-width:none;left:0;right:0;
-  bottom:0;transform:none;height:72px;border:0;border-top:1px solid #56462c;
-  border-radius:0;background:#0c100ded;
-}
-.vault-v3 .bottom-nav button {min-width:0;flex:1;font-size:9px;color:#cabda4;gap:5px;}
-.vault-v3 .bottom-nav button.active {color:#a1d475;}
-.vault-v3 .bottom-nav svg {width:22px;height:22px;}
-.vault-v3 .vault-menu-options {display:grid;gap:7px;}
-.vault-v3 .vault-menu-options .btn {justify-content:flex-start;width:100%;min-height:43px;}
-@media(min-width:610px) {
-  .vault-v3 .group-grid.mockup-sleeve-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
-  .vault-v3 .mockup-sleeve .sleeve-art-title {font-size:clamp(21px,3.8vw,33px);}
-  .vault-v3 .vault-compact-toolbar {max-width:580px;}
-  .vault-v3 .mockup-masthead .vault-title {max-width:580px;}
-  .vault-v3 .mockup-masthead .vault-tabs {width:430px;}
-  .vault-v3 .mockup-prompts-heading h2 {font-size:19px;}
-}
-@media(min-width:950px) {
-  .vault-v3 .group-grid.mockup-sleeve-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:21px;}
-  .vault-v3 .vault-masthead.mockup-masthead {margin-top:12px;border-radius:14px;border:1px solid #4b3d2d;padding:27px 35px;}
-  .vault-v3 .site-header .mockup-settings-button {display:grid;}
-  .vault-v3 .site-header .brand-logo {width:49px;height:49px;max-width:none;}
-  .vault-v3 .site-header .brand-badge {font-size:12px;}
-  .vault-v3 .bottom-nav {left:50%;right:auto;bottom:14px;transform:translateX(-50%);
-    max-width:540px;height:62px;border:1px solid #705b3f;border-radius:15px;}
-  .vault-v3 .mockup-masthead .vault-title {font-size:54px;}
-  .vault-v3 .crate-stage {height:420px;}
-  .vault-v3 .crate-main-cover {width:74%;left:13%;top:40px;}
-  .vault-v3 .crate-front-wood {height:78px;}
-}
-@media(max-width:560px) {
-  .vault-v3 .site-header .mockup-settings-button {display:none;}
-  .vault-v3 .site-header #installButton:not([hidden]) {position:absolute;right:55px;top:17px;}
-  .vault-v3 .mockup-masthead .vault-eyebrow {display:none;}
-  .vault-v3 .vault-masthead.mockup-masthead {padding-top:19px;}
-  .vault-v3 .vault-masthead.mockup-masthead::after {width:235px;height:235px;right:-125px;top:8px;}
-  .vault-v3 .crate-details {padding:11px 11px 15px;}
-  .vault-v3 .crate-tags {gap:5px;}
-  .vault-v3 .crate-tag {font-size:10px;padding:5px 9px;}
-  .vault-v3 .preset-name>span {display:none;}
-}
-@media(max-width:355px) {
-  .vault-v3 .site-header .brand-badge {font-size:9px;}
-  .vault-v3 .site-header .brand-logo {width:37px;height:37px;}
-  .vault-v3 .mockup-sleeve .sleeve-art-title {font-size:16px;}
-  .vault-v3 .mockup-sleeve.vertigo .sleeve-art-title {font-size:21px;}
-  .vault-v3 .crate-stage {height:240px;}
-  .vault-v3 .crate-main-cover {top:39px;}
-  .vault-v3 .mockup-preset-row {gap:6px;padding:7px;}
-  .vault-v3 .preset-reveal {width:30px;height:30px;}
-  .vault-v3 .preset-star {width:24px;font-size:21px;}
-  .vault-v3 .preset-copy {min-width:48px;padding-inline:7px;}
-}
-@media(prefers-reduced-motion:reduce) {
-  .vault-v3 .group-card {transition:none;}
-  .vault-v3 .mockup-add-prompt {transition:none;}
-}
-
-/* Contextual toolbar: Home shows menu/search, group shows back/favorites/more. */
-.vault-v3 .site-header .mockup-back-button,
-.vault-v3 .site-header .mockup-favorites-button {display:none;}
-.vault-v3[data-vault-page="group"] .site-header .mockup-menu-button,
-.vault-v3[data-vault-page="group"] .site-header .mockup-search-button {display:none;}
-.vault-v3[data-vault-page="group"] .site-header .mockup-back-button,
-.vault-v3[data-vault-page="group"] .site-header .mockup-favorites-button,
-.vault-v3[data-vault-page="group"] .site-header .mockup-settings-button {display:grid;}
-.vault-v3[data-vault-page="group"] .site-header .mockup-back-button {margin-right:auto;}
-.vault-v3[data-vault-page="group"] .site-header .mockup-favorites-button {margin-left:auto;}
-@media(max-width:560px) {
-  .vault-v3[data-vault-page="group"] .site-header .mockup-settings-button {display:grid;}
-  .vault-v3[data-vault-page="group"] .mockup-back {display:none;}
-  .vault-v3[data-vault-page="group"] .site-header #installButton:not([hidden]) {display:none;}
+@media (max-width: 609px) {
+  .mockup-masthead::before { width: 42%; height: calc(100% + 78px); }
+  .mockup-section-bar .section-note { font-size: 10px; }
 }

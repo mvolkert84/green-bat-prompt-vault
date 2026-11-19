@@ -1,29 +1,15 @@
-# Green Bat Prompt Vault — Underground Record Vault (v3)
+# Green Bat Prompt Vault
 
-## Locked design direction
-The user-selected **Underground Record Vault** mockup is the visual reference for this private Suno style prompt library. The purpose remains instant retrieval and copying of style prompts. The design should evoke a collectible vinyl archive, not a generic productivity dashboard.
+The Underground Record Vault redesign uses the approved mobile mockup as its visual reference. The first four home sleeves and the crate materials come from the reference. The vinyl record and four additional default sleeves were generated for this redesign. The header uses the existing Green Bat artwork arranged horizontally.
 
-### Visual vocabulary
-- Deep black / warm charcoal, walnut-like dark surfaces, muted emerald highlights, and antique brass details.
-- Record sleeve artwork cards for groups, worn paper and edge textures, subtle concentric vinyl-groove patterning.
-- Editorial/serif display headlines with clear sans-serif labels and readable functional text.
-- Record crate details on group pages and modular rack/track-inspired prompt soundboards.
-- Subdued lighting and restrained effects. No heavy animation or decorative interaction blocking use.
+The crate uses a rear stack and transparent foreground rails with an interchangeable artwork layer between them. The foreground includes the walnut and brass hardware. Saved cover uploads take priority over default art and are fitted inside the sleeve opening. Default assets live in `assets/vault` as 18 WebP files totaling about 371 KiB. The service worker precaches them for offline use.
 
-### Screen structure
-1. **Vault home:** actual Green Bat Music logo in header, "Green Bat Prompt Vault", "Every sound. One vault.", Music Groups/Favorites actions, search, compact two-column sleeves on phone, larger responsive grid on Chromebook/desktop.
-2. **Artist crate:** chosen sleeve artwork, band name, genre/description, prompt count, actual category filtering, search, edit group and cover.
-3. **Style Prompt Soundboard:** each saved prompt shows an ornamental record label/disc, category, title, short preview, favorite, **View** (expands text), **Edit**, and conspicuous **Copy**. No audio playback exists: do not render fake working play buttons.
-4. **Favorites:** same track modules and one-tap copying.
-5. **Editing and backups:** keep add/edit/remove of groups and prompts, artwork upload/removal, JSON import/export, 1000-character Suno prompt limit and local-first behavior.
+The mobile library uses two columns. Wider screens show three or four columns and place the crate beside the group soundboard. Prompt rows keep category, favorite and full-text Copy controls visible. A chevron opens the prompt and its edit action.
 
-### Functionality to preserve
-- Keep the `greenbat-prompt-vault-v2` localStorage key and existing library data schema. Never silently reset saved data during UI upgrades.
-- Default seed includes the established eight music groups and 39 reconstructed starter prompts.
-- Uploaded group artwork stays user-supplied. Uncustomized groups get CSS-designed placeholder sleeves; don't misrepresent placeholder graphics as actual band cover art.
-- Copy controls copy the actual full prompt text, not abbreviated preview text.
-- Browser/installable PWA works on Android, Chromebook, and desktop. Offline pages and CSS should refresh reliably via a versioned network-first app cache.
-- Keyboard accessibility, focus outlines, reduced-motion preference and readable contrast remain supported.
+The storage key remains `greenbat-prompt-vault-v2`. The existing data schema, starter library, artwork uploads, JSON backups and PWA app identity carry forward.
 
-## Implementation location
-The design is implemented through `record-vault.css` and home/group/prompt rendering in `app.js`, while retaining forms, actions, storage and backups. Existing `styles.css` remains as a base layer for continuity.
+## Verification
+
+Playwright Chromium captured the home and Vertigo screens at 393 × 852 with mobile touch emulation and at 1366 × 900. The mobile captures were compared to the reference. The reference prompt names and category chips are illustrative. The running app shows the saved library's real names, category chips and counts. Browser chrome, device bezels and the setting outside the phones belong to the reference presentation.
+
+Browser checks covered search, category filtering, prompt expansion, full-text clipboard copying, prompt creation and editing, favorites, group creation and editing with artwork, JSON export and import, persisted changes across reload, and successful offline rendering with the cached crate and sleeve graphics.
