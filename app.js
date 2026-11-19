@@ -20,6 +20,7 @@
   let query = '';
   let category = 'All';
   let groupSearchOpen = false;
+  let homeSearchOpen = false;
   const expanded = new Set();
 
   function normalizePrompt(p) {
@@ -165,8 +166,8 @@ function renderHome() {
           '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorites</button>' +
         '</nav>' +
       '</section>' +
-      '<div class="vault-compact-toolbar">' + searchMarkup('Search records or Suno styles...') +
-        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' +
+      (homeSearchOpen ? '<div class="vault-compact-toolbar">' + searchMarkup('Search records or Suno styles...') +
+        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' : '') +
       '<div class="section-bar mockup-section-bar" id="musicGroupsHeading">' +
         '<h2>Music Groups</h2><span class="section-note">' + matched.length + ' sleeves</span></div>' +
       '<section class="group-grid mockup-sleeve-grid" aria-label="Music group sleeves">' +
@@ -253,6 +254,7 @@ function renderFavorites() {
   function navigate(to, id = null) {
     page = to;
     groupSearchOpen = false;
+    homeSearchOpen = false;
     query = '';
     category = 'All';
     expanded.clear();
@@ -371,7 +373,7 @@ function renderFavorites() {
     if (t.dataset.expand) { const id = t.dataset.expand; expanded.has(id) ? expanded.delete(id) : expanded.add(id); render(); return; }
     if (t.dataset.category) { category = t.dataset.category; render(); return; }
     if (t.dataset.group) { navigate('group', t.dataset.group); return; }
-    if (t.dataset.go) { navigate(t.dataset.go); return; }
+    if (t.dataset.go) { if (!modal.hidden) closeModal(); navigate(t.dataset.go); return; }
     if (t.dataset.editPrompt) { promptForm(t.dataset.editPrompt); return; }
     if (t.dataset.editGroup) { groupForm(t.dataset.editGroup); return; }
     if (t.dataset.deletePrompt) {
@@ -392,10 +394,11 @@ function renderFavorites() {
     }
     switch (t.dataset.action) {
       case 'open-vault-menu':
-        modalFrame('Underground Record Vault', '<div class="vault-menu-options"><button type="button" class="btn" data-go="home">⌂ &nbsp; Home / Records</button><button type="button" class="btn" data-action="show-groups">▦ &nbsp; Music Groups</button><button type="button" class="btn" data-go="favorites">☆ &nbsp; Favorites</button><button type="button" class="btn" data-action="add-prompt">＋ &nbsp; Add Prompt</button><button type="button" class="btn" data-action="open-settings">⚙ &nbsp; Library & Backups</button></div>');
+        modalFrame('Underground Record Vault', '<div class="vault-menu-options"><button type="button" class="btn" data-go="home">⌂ &nbsp; Home / Records</button><button type="button" class="btn" data-action="show-groups">▦ &nbsp; Music Groups</button><button type="button" class="btn" data-go="favorites">☆ &nbsp; Favorites</button><button type="button" class="btn" data-action="add-prompt">＋ &nbsp; Add Prompt</button><button type="button" class="btn" data-action="add-group">▣ &nbsp; Add Music Group</button><button type="button" class="btn" data-action="open-settings">⚙ &nbsp; Library & Backups</button></div>');
         break;
       case 'focus-vault-search':
         if(page==='group'&&!groupSearchOpen){groupSearchOpen=true;render();}
+        if(page==='home'&&!homeSearchOpen){homeSearchOpen=true;render();}
         document.getElementById('searchInput')?.focus();
         break;
       case 'show-groups':
