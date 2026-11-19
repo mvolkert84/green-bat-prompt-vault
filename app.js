@@ -19,6 +19,7 @@
   let activeGroup = null;
   let query = '';
   let category = 'All';
+  let groupSearchOpen = false;
   const expanded = new Set();
 
   function normalizePrompt(p) {
@@ -92,23 +93,28 @@
   }
 
 
+// User-uploaded group artwork always overrides the illustrated sample sleeve.
+  const sampleSleeves = new Set(['vertigo','state-of-tension','enter-the-end','4th-movement','after-dark','loose-change','ever-after','pillars']);
   function groupThumbMarkup(g, large = false) {
-    const safeId = String(g.id || "").replace(/[^a-z0-9-]/gi, "");
-    const art = g.artwork
-      ? '<img src="' + g.artwork + '" alt="' + escapeHTML(g.name) + ' cover art">'
-      : '<span class="record-rings" aria-hidden="true"></span>';
-    const sleeve = '<div class="sleeve-art ' + safeId + '" style="--accent:' + color(g.color) + '">' +
-      art + '<span class="sleeve-art-label">GREEN BAT / ARCHIVE</span>' +
-      '<span class="sleeve-art-title">' + escapeHTML(g.name) + '</span></div>';
-    return large ? '<div class="crate-art">' + sleeve + '</div>' : sleeve;
+    const custom = Boolean(g.artwork);
+    const artwork = custom ? g.artwork : sampleSleeves.has(g.id) ? './assets/sleeves/' + g.id + '.svg' : '';
+    const safeId = String(g.id || '').replace(/[^a-z0-9-]/gi,'');
+    const art = artwork ? '<img src="' + artwork + '" alt="' + escapeHTML(g.name) + ' album sleeve artwork" loading="' + (large ? 'eager' : 'lazy') + '">' : '<span class="record-rings" aria-hidden="true"></span>';
+    return '<div class="sleeve-art mockup-sleeve ' + safeId + (custom?' custom-cover':'') +
+      '" style="--accent:' + color(g.color) + '">' + art +
+      '<span class="sleeve-art-label">GREEN BAT MUSIC · ARCHIVE</span>' +
+      (custom ? '<span class="custom-sleeve-caption">' + escapeHTML(g.name) + '</span>' : '<span class="sleeve-art-title">' + escapeHTML(g.name) + '</span>') +
+      '<span class="sleeve-aging" aria-hidden="true"></span></div>';
   }
 
   function groupCard(g) {
-    return '<button class="group-card record-sleeve" type="button" style="--accent:' + color(g.color) +
-      '" data-group="' + escapeHTML(g.id) + '" aria-label="Open ' + escapeHTML(g.name) + ' prompts">' +
-      groupThumbMarkup(g) + '<div class="group-copy"><h3>' + escapeHTML(g.name) + '</h3>' +
-      '<p>' + escapeHTML(g.genre) + '</p><span class="smallcount">' +
-      g.prompts.length + ' RECORDS · OPEN CRATE</span></div></button>';
+    const favs = g.prompts.filter(p => p.favorite).length;
+    return '<button class="group-card record-sleeve mockup-group-card" type="button" data-group="' +
+      escapeHTML(g.id) + '" style="--accent:' + color(g.color) + '" aria-label="Open ' +
+      escapeHTML(g.name) + ', ' + g.prompts.length + ' style prompts">' +
+      groupThumbMarkup(g) + '<span class="sleeve-favorite-indicator" title="' +
+      favs + ' favorite prompts" aria-hidden="true">' + (favs ? '★' : '☆') +
+      '</span></button>';
   }
 
   function featuredCard(p) {
@@ -116,124 +122,120 @@
   }
 
 
-  function promptCard(p, showGroup = false) {
-    const isOpen = expanded.has(p.id);
-    const pid = escapeHTML(p.id);
-    const accent = color(p.groupColor || "#80945e");
-    return '<article class="prompt-card record-track" style="--track-accent:' + accent + '">' +
-      '<div class="prompt-main">' +
-        '<div class="track-row">' +
-          '<span class="track-disc" aria-hidden="true"></span>' +
-          '<div class="track-heading">' +
-            '<span class="micro">' + (showGroup ? escapeHTML(p.groupName) + ' / ' : '') + escapeHTML(p.category || "Style") + ' PRESET</span>' +
-            '<h3>' + escapeHTML(p.title) + '</h3>' +
-            '<div class="track-subtitle">' + escapeHTML(p.text) + '</div>' +
-          '</div>' +
-          '<button class="star ' + (p.favorite ? 'selected' : '') + '" title="Favorite" type="button" data-favorite="' + pid +
-            '" aria-label="' + (p.favorite ? 'Remove from favorites' : 'Add to favorites') + '">' + (p.favorite ? '★' : '☆') + '</button>' +
+function promptCard(p, showGroup = false) {
+    const open = expanded.has(p.id);
+    const pid = escapeHTML(p.id), accent = color(p.groupColor || '#96a96a');
+    return '<article class="prompt-card mockup-preset" style="--track-accent:' + accent + '">' +
+      '<div class="mockup-preset-row">' +
+        '<button type="button" class="preset-reveal" data-expand="' + pid + '" aria-expanded="' + open +
+          '" aria-label="' + (open ? 'Hide' : 'View') + ' full prompt: ' + escapeHTML(p.title) + '">▶</button>' +
+        '<div class="preset-name">' +
+          '<h3>' + escapeHTML(p.title) + '</h3>' +
+          '<span>' + (showGroup ? escapeHTML(p.groupName) + ' · ' : '') + escapeHTML(p.category) + '</span>' +
         '</div>' +
-        '<div class="track-actions">' +
-          '<button type="button" class="btn sm track-expand" data-expand="' + pid + '" aria-expanded="' + (isOpen ? 'true' : 'false') + '">' + (isOpen ? 'Hide' : 'View') + '</button>' +
-          '<button type="button" class="btn ghost sm track-edit" data-edit-prompt="' + pid + '">Edit</button>' +
-          '<button type="button" class="btn primary sm track-copy" data-copy="' + pid + '">Copy</button>' +
-          '<span class="char-count">' + p.text.length + '/1000</span>' +
-        '</div>' +
-        (p.origin === 'reconstructed' ? '<div class="origin-note">Editable starter preset</div>' : '') +
+        '<button type="button" class="star preset-star ' + (p.favorite ? 'selected' : '') +
+          '" data-favorite="' + pid + '" aria-label="' + (p.favorite ? 'Remove from' : 'Add to') +
+          ' favorites">' + (p.favorite ? '★' : '☆') + '</button>' +
+        '<button type="button" class="preset-copy" data-copy="' + pid + '" aria-label="Copy ' +
+          escapeHTML(p.title) + ' to clipboard">Copy</button>' +
       '</div>' +
-      (isOpen ? '<div class="expanded-text">' + escapeHTML(p.text) + '</div>' : '') +
+      (open ? '<div class="expanded-text mockup-expanded"><div class="preset-category">' +
+        escapeHTML(p.category) + ' · ' + p.text.length +
+        '/1000 characters</div>' + escapeHTML(p.text) +
+        '<div class="preset-expanded-actions"><button type="button" class="btn ghost sm" data-edit-prompt="' +
+        pid + '">Edit this preset</button></div></div>' : '') +
     '</article>';
   }
 
   function matchesPrompt(p, q) { return [p.title,p.category,p.text,p.groupName].join(' ').toLowerCase().includes(q); }
 
 
-  function renderHome() {
+function renderHome() {
     const q = query.toLowerCase().trim();
-    const matched = data.groups.filter(g =>
-      [g.name,g.genre,g.description,...g.prompts.map(p=>p.title+' '+p.text)]
-        .join(' ').toLowerCase().includes(q));
+    const matched = data.groups.filter(g => [g.name,g.genre,g.description,...g.prompts.map(p=>p.title+' '+p.text)]
+      .join(' ').toLowerCase().includes(q));
     const favs = allPrompts().filter(p=>p.favorite).slice(0,6);
     main.innerHTML =
-      '<section class="hero vault-masthead">' +
+      '<section class="hero vault-masthead mockup-masthead">' +
         '<span class="vault-eyebrow">THE UNDERGROUND RECORD VAULT</span>' +
-        '<h1 class="vault-title">Green Bat <span>Prompt Vault</span></h1>' +
+        '<h1 class="vault-title">Green Bat<br>Prompt Vault</h1>' +
         '<p class="vault-tagline">Every sound. One vault.</p>' +
-        '<nav class="vault-tabs" aria-label="Browse vault">' +
-          '<button type="button" class="vault-tab active" data-go="home" aria-current="page">◉ Music Groups</button>' +
-          '<button type="button" class="vault-tab" data-go="favorites">☆ Favorites</button>' +
-          '<span class="vault-stats">' + data.groups.length + ' Groups · ' + allPrompts().length + ' Presets</span>' +
+        '<nav class="vault-tabs" aria-label="Vault sections">' +
+          '<button type="button" class="vault-tab active" data-action="show-groups">◉ &nbsp;Music Groups</button>' +
+          '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorites</button>' +
         '</nav>' +
       '</section>' +
-      '<div class="toolbar">' + searchMarkup('Search the record vault...') +
-        '<button type="button" class="btn" data-action="add-group">+ Add Group</button></div>' +
-      '<div class="section-bar"><h2>Music Groups</h2><span class="section-note">' + matched.length + ' sleeves</span></div>' +
-      '<section class="group-grid" aria-label="Music group record sleeves">' + matched.map(groupCard).join('') + '</section>' +
-      (matched.length ? '' : '<div class="empty-state"><h3>No records found</h3><p>Try another search.</p></div>') +
+      '<div class="vault-compact-toolbar">' + searchMarkup('Search records or Suno styles...') +
+        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' +
+      '<div class="section-bar mockup-section-bar" id="musicGroupsHeading">' +
+        '<h2>Music Groups</h2><span class="section-note">' + matched.length + ' sleeves</span></div>' +
+      '<section class="group-grid mockup-sleeve-grid" aria-label="Music group sleeves">' +
+        matched.map(groupCard).join('') + '</section>' +
+      (matched.length ? '' : '<div class="empty-state"><h3>No matching records</h3><p>Try a different search.</p></div>') +
       (q ? '' : '<section class="featured-section"><div class="section-bar"><h2>Favorite Presets</h2>' +
-        '<button type="button" class="btn ghost sm" data-go="favorites">View all</button></div>' +
-        (favs.length ? '<div class="featured-row">' + favs.map(featuredCard).join('') + '</div>' :
-         '<div class="section-note">Star any style prompt to add it to the front of your crate.</div>') +
-        '</section>') +
-      '<p class="footer-note">PRIVATE CREATIVE ARCHIVE · Data and uploaded covers stay on this device until you export a backup. Not affiliated with Suno.</p>';
+          '<button type="button" class="btn ghost sm" data-go="favorites">See all</button></div>' +
+          (favs.length ? '<div class="featured-row">' + favs.map(featuredCard).join('') + '</div>' :
+            '<div class="section-note">Tap a star on a style prompt to save it here.</div>') +
+          '</section>') +
+      '<p class="footer-note">GREEN BAT MUSIC · PERSONAL RECORD ARCHIVE. Covers and edits remain on this device until exported as a backup.</p>';
   }
 
   function renderGroup() {
     const g = findGroup(activeGroup);
-    if (!g) { page = 'home'; renderHome(); return; }
+    if (!g) {page='home';renderHome();return;}
     const q = query.toLowerCase().trim();
-    const categories = ['All', ...new Set(g.prompts.map(p=>p.category))];
-    if (!categories.includes(category)) category = 'All';
-    const matched = g.prompts.filter(p =>
-      (category === 'All' || p.category === category) &&
-      matchesPrompt({...p,groupName:g.name},q));
+    const categories = ['All',...new Set(g.prompts.map(p=>p.category))];
+    if(!categories.includes(category)) category='All';
+    const matched = g.prompts.filter(p=>(category==='All'||p.category===category)&&matchesPrompt({...p,groupName:g.name},q));
+    const tags = [...new Set(g.prompts.map(p=>p.category))].slice(0,3);
     main.innerHTML =
-      '<button type="button" class="back" data-go="home">← Back to Record Vault</button>' +
-      '<section class="crate-hero" style="--accent:' + color(g.color) + '">' +
-        groupThumbMarkup(g,true) +
-        '<div class="crate-metadata">' +
-          '<span class="crate-overline">GREEN BAT / ARTIST CRATE</span>' +
-          '<h1>' + escapeHTML(g.name) + '</h1>' +
-          '<div class="genre">' + escapeHTML(g.genre) + '</div>' +
-          '<p>' + escapeHTML(g.description) + '</p>' +
-          '<div class="crate-count">' + g.prompts.length + ' STYLE PRESETS</div>' +
+      '<button type="button" class="back mockup-back" data-go="home">← &nbsp; Back to Record Vault</button>' +
+      '<section class="mockup-crate-shell" style="--accent:' + color(g.color) + '">' +
+        '<div class="crate-stage" role="img" aria-label="' + escapeHTML(g.name) + ' record sleeve displayed in a wooden crate">' +
+          '<div class="stack-record stack-record-four" aria-hidden="true"></div>' +
+          '<div class="stack-record stack-record-three" aria-hidden="true"></div>' +
+          '<div class="stack-record stack-record-two" aria-hidden="true"></div>' +
+          '<div class="stack-record stack-record-one" aria-hidden="true"></div>' +
+          '<div class="crate-side crate-side-left" aria-hidden="true"></div>' +
+          '<div class="crate-side crate-side-right" aria-hidden="true"></div>' +
+          '<div class="crate-main-cover">' + groupThumbMarkup(g,true) + '</div>' +
+          '<div class="crate-front-wood" aria-hidden="true"></div>' +
+          '<div class="crate-front-title"><h1>' + escapeHTML(g.name) + '</h1></div>' +
+        '</div>' +
+        '<div class="crate-details">' +
+          '<div class="crate-tags">' + tags.map(t=>'<span class="crate-tag">'+escapeHTML(t)+'</span>').join('') + '</div>' +
+          '<p>' + escapeHTML(g.description || g.genre) + '</p>' +
+          '<div class="crate-meta-bar"><span>' + escapeHTML(g.genre) + '</span>' +
+            '<button type="button" class="crate-edit-button" data-edit-group="' + escapeHTML(g.id) + '" aria-label="Edit ' + escapeHTML(g.name) + ' artwork and details">Edit sleeve</button></div>' +
         '</div>' +
       '</section>' +
-      '<div class="crate-heading"><h2>Style Prompt Soundboard</h2><small>SELECT · COPY · CREATE</small></div>' +
-      '<div class="toolbar">' + searchMarkup('Find a sound, mood or instrument...') +
-        '<button type="button" class="btn primary" data-action="add-prompt">+ Add Prompt</button></div>' +
-      '<div class="filter-row" aria-label="Style category filters">' +
-        categories.map(cat =>
-          '<button type="button" data-category="' + escapeHTML(cat) + '" class="filter-chip ' +
-            (cat === category ? 'active' : '') + '">' + escapeHTML(cat) + '</button>'
-        ).join('') +
+      '<div class="mockup-prompts-heading">' +
+        '<h2>Prompts <span>(' + g.prompts.length + ')</span></h2>' +
+        '<button type="button" class="preset-search-toggle" data-action="toggle-group-search" aria-expanded="' + groupSearchOpen + '">⌕ &nbsp;Search / Filters</button>' +
       '</div>' +
-      '<div class="section-bar"><h2>Saved Presets</h2><span class="section-note">' + matched.length + ' tracks</span></div>' +
-      '<section class="prompt-stack" aria-label="Suno style prompt presets">' +
-        matched.map(p => promptCard({...p,groupColor:g.color})).join('') +
+      (groupSearchOpen ? '<div class="mockup-search-panel"><div class="toolbar">' + searchMarkup('Search this group...') + '</div>' +
+      '<div class="filter-row" aria-label="Prompt category filters">' +
+      categories.map(cat=>'<button type="button" class="filter-chip ' + (cat===category?'active':'') +
+        '" data-category="' + escapeHTML(cat) + '">' + escapeHTML(cat) + '</button>').join('') + '</div></div>' : '') +
+      '<section class="prompt-stack mockup-track-list" aria-label="Style prompt soundboard">' +
+        matched.map(p=>promptCard({...p,groupColor:g.color})).join('') +
       '</section>' +
-      (matched.length ? '' : '<div class="empty-state"><h3>No presets found</h3><p>Change the filter or add a new style.</p></div>') +
-      '<div class="footer-note"><button type="button" class="btn ghost sm" data-edit-group="' +
-        escapeHTML(g.id) + '">Edit cover art &amp; group details</button></div>';
+      (matched.length?'':'<div class="empty-state"><h3>No prompts found</h3><p>Change the search or filters.</p></div>') +
+      '<button type="button" class="mockup-add-prompt" data-action="add-prompt">＋ &nbsp; Add Prompt</button>';
   }
 
-
-  function renderFavorites() {
-    const q=query.toLowerCase().trim();
-    const favs=allPrompts().filter(p=>p.favorite && matchesPrompt(p,q));
-    main.innerHTML =
-      '<section class="hero vault-masthead">' +
-        '<span class="vault-eyebrow">GREEN BAT / SAVED RECORDS</span>' +
-        '<h1 class="vault-title">Favorite <span>Presets</span></h1>' +
-        '<p class="vault-tagline">The sounds you keep coming back to.</p>' +
-        '<nav class="vault-tabs" aria-label="Browse vault">' +
-          '<button type="button" class="vault-tab" data-go="home">◉ Music Groups</button>' +
-          '<button type="button" class="vault-tab active" data-go="favorites" aria-current="page">★ Favorites</button>' +
-          '<span class="vault-stats">' + favs.length + ' starred presets</span>' +
-        '</nav></section>' +
-      '<div class="toolbar">' + searchMarkup('Search favorite presets...') + '</div>' +
-      '<div class="section-bar"><h2>Favorite Soundboard</h2><span class="section-note">' + favs.length + ' records</span></div>' +
-      '<section class="prompt-stack">' + favs.map(p=>promptCard(p,true)).join('') + '</section>' +
-      (favs.length ? '' : '<div class="empty-state"><h3>Your favorites crate is empty</h3><p>Star a prompt to keep it here for one-tap copying.</p></div>');
+function renderFavorites() {
+    const q=query.toLowerCase().trim(), favs=allPrompts().filter(p=>p.favorite&&matchesPrompt(p,q));
+    main.innerHTML='<section class="hero vault-masthead mockup-masthead">' +
+      '<span class="vault-eyebrow">YOUR MOST-PLAYED IDEAS</span>' +
+      '<h1 class="vault-title">Favorite<br>Presets</h1>' +
+      '<p class="vault-tagline">Your personal crate of go-to sounds.</p>' +
+      '<nav class="vault-tabs"><button type="button" class="vault-tab" data-go="home">◉ Music Groups</button>' +
+      '<button type="button" class="vault-tab active" data-go="favorites">★ Favorites</button></nav></section>' +
+      '<div class="vault-compact-toolbar">'+searchMarkup('Find a favorite preset...')+'</div>' +
+      '<div class="section-bar"><h2>Favorite Soundboard</h2><span class="section-note">'+favs.length+' saved</span></div>' +
+      '<section class="prompt-stack mockup-track-list">'+favs.map(p=>promptCard(p,true)).join('')+'</section>' +
+      (favs.length?'':'<div class="empty-state"><h3>No favorite presets yet</h3><p>Star a prompt to keep it here.</p></div>');
   }
 
   function setActiveNav() {
@@ -250,6 +252,7 @@
 
   function navigate(to, id = null) {
     page = to;
+    groupSearchOpen = false;
     query = '';
     category = 'All';
     expanded.clear();
@@ -388,6 +391,25 @@
       return;
     }
     switch (t.dataset.action) {
+      case 'open-vault-menu':
+        modalFrame('Underground Record Vault', '<div class="vault-menu-options"><button type="button" class="btn" data-go="home">⌂ &nbsp; Home / Records</button><button type="button" class="btn" data-action="show-groups">▦ &nbsp; Music Groups</button><button type="button" class="btn" data-go="favorites">☆ &nbsp; Favorites</button><button type="button" class="btn" data-action="add-prompt">＋ &nbsp; Add Prompt</button><button type="button" class="btn" data-action="open-settings">⚙ &nbsp; Library & Backups</button></div>');
+        break;
+      case 'focus-vault-search':
+        if(page==='group'&&!groupSearchOpen){groupSearchOpen=true;render();}
+        document.getElementById('searchInput')?.focus();
+        break;
+      case 'show-groups':
+        if(!modal.hidden)closeModal();
+        if(page!=='home')navigate('home');
+        document.getElementById('musicGroupsHeading')?.scrollIntoView({behavior:'smooth',block:'start'});
+        document.querySelectorAll('.bottom-nav button').forEach(btn=>btn.classList.remove('active'));
+        document.getElementById('nav-groups')?.classList.add('active');
+        break;
+      case 'toggle-group-search':
+        groupSearchOpen=!groupSearchOpen;
+        render();
+        if(groupSearchOpen)document.getElementById('searchInput')?.focus();
+        break;
       case 'close-modal': closeModal(); break;
       case 'add-prompt': promptForm(); break;
       case 'add-group': groupForm(); break;

@@ -8,44 +8,51 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" sizes="192x192" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=record-vault-v3-20261118">
-  <link rel="stylesheet" href="./record-vault.css?v=record-vault-v3-20261118">
+  <link rel="stylesheet" href="./styles.css?v=record-vault-mockup-v4-20261118">
+  <link rel="stylesheet" href="./record-vault.css?v=record-vault-mockup-v4-20261118">
   <title>Green Bat · Underground Record Vault</title>
 </head>
 <body class="vault-v3">
 <div class="app-shell">
   <header class="site-header">
-    <div class="brand" role="button" tabindex="0" data-go="home" aria-label="Home">
-      <img class="brand-logo" src="./icons/green-bat-logo.png" alt="Green Bat Music">
-      <span class="brand-badge">THE PROMPT VAULT</span>
-    </div>
-    <button class="icon-button" id="installButton" type="button" title="Install on phone" aria-label="Install app" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>
+    <button class="icon-button mockup-menu-button" type="button" data-action="open-vault-menu" title="Vault menu" aria-label="Open vault menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
-    <button class="icon-button" type="button" data-action="open-settings" title="Library and backups" aria-label="Library and backups">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.04.04-1.84 1.84-.04-.04A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1.1 1.57V21H9.1v-1.03A1.7 1.7 0 0 0 8 18.4a1.7 1.7 0 0 0-1.88.34l-.04.04-1.84-1.84.04-.04A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.57-1.1H2v-3.8h1.03A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.04-.04 1.84-1.84.04.04A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1.1-1.57V3h5.8v1.03A1.7 1.7 0 0 0 16 5.6a1.7 1.7 0 0 0 1.88-.34l.04-.04 1.84 1.84-.04.04A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.57 1.1H22v3.8h-1.03A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+    <div class="brand" role="button" tabindex="0" data-go="home" aria-label="Green Bat Prompt Vault home">
+      <img class="brand-logo" src="./icons/green-bat-logo.png" alt="Green Bat Music">
+      <span class="brand-badge">PROMPT VAULT</span>
+    </div>
+    <button class="icon-button mockup-search-button" type="button" data-action="focus-vault-search" aria-label="Search the vault" title="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.9" cy="10.9" r="7.2"/><path d="m16.2 16.2 5.2 5.2"/></svg>
+    </button>
+    <button class="icon-button" id="installButton" type="button" title="Install app" aria-label="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>
+    </button>
+    <button class="icon-button mockup-settings-button" type="button" data-action="open-settings" title="Library and backups" aria-label="Library and backups">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19 15l2 2-4 4-2-2H9l-2 2-4-4 2-2V9L3 7l4-4 2 2h6l2-2 4 4-2 2Z"/></svg>
     </button>
   </header>
 
   <main id="mainContent" tabindex="-1"></main>
 
   <nav class="bottom-nav" aria-label="Primary">
-    <button type="button" data-go="home" id="nav-home" aria-label="Groups"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.4"/><rect x="14" y="3" width="7" height="7" rx="1.4"/><rect x="3" y="14" width="7" height="7" rx="1.4"/><rect x="14" y="14" width="7" height="7" rx="1.4"/></svg><span>Groups</span></button>
-    <button type="button" data-go="favorites" id="nav-favorites" aria-label="Favorites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1z"/></svg><span>Favorites</span></button>
-    <button type="button" data-action="add-prompt" id="nav-add" aria-label="Add a prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Add Prompt</span></button>
+    <button type="button" data-go="home" id="nav-home" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"/></svg><span>Home</span></button>
+    <button type="button" data-action="show-groups" id="nav-groups" aria-label="Music groups"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 10 6-10 6L2 8z"/><path d="m2 13 10 6 10-6M2 18l10 5 10-5"/></svg><span>Groups</span></button>
+    <button type="button" data-go="favorites" id="nav-favorites" aria-label="Favorites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1z"/></svg><span>Favorites</span></button>
+    <button type="button" data-action="add-prompt" id="nav-add" aria-label="Add a prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M4 12h16"/></svg><span>Add Prompt</span></button>
   </nav>
 </div>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div class="modal-scrim" id="modalScrim" hidden><div class="modal" id="modalBody" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div></div>
 <input id="importFile" type="file" accept="application/json,.json" hidden>
-<script src="./starter-data.js?v=record-vault-v3-20261118"></script>
-<script src="./app.js?v=record-vault-v3-20261118"></script>
+<script src="./starter-data.js?v=record-vault-mockup-v4-20261118"></script>
+<script src="./app.js?v=record-vault-mockup-v4-20261118"></script>
 <script>
 /* Refresh once when a newer offline worker takes control. Never touches user data. */
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!sessionStorage.getItem('greenbat-controller-reload-record-vault-v3')) {
+    if (!sessionStorage.getItem('greenbat-controller-reload-record-vault-v4')) {
       sessionStorage.setItem('greenbat-controller-reload-v3', '1');
       location.reload();
     }
