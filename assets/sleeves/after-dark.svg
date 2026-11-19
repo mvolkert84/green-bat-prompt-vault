@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" aria-label="Illustrated vintage record sleeve">
+<defs>
+  <filter id="grain" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".18 .32" numOctaves="3" seed="7" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".12"/></feComponentTransfer></filter>
+  <radialGradient id="shade"><stop offset="0" stop-color="#ffebae" stop-opacity=".20"/><stop offset=".65" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".65"/></radialGradient>
+  <linearGradient id="wear"><stop stop-color="#a8996e"/><stop offset=".05" stop-color="#342b21"/><stop offset=".48" stop-color="#070908"/><stop offset=".95" stop-color="#4a3b29"/><stop offset="1" stop-color="#b9a07b"/></linearGradient>
+</defs><rect width="720" height="720" fill="#201321"/><defs><radialGradient id="purple"><stop stop-color="#544259"/><stop offset="1" stop-color="#111017"/></radialGradient></defs><rect width="720" height="720" fill="url(#purple)"/>
+<g opacity=".6"><ellipse cx="548" cy="420" rx="120" ry="340" fill="#1e1125"/><ellipse cx="548" cy="420" rx="70" ry="270" fill="#8e4f88" opacity=".25"/></g>
+<path d="M310 250C310 315 315 340 280 372Q246 413 282 455T373 453C396 437 400 420 398 398" fill="none" stroke="#caa56b" stroke-width="30" stroke-linecap="round"/>
+<path d="M309 248L420 218L432 252L332 276Z" fill="#cba36c"/><path d="M372 452L432 431" stroke="#d2b57e" stroke-width="44" stroke-linecap="round"/>
+<path d="M0 615Q210 560 360 610T720 590" stroke="#654260" stroke-width="27" opacity=".3" fill="none"/>
+<rect width="720" height="720" fill="url(#shade)"/><rect x="0" y="0" width="720" height="720" filter="url(#grain)" opacity=".45"/>
+<rect x="12" y="12" width="696" height="696" fill="none" stroke="#d5b38c" stroke-opacity=".48" stroke-width="11" rx="8"/>
+<rect x="23" y="23" width="674" height="674" fill="none" stroke="#090a08" stroke-opacity=".82" stroke-width="7"/>
+<path d="M28 31h65m-59 7h24m607 14h33M16 602v80m673-160v155M20 20l45 16M680 666l-57 18" stroke="#d7c393" opacity=".4" stroke-width="4" fill="none"/>
+</svg>
