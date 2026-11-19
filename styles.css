@@ -23,3 +23,18 @@
 @media(max-width:520px){.brand-badge{display:none}.brand-logo{max-width:58vw;height:42px}.group-banner{align-items:flex-start}.large-mark{width:90px;height:90px}.featured-row{display:flex;overflow-x:auto}.featured-card{flex:0 0 188px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 [hidden]{display:none!important}
+
+/* Compact group artwork cards v2.1 */
+/* Restore the original compact group browsing density while retaining uploaded cover art. */
+.group-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.group-card{min-height:158px;padding:12px;border-radius:16px;justify-content:flex-start}
+.group-card .monogram{display:none}
+.group-card .group-thumb{width:64px;height:64px;aspect-ratio:1;border-radius:13px;flex:none}
+.group-card .group-thumb .group-icon{width:100%;height:100%;border-radius:12px;font-size:23px;box-shadow:none}
+.group-card .group-copy{padding-top:11px;min-width:0}
+.group-card h3{font-size:15px;line-height:1.2;margin:0 0 5px;overflow-wrap:anywhere}
+.group-card p{font-size:11px;line-height:1.35;margin:0 0 8px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.group-card .smallcount{font-size:10px}
+@media(min-width:640px){.group-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.group-card{min-height:170px;padding:15px}.group-card .group-thumb{width:76px;height:76px}.group-card h3{font-size:17px}}
+@media(min-width:960px){.group-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.group-card{min-height:174px}}
+@media(max-width:360px){.group-card{padding:10px;min-height:150px}.group-card .group-thumb{width:56px;height:56px}.group-card h3{font-size:14px}}
