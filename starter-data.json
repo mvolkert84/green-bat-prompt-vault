@@ -372,6 +372,46 @@
           "text": "Groove-forward metalcore with huge down-tuned rhythmic guitars, powerful live kick and snare, rolling toms, Latin-inspired hand percussion and thick bass. Controlled rhythmic verses, strong clean male tenor and selectively aggressive accents. Low-slung hypnotic movement, massive chorus and prominent guitar-led instrumental section, not nonstop blast beats.",
           "favorite": false,
           "origin": "reconstructed"
+        },
+        {
+          "id": "enter-the-end-7",
+          "title": "Blackwater Blues",
+          "category": "Blues / Groove",
+          "text": "Southern blues-infused groove metalcore with crushing downtuned guitars, gritty blues-scale riffs, thick distorted bass, swampy rhythmic swagger and explosive live drums. Subtle Latin tribal percussion reinforces the groove. Soulful gritty male verses shift between dark blues-influenced melodic phrasing, controlled aggressive screams and massive powerful clean tenor choruses. Heavy syncopated guitar chugs, ominous atmospheric passages, expressive wah-inflected lead guitar and an extended blues-metal solo with screaming bends. Raw, dangerous and deeply rhythmic. No country twang, no gimmicky breakdowns.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "enter-the-end-8",
+          "title": "Fractured Time",
+          "category": "Progressive",
+          "text": "Progressive groove metalcore driven by low-tuned seven-string guitars, intricate syncopated djent riffs, shifting time signatures, deep distorted bass and dynamic live drumming. Polyrhythmic kick patterns interlock with rolling tribal percussion while atmospheric dissonant guitars create tension. Gritty rhythmic male verses alternate with controlled harsh screams and soaring melodic clean tenor choruses. Build through evolving riffs, unexpected rhythmic transitions and expansive instrumental passages featuring a technically fluid melodic guitar solo. Modern, muscular and sophisticated, maintaining infectious grooves beneath the complexity. No robotic repetition or abrupt scream-only breakdowns.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "enter-the-end-9",
+          "title": "Velvet Ruin",
+          "category": "R&B / Soul",
+          "text": "Dark contemporary R&B fused with crushing groove metalcore. Smooth atmospheric electric piano, haunting synth pads and deep soulful bass weave around downtuned syncopated guitar riffs, explosive live drums and subtle Latin percussion. Expressive male vocals alternate between intimate soulful R&B melodies, gritty rhythmic phrasing, powerful clean tenor belts and selective controlled screams. Verses breathe with spacious late-night atmosphere before erupting into massive heavy guitar-driven choruses. Rich layered vocal harmonies, dynamic rhythmic contrast and a soaring melodic electric guitar solo. Sensual tension meets genuine metal aggression, never glossy pop or lightweight rock.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "enter-the-end-10",
+          "title": "Cathedral Collapse",
+          "category": "Cinematic",
+          "text": "Cinematic atmospheric metalcore combining crushing downtuned groove riffs, thick bass, powerful live drums and rolling tribal percussion with ominous orchestral strings, low brass, haunting choirs and distant piano. Dark spacious verses feature restrained gritty male vocals and atmospheric guitar textures, building toward thunderous syncopated riffs, selective harsh screams and towering clean tenor choruses. Dramatic orchestral swells enhance the guitars without overpowering them. Slow-building tension, enormous dynamic contrasts, a sweeping melodic guitar solo and a devastating instrumental climax. Epic, sinister and emotionally intense, never theatrical novelty or symphonic power metal.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "enter-the-end-11",
+          "title": "Overdrive Riot",
+          "category": "Thrash / Hardcore",
+          "text": "High-velocity thrash-infused groove metalcore with razor-sharp downtuned guitar riffs, galloping palm-muted rhythms, thick distorted bass, punishing live drums and relentless double-kick acceleration. Aggressive hardcore energy collides with syncopated alternative-metal grooves and rapid tribal percussion fills. Ferocious gritty male verses, controlled harsh screams and forceful clean tenor choruses with commanding melodic hooks. Fast technical riff exchanges, driving rhythmic transitions, explosive extended guitar solos and muscular half-time passages that sustain the momentum. Raw, confrontational and fiercely energetic with polished modern production. No electronic dance elements or short gimmicky breakdowns.",
+          "favorite": false,
+          "origin": "user"
         }
       ]
     },
