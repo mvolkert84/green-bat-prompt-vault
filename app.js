@@ -100,18 +100,41 @@
     return library;
   }
 
+  // Bring approved Loose Change prompts into existing device libraries once.
+  // Preserve edits, favorites and deleted groups; never replace an existing ID.
+  function addApprovedLooseChangePack(library) {
+    const marker = 'greenbat-loose-change-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'loose-change');
+      const original = seed.groups.find(group => group.id === 'loose-change');
+      if (!target || !original) return library;
+      const existingIds = new Set(target.prompts.map(prompt => prompt.id));
+      const additions = original.prompts.filter(prompt =>
+        /^loose-change-(?:5|6|7|8|9|10)$/.test(prompt.id) && !existingIds.has(prompt.id));
+      if (additions.length) {
+        target.prompts.push(...additions.map(normalizePrompt));
+        localStorage.setItem(STORE, JSON.stringify(library));
+      }
+      // Mark once so user-deleted pack prompts do not return later.
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; retain the user's in-memory library */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved)));
+      if (saved && Array.isArray(saved.groups)) return addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved))));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy)));
+      if (legacy && Array.isArray(legacy.groups)) return addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy))));
     } catch (e) { /* storage unavailable */ }
     // A fresh install already includes this pack in its seed. Mark it as
     // applied so removing a bundled prompt won't cause it to return on reload.
     try {
       localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-ete-pack-2026-11', 'applied');
+      localStorage.setItem('greenbat-loose-change-pack-2026-11', 'applied');
     }
     catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
