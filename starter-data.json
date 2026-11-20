@@ -172,6 +172,54 @@
           "text": "Late-night smooth funk-pop. Rounded bass, mellow electric piano, soft muted guitar, restrained drums, subtle analog keys and a relaxed pocket. Soulful expressive male vocal, understated harmonies and a chorus that glides rather than shouts. Warm urban atmosphere and sophisticated minimal production.",
           "favorite": false,
           "origin": "reconstructed"
+        },
+        {
+          "id": "loose-change-5",
+          "title": "Brass Tax",
+          "category": "Upbeat",
+          "text": "Explosive modern funk-pop fused with classic brass-driven soul and New Orleans-style rhythmic swagger. Thick bouncing electric bass, tight live drums, syncopated rhythm guitar, gritty Hammond organ, punchy trumpet and trombone riffs. Charismatic male lead vocals with confident rhythmic phrasing, soulful melodic choruses and tight backing harmonies. Dynamic horn call-and-response, infectious instrumental breaks and natural live-band energy. Crisp modern production with vintage warmth, relentless pocket and playful sophistication.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "loose-change-6",
+          "title": "Neon Circuit",
+          "category": "Electronic",
+          "text": "Modern funk-pop fused with 1980s electro-funk and analog synth-boogie. Rubber-band synth bass layered with expressive electric bass, crisp drum-machine grooves, funky muted guitar, shimmering vintage synthesizers, talkbox accents and bright keyboard hooks. Smooth charismatic male vocals alternating between rhythmic verses and soaring soulful choruses. Catchy harmonies, syncopated electronic percussion and addictive melodic bass movement. Glossy neon production with authentic funk swing, danceable momentum and warm human character, never generic EDM.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "loose-change-7",
+          "title": "Sidewalk Swagger",
+          "category": "Hip-Hop",
+          "text": "Groove-heavy funk-pop blending 1990s West Coast hip-hop production, G-funk textures and classic soul. Deep elastic fingerstyle bass, laid-back punchy hip-hop drums, clipped wah guitar, warm Rhodes keys, smooth synth leads and occasional brass stabs. Confident male vocals with conversational rhythmic delivery, subtle melodic rap inflections and infectious fully sung funk-pop choruses. Soulful background harmonies, relaxed streetwise charisma and spacious bass-driven production. Cool, playful and stylish without becoming aggressive or losing the organic funk groove.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "loose-change-8",
+          "title": "Grease & Gold",
+          "category": "Rock",
+          "text": "Gritty modern funk-pop fused with blues-rock and Southern soul. Thick fingerstyle electric bass, gritty syncopated guitar riffs, bluesy wah leads, dry punchy drums, Hammond organ and occasional gritty brass accents. Charismatic slightly raspy male vocals with rhythmic swagger, expressive blues inflections and smooth melodic funk-pop choruses. Tight rhythmic breaks, tasteful guitar improvisations, dynamic stop-start grooves and infectious vocal hooks. Warm analog grit with polished modern low end, muscular danceable pocket and no excessive rock distortion.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "loose-change-9",
+          "title": "Velvet Theory",
+          "category": "Slow Burn",
+          "text": "Sophisticated modern funk-pop fused with jazz-funk and contemporary neo-soul. Fluid melodic electric bass, intricate but relaxed pocket drums, warm Rhodes chords, jazzy guitar voicings, subtle muted trumpet, clavinet accents and tasteful chromatic harmonies. Smooth expressive male lead vocals with confident rhythmic verses, soulful melodic hooks and layered background harmonies. Rich extended chords, unexpected rhythmic accents and restrained instrumental improvisation. Intimate polished production, warm analog textures and irresistible head-nodding groove without sacrificing memorable pop songwriting.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "loose-change-10",
+          "title": "House Money",
+          "category": "Dance",
+          "text": "High-energy funk-pop fused with soulful funky house and modern nu-disco. Deep bouncing live electric bass layered with a controlled electronic sub, crisp four-on-the-floor drums, syncopated rhythm guitar, bright piano stabs, filtered synth accents and tightly arranged disco strings. Charismatic male vocals with rhythmic funky verses, soaring soulful pop hooks and infectious layered harmonies. Dynamic groove builds, tasteful filtered breaks and hypnotic bass-led instrumental sections. Sleek club-ready production with organic funk musicianship, uplifting momentum and no oversized festival EDM drops.",
+          "favorite": false,
+          "origin": "approved"
         }
       ]
     },
