@@ -1,11 +1,11 @@
-const CACHE = 'green-bat-prompt-vault-underground-photo-v2-vertigo';
+const CACHE = 'green-bat-prompt-vault-underground-photo-v3-ete';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=underground-photo-v1',
-  './app.js?v=vertigo-2026-11',
-  './starter-data.js?v=vertigo-2026-11',
+  './app.js?v=ete-2026-11',
+  './starter-data.js?v=ete-2026-11',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
