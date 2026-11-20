@@ -85,6 +85,10 @@
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
       if (legacy && Array.isArray(legacy.groups)) return addApprovedVertigoPack(normalizeLibrary(legacy));
     } catch (e) { /* storage unavailable */ }
+    // A fresh install already includes this pack in its seed. Mark it as
+    // applied so removing a bundled prompt won't cause it to return on reload.
+    try { localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied'); }
+    catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
   }
 
