@@ -78,16 +78,41 @@
     return library;
   }
 
+  // Bring approved Enter The End prompts into an existing device library once.
+  // Never recreate deleted groups, overwrite matching IDs, or change saved favorites.
+  function addApprovedEtePack(library) {
+    const marker = 'greenbat-ete-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'enter-the-end');
+      const original = seed.groups.find(group => group.id === 'enter-the-end');
+      if (!target || !original) return library;
+      const existingIds = new Set(target.prompts.map(prompt => prompt.id));
+      const additions = original.prompts.filter(prompt =>
+        /^enter-the-end-(?:7|8|9|10|11)$/.test(prompt.id) && !existingIds.has(prompt.id));
+      if (additions.length) {
+        target.prompts.push(...additions.map(normalizePrompt));
+        localStorage.setItem(STORE, JSON.stringify(library));
+      }
+      // Respect later local deletions; don't re-add the pack on subsequent launches.
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; retain the user's in-memory library */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return addApprovedVertigoPack(normalizeLibrary(saved));
+      if (saved && Array.isArray(saved.groups)) return addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved)));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return addApprovedVertigoPack(normalizeLibrary(legacy));
+      if (legacy && Array.isArray(legacy.groups)) return addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy)));
     } catch (e) { /* storage unavailable */ }
     // A fresh install already includes this pack in its seed. Mark it as
     // applied so removing a bundled prompt won't cause it to return on reload.
-    try { localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied'); }
+    try {
+      localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied');
+      localStorage.setItem('greenbat-ete-pack-2026-11', 'applied');
+    }
     catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
   }
