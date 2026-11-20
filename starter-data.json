@@ -40,6 +40,54 @@
           "text": "Warm island deep house blending a mellow four-on-the-floor pulse with reggae guitar chops, soft shakers, gentle tropical percussion and smooth melodic bass. Airy synth atmosphere, restrained vocal fragments, patient transitions and a relaxed sunrise-to-sunset mood. Spacious, elegant, hypnotic, never festival EDM.",
           "favorite": false,
           "origin": "reconstructed"
+        },
+        {
+          "id": "vertigo-5",
+          "title": "Crosscurrent",
+          "category": "Reggaeton",
+          "text": "Minimal modern reggae-pop with a stronger reggaeton pulse, blending warm offbeat reggae guitar with tight syncopated dembow percussion and a deep, rolling melodic bassline. Crisp rimshots, shakers, hand drums, subtle piano accents and occasional dub echoes. Smooth, relaxed male lead vocals with rhythmic phrasing, conversational verses and infectious melodic hooks. Bright, confident, uplifting island energy with organic Caribbean warmth. Clean, spacious production, fluid transitions and groove-first arrangements. No aggressive trap, oversized EDM drops or generic tropical-house clichés.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "vertigo-6",
+          "title": "Velvet Shore",
+          "category": "R&B / Soul",
+          "text": "Smooth reggae-pop fused with classic 90s R&B warmth and soulful melodic arrangements. Silky Rhodes electric piano, mellow offbeat guitar chops, rounded bass guitar, soft swung percussion, warm organ textures and understated dub delays. Expressive male lead vocals blend effortless reggae phrasing with soulful R&B melodies, tasteful runs, rich backing harmonies and smooth call-and-response choruses. Romantic, hopeful and emotionally mature atmosphere with a relaxed island pocket. Minimal instrumentation, analog warmth, spacious dynamics and polished studio clarity. No excessive vocal runs, trap rhythms or glossy commercial pop production.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "vertigo-7",
+          "title": "Dub Garden",
+          "category": "Dub",
+          "text": "Minimal reggae-pop rooted in atmospheric dub and traditional sound-system culture. Deep, resonant melodic basslines, relaxed one-drop drums, warm guitar skanks, bubbling organ chords, sparse hand percussion, analog spring reverb and rhythmic tape-delay echoes. Intimate, soulful male vocals deliver thoughtful, uplifting melodies over wide open instrumental space. Brief dub instrumental passages let the bass, percussion and echoes breathe before returning to memorable vocal hooks. Earthy, meditative, optimistic and immersive with subtle psychedelic textures. Organic analog-style production, strong low-end separation and restrained arrangements. Avoid dense synth layers or aggressive EDM drops.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "vertigo-8",
+          "title": "Neon Tides",
+          "category": "Electronic",
+          "text": "Contemporary reggae-pop fused with melodic electronic dance music and subtle UK garage two-step rhythms. Warm offbeat guitar, fluid sub-bass, crisp shuffled percussion, atmospheric synth plucks, delicate arpeggios and airy electronic textures. Relaxed soulful male lead with memorable uplifting melodies, intimate verses and wide layered choruses. Gentle electronic buildups transition into groove-driven instrumental releases rather than explosive festival drops. Shimmering night-drive atmosphere, hypnotic movement and optimistic emotional energy. Preserve the reggae rhythmic foundation beneath modern electronic production. Spacious, detailed mixing with organic percussion and warm melodic bass.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "vertigo-9",
+          "title": "Morning Light",
+          "category": "Acoustic",
+          "text": "Stripped-back acoustic reggae-pop with a natural, intimate island atmosphere. Warm fingerpicked acoustic guitar, understated offbeat strumming, rounded live bass guitar, soft brushed drums, cajón, shakers and delicate hand percussion. Close, expressive male lead vocals with honest conversational phrasing and gentle melodic hooks. Minimal vocal harmonies open gradually into bright, uplifting choruses. Subtle organic room ambience, relaxed rhythmic swing and a warm live-session character. Reflective but optimistic, peaceful without becoming sleepy. Clean acoustic production with plenty of breathing room, no synthetic drops, excessive layers or sugary tropical clichés.",
+          "favorite": false,
+          "origin": "user"
+        },
+        {
+          "id": "vertigo-10",
+          "title": "Golden Roots",
+          "category": "Roots / Rocksteady",
+          "text": "Uplifting modern reggae-pop blended with vintage rocksteady, warm Caribbean soul and subtle classic ska influences. Bouncy melodic bass guitar, crisp offbeat rhythm guitar, playful piano accents, tight live drums, warm organ and restrained brass responses from trumpet and trombone. Smooth soulful male lead with confident melodic phrasing, lively backing harmonies and infectious singalong choruses. Bright rhythmic movement, timeless positivity and genuine live-band chemistry. Modern, clean studio production preserves the character of vintage instruments without sounding retro or theatrical. No novelty ska exaggeration, crowded horn arrangements or overproduced pop effects.",
+          "favorite": false,
+          "origin": "user"
         }
       ]
     },
