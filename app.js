@@ -56,12 +56,34 @@
     };
   }
 
+  // Bring the approved Vertigo pack into an existing device library once.
+  // Other prompts, user edits, favorites, and removed groups are left alone.
+  function addApprovedVertigoPack(library) {
+    const marker = 'greenbat-vertigo-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'vertigo');
+      const original = seed.groups.find(group => group.id === 'vertigo');
+      if (!target || !original) return library; // Never recreate a deleted group.
+      const existingIds = new Set(target.prompts.map(prompt => prompt.id));
+      const newPrompts = original.prompts.filter(prompt =>
+        /^vertigo-(?:5|6|7|8|9|10)$/.test(prompt.id) && !existingIds.has(prompt.id));
+      if (newPrompts.length) {
+        target.prompts.push(...newPrompts.map(normalizePrompt));
+        localStorage.setItem(STORE, JSON.stringify(library));
+      }
+      // The marker prevents deleted pack prompts reappearing on subsequent launches.
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; keep the in-memory library usable */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return normalizeLibrary(saved);
+      if (saved && Array.isArray(saved.groups)) return addApprovedVertigoPack(normalizeLibrary(saved));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return normalizeLibrary(legacy);
+      if (legacy && Array.isArray(legacy.groups)) return addApprovedVertigoPack(normalizeLibrary(legacy));
     } catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
   }
