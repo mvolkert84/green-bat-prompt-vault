@@ -130,6 +130,54 @@
           "text": "Cinematic noir rap built on smoky jazz sax, Rhodes chords, dusty drum texture and modern trap sub bass. Precise crisp hats, sparse guitar dissonance, lyrical rhythmic male lead and a hypnotic nighttime pulse. Keep the arrangement spacious and moody; allow one intense distorted-guitar lift in the final section.",
           "favorite": false,
           "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-5",
+          "title": "Brass & Bruises",
+          "category": "Big Band",
+          "text": "High-energy fusion of dark big-band jazz, trap and groove-driven metalcore. Aggressive syncopated brass stabs, baritone sax growls, muted trumpet solos and restless walking bass collide with thunderous 808s, sharp trap hi-hats and down-tuned metal guitars. Swing-inflected jazz verses give way to crushing half-time choruses with heavy rhythmic guitar accents. Charismatic low-register male vocals alternate between smooth jazz phrasing, rapid rhythmic delivery and controlled harsh metal vocals. Unpredictable horn-and-guitar exchanges, sophisticated jazz harmony, explosive dynamics and a dangerous late-night club atmosphere. Tight, polished studio production.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-6",
+          "title": "Velvet Vice",
+          "category": "Soul",
+          "text": "Dark, seductive fusion of neo-soul, acid jazz, atmospheric metalcore and modern trap. Silky Rhodes chords, expressive tenor saxophone, warm fingerstyle bass and sophisticated extended jazz harmonies glide over deep 808 sub bass and intricate trap percussion. Intimate soulful male vocals use rich harmonies, smooth falsetto passages and restrained rhythmic phrasing. Gradually introduce down-tuned guitars, thick distorted bass layers and emotionally powerful metalcore choruses without sacrificing the soulful groove. Subtle vocal grit, atmospheric guitar leads and elegant instrumental transitions. Luxurious, hypnotic midnight atmosphere with spacious, detailed studio production and controlled dynamic contrast.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-7",
+          "title": "Crooked Clockwork",
+          "category": "Progressive",
+          "text": "Technical progressive fusion of experimental jazz, djent-influenced metalcore and complex trap rhythms. Unpredictable time-signature changes, angular saxophone melodies, dissonant Rhodes voicings, syncopated seven-string guitar riffs and intricate live jazz drumming interlock with precise 808 patterns and rapid trap hi-hats. Shifting polyrhythms create tension while a recurring bass groove anchors the arrangement. Rhythmic male vocals alternate between syncopated rap, controlled melodic phrases and aggressive metalcore delivery. Emphasize instrumental virtuosity, unusual harmonic movement and sudden dynamic transitions without becoming chaotic. Dark, cerebral, mechanical and sophisticated, with pristine studio separation.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-8",
+          "title": "Static Noir",
+          "category": "Electronic",
+          "text": "Futuristic fusion of industrial electronic music, noir acid jazz, trap and atmospheric metalcore. Cold analog synthesizers, distorted electronic bass, mechanical percussion and glitching trap hi-hats surround smoky saxophone phrases and minor-key Rhodes chords. Heavy down-tuned guitars introduce grinding rhythmic patterns and explosive metallic choruses. Deep male vocals shift between detached spoken rhythms, haunting melodic lines and forceful harsh delivery. Alternate sterile electronic verses with intensely organic jazz passages and crushing guitar-driven climaxes. Subtle digital distortion, evolving synth textures and precise rhythmic experimentation. Urban, claustrophobic and cinematic, with deep sub bass and polished modern production.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-9",
+          "title": "Devil's Blue Note",
+          "category": "Blues",
+          "text": "Gritty fusion of dark electric blues, smoky jazz, Southern trap and groove-heavy metalcore. Bent blues guitar notes, expressive tenor saxophone, dirty Hammond organ and warm Rhodes chords establish a slow swaggering groove. Heavy 808 sub bass, rolling trap hats and deep live drum accents support increasingly distorted low-tuned guitar riffs. Raspy soulful male vocals move between blues-inflected melodies, confident rhythmic rap and powerful metalcore aggression. Use blues-scale guitar solos, call-and-response between sax and electric guitar, gritty bass movement and unexpected heavy instrumental peaks. Raw emotional weight, hypnotic rhythmic swagger and a shadowy after-hours atmosphere. Organic instrumentation with modern studio punch.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "after-dark-10",
+          "title": "Electric Masquerade",
+          "category": "Funk",
+          "text": "Sinister groove-driven fusion of dark jazz-funk, underground disco, modern trap and rhythmic metalcore. Slapping electric bass, syncopated wah guitar, muted brass stabs and slick Rhodes chords establish a hypnotic dance groove. Thick 808s, intricate trap hi-hats and punchy live drums build momentum beneath chromatic jazz harmonies. Introduce down-tuned metal guitars playing tight syncopated riffs that reinforce the funk rhythm rather than overpower it. Smooth charismatic male vocals alternate between rhythmic rap, seductive melodic hooks and controlled aggressive metal delivery. Gritty saxophone solos, unexpected heavy transitions and dark electronic accents. Stylish, dangerous and irresistibly rhythmic, with polished midnight-club production.",
+          "favorite": false,
+          "origin": "reconstructed"
         }
       ]
     },
