@@ -122,12 +122,34 @@
     return library;
   }
 
+  // Bring approved After Dark styles into existing device libraries once.
+  // Never recreate deleted groups, overwrite edits/favorites, or duplicate IDs.
+  function addApprovedAfterDarkPack(library) {
+    const marker = 'greenbat-after-dark-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'after-dark');
+      const original = seed.groups.find(group => group.id === 'after-dark');
+      if (!target || !original) return library;
+      const existingIds = new Set(target.prompts.map(prompt => prompt.id));
+      const additions = original.prompts.filter(prompt =>
+        /^after-dark-(?:5|6|7|8|9|10)$/.test(prompt.id) && !existingIds.has(prompt.id));
+      if (additions.length) {
+        target.prompts.push(...additions.map(normalizePrompt));
+        localStorage.setItem(STORE, JSON.stringify(library));
+      }
+      // Respect subsequent local deletions after the first successful upgrade.
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; preserve the in-memory library */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved))));
+      if (saved && Array.isArray(saved.groups)) return addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved)))));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy))));
+      if (legacy && Array.isArray(legacy.groups)) return addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy)))));
     } catch (e) { /* storage unavailable */ }
     // A fresh install already includes this pack in its seed. Mark it as
     // applied so removing a bundled prompt won't cause it to return on reload.
@@ -135,6 +157,7 @@
       localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-ete-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-loose-change-pack-2026-11', 'applied');
+      localStorage.setItem('greenbat-after-dark-pack-2026-11', 'applied');
     }
     catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
