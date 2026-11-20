@@ -1,11 +1,11 @@
-const CACHE = 'green-bat-prompt-vault-underground-photo-v4-loose-change';
+const CACHE = 'green-bat-prompt-vault-underground-photo-v5-after-dark';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=underground-photo-v1',
-  './app.js?v=loose-change-2026-11',
-  './starter-data.js?v=loose-change-2026-11',
+  './app.js?v=after-dark-2026-11',
+  './starter-data.js?v=after-dark-2026-11',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
