@@ -4,7 +4,7 @@ A lightweight, mobile-first installable web app (PWA), made for collecting, edit
 
 ## Included
 - 8 music groups: Vertigo, After Dark, Loose Change, Ever After Project, Pillars, State of Tension, Enter The End, 4th Movement
-- 62 editable starter prompts across core styles and alternate variations
+- 71 editable starter prompts across core styles and alternate variations
 - One-tap **Copy**; searchable groups and style prompts; category filters; star favorites
 - Add, edit and remove music groups or style prompts
 - Suno-oriented 1,000-character limit and live count
@@ -31,6 +31,6 @@ A lightweight, mobile-first installable web app (PWA), made for collecting, edit
 - The app makes no external requests and uses no analytics. It is not affiliated with Suno.
 
 ## Updating the app
-Modify the source files in your GitHub repository to update the app for everyone. Starter data updates won't overwrite saved personal edits by default. The service worker uses a versioned cache; bump the cache version in `service-worker.js` if changing shipped assets.
+Modify the source files in your GitHub repository to update the app for everyone. Starter data updates won't overwrite saved personal edits by default. Exception: the November 2026 Pillars sound rebuild replaces the old Pillars prompts with 12 new styles once per existing device; it leaves other groups intact and saves the previous Pillars prompt list in that device's local storage under `greenbat-pillars-before-rebuild-2026-11`. The service worker uses a versioned cache; bump the cache version in `service-worker.js` if changing shipped assets.
 
 For a simple desktop preview, run `python3 -m http.server 8000` in this directory, then visit `http://localhost:8000`. Installing as an Android PWA requires HTTPS (GitHub Pages provides it).
