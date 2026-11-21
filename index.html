@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b0906">
-  <meta name="description" content="Green Bat Music: a searchable, offline-first Suno prompt library for all your music projects.">
+  <meta name="description" content="Green Bat Music: Your offline music library, album collections, and Suno style prompts.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" sizes="192x192" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <link rel="stylesheet" href="./styles.css?v=underground-photo-v1">
   <link rel="stylesheet" href="./record-vault.css?v=underground-photo-v1">
+  <link rel="stylesheet" href="./music-library.css?v=1">
   <title>Green Bat · Underground Record Vault</title>
 </head>
 <body class="vault-v3">
@@ -21,7 +22,7 @@
     <button class="icon-button mockup-back-button" type="button" data-go="home" title="Back to vault" aria-label="Back to vault">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m14 5-7 7 7 7M7 12h14"/></svg>
     </button>
-    <div class="brand" role="button" tabindex="0" data-go="home" aria-label="Green Bat Prompt Vault home">
+    <div class="brand" role="button" tabindex="0" data-go="home" aria-label="Green Bat Music Vault home">
       <img class="brand-logo" src="./assets/vault/brand-lockup.webp" alt="Green Bat Music">
     </div>
     <button class="icon-button mockup-search-button" type="button" data-action="focus-vault-search" aria-label="Search the vault" title="Search">
@@ -48,10 +49,15 @@
   </nav>
 </div>
 
+<section id="musicDock" class="music-dock" aria-label="Music player" hidden></section>
+<dialog id="musicDeck" class="music-deck" aria-labelledby="musicDeckTitle"></dialog>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div class="modal-scrim" id="modalScrim" hidden><div class="modal" id="modalBody" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div></div>
 <input id="importFile" type="file" accept="application/json,.json" hidden>
 <script src="./starter-data.js?v=alan-walker-band-2026-11"></script>
-<script src="./app.js?v=alan-walker-band-2026-11"></script>
+<script src="./audio-tags.js?v=1"></script>
+<script src="./music-library.js?v=1"></script>
+<script src="./app.js?v=music-vault-1"></script>
 </body>
 </html>

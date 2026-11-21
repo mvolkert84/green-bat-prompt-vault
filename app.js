@@ -20,6 +20,7 @@
   let query = '';
   let category = 'All';
   let groupSearchOpen = false;
+  let groupSection = 'music';
   let homeSearchOpen = false;
   const expanded = new Set();
 
@@ -305,7 +306,8 @@
     ['vertigo', 'Vertigo'], ['state-of-tension', 'State of Tension'],
     ['enter-the-end', 'Enter the End'], ['4th-movement', '4th Movement'],
     ['after-dark', 'After Dark'], ['loose-change', 'Loose Change'],
-    ['ever-after', 'Ever After Project'], ['pillars', 'Pillars']
+    ['ever-after', 'Ever After Project'], ['pillars', 'Pillars'],
+    ['oblivion', 'Oblivion'], ['alan-walker-band', 'Alan Walker Band']
   ]);
 
   const featuredSleeves = ['vertigo', 'state-of-tension', 'enter-the-end', '4th-movement'];
@@ -314,13 +316,27 @@
     return index === -1 ? featuredSleeves.length : index;
   }
 
+  function groupSleeve(g) {
+    if (printedSleeves.has(g.id)) return g.id;
+    const name = g.name.trim().toLowerCase();
+    if (name === 'alan walker band') return 'alan-walker-band';
+    if (name === 'oblivion') return 'oblivion';
+    return 'blank-sleeve';
+  }
+
+  function groupCover(g, large = false) {
+    const sleeve = groupSleeve(g);
+    const image = large && sleeve === 'vertigo' ? 'vertigo-crate' : sleeve;
+    return g.artwork || './assets/vault/' + image + '.webp';
+  }
+
   function groupThumbMarkup(g, large = false) {
     const custom = Boolean(g.artwork);
-    const printed = printedSleeves.has(g.id) && !custom;
-    const sleeve = printed ? (large && g.id === 'vertigo' ? 'vertigo-crate' : g.id) : 'blank-sleeve';
-    const artwork = g.artwork || './assets/vault/' + sleeve + '.webp';
-    const showTitle = !printed || g.name.toLowerCase() !== printedSleeves.get(g.id).toLowerCase();
-    return `<div class="sleeve-art mockup-sleeve ${custom ? 'custom-cover' : ''} ${sleeve === 'vertigo-crate' ? 'vertigo-crate-art' : ''}" style="--accent:${color(g.color)}">
+    const sleeve = groupSleeve(g);
+    const printed = sleeve !== 'blank-sleeve' && !custom;
+    const artwork = groupCover(g, large);
+    const showTitle = !printed || g.name.toLowerCase() !== printedSleeves.get(sleeve).toLowerCase();
+    return `<div class="sleeve-art mockup-sleeve ${custom ? 'custom-cover' : ''} ${large && sleeve === 'vertigo' && !custom ? 'vertigo-crate-art' : ''}" style="--accent:${color(g.color)}">
       <img src="${escapeHTML(artwork)}" alt="" loading="${large ? 'eager' : 'lazy'}" decoding="async">
       ${showTitle ? `<span class="${custom || printed ? 'custom-sleeve-caption' : 'sleeve-art-title'}">${escapeHTML(g.name)}</span>` : ''}
     </div>`;
@@ -330,7 +346,7 @@
     const favs = g.prompts.filter(p => p.favorite).length;
     return '<button class="group-card record-sleeve mockup-group-card" type="button" data-group="' +
       escapeHTML(g.id) + '" style="--accent:' + color(g.color) + '" aria-label="Open ' +
-      escapeHTML(g.name) + ', ' + g.prompts.length + ' style prompts">' +
+      escapeHTML(g.name) + '">' +
       groupThumbMarkup(g) + '<span class="sleeve-favorite-indicator" title="' +
       favs + ' favorite prompts" aria-hidden="true">' + (favs ? '★' : '☆') +
       '</span></button>';
@@ -377,11 +393,11 @@ function renderHome() {
     const favs = allPrompts().filter(p=>p.favorite).slice(0,6);
     main.innerHTML =
       '<section class="hero vault-masthead mockup-masthead">' +
-        '<h1 class="vault-title">Green Bat<br>Prompt Vault</h1>' +
-        '<p class="vault-tagline">Every sound. One vault.</p>' +
+        '<h1 class="vault-title">Green Bat<br>Music Vault</h1>' +
+        '<p class="vault-tagline">Songs, albums, and style prompts.</p>' +
         '<nav class="vault-tabs" aria-label="Vault sections">' +
           '<button type="button" class="vault-tab active" data-action="show-groups">◉ &nbsp;Music Groups</button>' +
-          '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorites</button>' +
+          '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorite Prompts</button>' +
         '</nav>' +
       '</section>' +
       (homeSearchOpen ? '<div class="vault-compact-toolbar">' + searchMarkup('Search records or Suno styles...') +
@@ -396,7 +412,7 @@ function renderHome() {
           (favs.length ? '<div class="featured-row">' + favs.map(featuredCard).join('') + '</div>' :
             '<div class="section-note">Tap a star on a style prompt to save it here.</div>') +
           '</section>') +
-      '<p class="footer-note">GREEN BAT MUSIC · PERSONAL RECORD ARCHIVE. Covers and edits remain on this device until exported as a backup.</p>';
+      '<p class="footer-note">GREEN BAT MUSIC · PERSONAL RECORD ARCHIVE</p>';
   }
 
   function renderGroup() {
@@ -422,7 +438,15 @@ function renderHome() {
             '<button type="button" class="crate-edit-button" data-edit-group="' + escapeHTML(g.id) + '" aria-label="Edit ' + escapeHTML(g.name) + ' artwork and details">Edit sleeve</button></div>' +
         '</div>' +
       '</section>' +
-      '<section class="group-soundboard" aria-label="Saved prompts">' +
+      '<section class="group-soundboard" aria-label="Group library">' +
+      '<nav class="group-library-tabs" aria-label="Group sections">' +
+        '<button type="button" class="vault-tab ' + (groupSection === 'music' ? 'active' : '') +
+          '" data-action="group-music" aria-pressed="' + (groupSection === 'music') + '">Music</button>' +
+        '<button type="button" class="vault-tab ' + (groupSection === 'prompts' ? 'active' : '') +
+          '" data-action="group-prompts" aria-pressed="' + (groupSection === 'prompts') + '">Style Prompts</button>' +
+      '</nav>' +
+      (groupSection === 'music' ?
+        '<section id="musicLibrary" aria-label="Music library" aria-busy="true"><p class="record-empty">Loading music library…</p></section>' :
       '<div class="mockup-prompts-heading">' +
         '<h2>Prompts <span>(' + g.prompts.length + ')</span></h2>' +
         '<button type="button" class="preset-search-toggle" data-action="toggle-group-search" aria-expanded="' + groupSearchOpen + '">⌕ &nbsp;Search / Filters</button>' +
@@ -435,7 +459,9 @@ function renderHome() {
         matched.map(p=>promptCard({...p,groupColor:g.color})).join('') +
       '</section>' +
       (matched.length?'':'<div class="empty-state"><h3>No prompts found</h3><p>Change the search or filters.</p></div>') +
-      '<button type="button" class="mockup-add-prompt" data-action="add-prompt">＋ &nbsp; Add Prompt</button></section></div>';
+      '<button type="button" class="mockup-add-prompt" data-action="add-prompt">＋ &nbsp; Add Prompt</button>') + '</section></div>';
+    const library = document.getElementById('musicLibrary');
+    if (library) music.render(library, g);
   }
 
 function renderFavorites() {
@@ -465,14 +491,14 @@ function renderFavorites() {
     setActiveNav();
   }
 
-  function navigate(to, id = null) {
+  function navigate(to, id = null, section = 'music') {
     page = to;
     groupSearchOpen = false;
     homeSearchOpen = false;
     query = '';
     category = 'All';
     expanded.clear();
-    if (to === 'group') activeGroup = id;
+    if (to === 'group') { activeGroup = id; groupSection = section; }
     render();
     window.scrollTo({top:0, behavior:'instant'});
     main.focus();
@@ -527,11 +553,11 @@ function renderFavorites() {
   }
 
   function settings() {
-    modalFrame('Library & backups', `<div class="setting-card"><h3>Your data stays on your device</h3><p>Changes are stored in this browser. They do not automatically sync between devices, and clearing browser data can erase them. Export a backup regularly. Group artwork thumbnails are included in that backup.</p><button type="button" class="btn primary" data-action="export">↓ Export JSON backup</button><button type="button" class="btn" data-action="import">↑ Import backup</button></div><div class="setting-card"><h3>Phone, desktop, and Chromebook</h3><p>This layout is designed to work across mobile and larger screens. On Android Chrome, use <strong>Add to Home screen</strong> or <strong>Install app</strong> after hosting.</p><button type="button" class="btn" data-action="install-help">Installation tips</button></div><div class="setting-card"><h3>Starting library</h3><p>Built-in prompts are editable starter presets based on your established group sound directions. They are not guaranteed to reproduce earlier chat prompts word-for-word.</p><button type="button" class="btn danger" data-action="restore-starter">Restore starter library</button></div>`);
+    modalFrame('Library & backups', `<div class="setting-card"><h3>Your data stays on your device</h3><p>Changes are stored in this browser. They do not automatically sync between devices, and clearing browser data can erase them. Export a backup regularly. JSON backups include prompts and group artwork. Audio uploads and album collections are stored separately on this device. Keep the original audio files.</p><button type="button" class="btn primary" data-action="export">↓ Export JSON backup</button><button type="button" class="btn" data-action="import">↑ Import backup</button></div><div class="setting-card"><h3>Phone, desktop, and Chromebook</h3><p>This layout is designed to work across mobile and larger screens. On Android Chrome, use <strong>Add to Home screen</strong> or <strong>Install app</strong> after hosting.</p><button type="button" class="btn" data-action="install-help">Installation tips</button></div><div class="setting-card"><h3>Starting library</h3><p>Built-in prompts are editable starter presets based on your established group sound directions. They are not guaranteed to reproduce earlier chat prompts word-for-word.</p><button type="button" class="btn danger" data-action="restore-starter">Restore starter library</button></div>`);
   }
 
   function exportBackup() {
-    const payload = {...normalizeLibrary(data), exportedAt:new Date().toISOString(), app:'Green Bat Prompt Vault'};
+    const payload = {...normalizeLibrary(data), exportedAt:new Date().toISOString(), app:'Green Bat Music Vault'};
     const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -579,7 +605,12 @@ function renderFavorites() {
     });
   }
 
-  document.addEventListener('click', e => {
+  const music = window.GreenBatMusicLibrary.attach({
+    esc: escapeHTML, uid, getGroup: findGroup, cover: groupCover,
+    showModal: modalFrame, closeModal, toast, processArtwork: processArtworkFile
+  });
+
+  document.addEventListener('click', async e => {
     const t = e.target.closest('[data-action],[data-go],[data-group],[data-copy],[data-favorite],[data-expand],[data-edit-prompt],[data-edit-group],[data-delete-prompt],[data-delete-group],[data-category]');
     if (!t) return;
     if (t.dataset.copy) { copyPrompt(t.dataset.copy); return; }
@@ -600,7 +631,10 @@ function renderFavorites() {
     }
     if (t.dataset.deleteGroup) {
       const g = findGroup(t.dataset.deleteGroup);
-      if (g && confirm(`Delete “${g.name}” and all ${g.prompts.length} prompts?`)) {
+      if (g && confirm(`Delete “${g.name}”, its ${g.prompts.length} prompts, and its local songs and albums?`)) {
+        t.disabled = true;
+        try { await music.deleteGroup(g.id); }
+        catch (error) { t.disabled = false; toast(error.message || 'Could not delete group'); return; }
         data.groups = data.groups.filter(x => x.id !== g.id);
         persist(); closeModal(); navigate('home'); toast('Group deleted');
       }
@@ -622,6 +656,12 @@ function renderFavorites() {
         document.querySelectorAll('.bottom-nav button').forEach(btn=>btn.classList.remove('active'));
         document.getElementById('nav-groups')?.classList.add('active');
         break;
+      case 'group-music':
+      case 'group-prompts':
+        groupSection = t.dataset.action === 'group-music' ? 'music' : 'prompts';
+        render();
+        main.querySelector(`[data-action="${t.dataset.action}"]`)?.focus();
+        break;
       case 'toggle-group-search':
         groupSearchOpen=!groupSearchOpen;
         render();
@@ -635,7 +675,7 @@ function renderFavorites() {
       case 'import': importInput.click(); break;
       case 'install-help': toast('Chrome menu · Add to Home screen or Install app'); break;
       case 'restore-starter':
-        if (confirm('Replace your current library with starter presets? Export a backup first.')) {
+        if (confirm('Replace groups and prompts with starter presets? Songs and albums stay on this device and are visible under matching groups.')) {
           data = normalizeLibrary(seed); persist(); closeModal(); navigate('home'); toast('Starter library restored');
         }
         break;
@@ -686,8 +726,8 @@ function renderFavorites() {
         target.prompts.unshift({id:uid(), title, category:cat || 'Core', text:txt, favorite:false, origin:'user'});
       }
       persist(); closeModal();
-      if (page !== 'group') navigate('group', target.id);
-      else { activeGroup = target.id; category = 'All'; query = ''; render(); }
+      if (page !== 'group') navigate('group', target.id, 'prompts');
+      else { activeGroup = target.id; groupSection = 'prompts'; category = 'All'; query = ''; render(); }
       toast('Style prompt saved');
       return;
     }
@@ -716,7 +756,7 @@ function renderFavorites() {
       };
       if (existing) Object.assign(existing, values);
       else data.groups.push({id:uid(), ...values, prompts:[]});
-      persist(); closeModal(); render(); toast('Music group saved');
+      persist(); closeModal(); render(); music.updatePlayerInfo(); toast('Music group saved');
     }
   });
 
@@ -725,7 +765,7 @@ function renderFavorites() {
     if (!file) return;
     try {
       const obj = validateImport(JSON.parse(await file.text()));
-      if (!confirm('Import will replace the current library. Continue?')) return;
+      if (!confirm('Import will replace groups and prompts. Songs and albums stay on this device and are visible under matching groups. Continue?')) return;
       data = obj; persist(); closeModal(); navigate('home'); toast('Library imported');
     } catch (err) {
       alert(`Could not import backup: ${err.message}`);
@@ -741,7 +781,7 @@ function renderFavorites() {
   });
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; document.getElementById('installButton').hidden = false; });
   document.getElementById('installButton').addEventListener('click', async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = undefined; document.getElementById('installButton').hidden = true; });
-  window.addEventListener('appinstalled', () => { toast('Prompt Vault installed'); document.getElementById('installButton').hidden = true; });
+  window.addEventListener('appinstalled', () => { toast('Music Vault installed'); document.getElementById('installButton').hidden = true; });
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
 
   render();
