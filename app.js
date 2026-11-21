@@ -188,12 +188,36 @@
     return library;
   }
 
+
+  // Add Oblivion's approved debut pack once to existing device libraries.
+  // Keep all existing groups, personal edits and favorites intact.
+  function addApprovedOblivionPack(library) {
+    const marker = 'greenbat-oblivion-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const original = seed.groups.find(group => group.id === 'oblivion');
+      if (!original) return library;
+      const existing = library.groups.find(group => group.id === 'oblivion');
+      if (!existing) {
+        library.groups.push(normalizeGroup(original));
+      } else {
+        const existingIds = new Set(existing.prompts.map(prompt => prompt.id));
+        const missing = original.prompts.filter(prompt => !existingIds.has(prompt.id));
+        if (missing.length) existing.prompts.push(...missing.map(normalizePrompt));
+      }
+      localStorage.setItem(STORE, JSON.stringify(library));
+      // Respect a later local deletion of the group or individual presets.
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* Keep the user's saved library if storage is unavailable */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved)))))));
+      if (saved && Array.isArray(saved.groups)) return addApprovedOblivionPack(replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved))))))));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy)))))));
+      if (legacy && Array.isArray(legacy.groups)) return addApprovedOblivionPack(replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy))))))));
     } catch (e) { /* storage unavailable */ }
     // A fresh install already includes this pack in its seed. Mark it as
     // applied so removing a bundled prompt won't cause it to return on reload.
@@ -204,6 +228,7 @@
       localStorage.setItem('greenbat-after-dark-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-ever-after-rebuild-2026-11', 'applied');
       localStorage.setItem('greenbat-pillars-rebuild-2026-11', 'applied');
+      localStorage.setItem('greenbat-oblivion-pack-2026-11', 'applied');
     }
     catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
