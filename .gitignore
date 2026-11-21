@@ -3,7 +3,7 @@ www/
 android/
 dist/
 worker/.wrangler/
-worker/wrangler.toml
+worker/node_modules/
 *.apk
 *.aab
 *.jks
