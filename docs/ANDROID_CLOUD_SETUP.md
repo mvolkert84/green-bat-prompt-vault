@@ -19,27 +19,55 @@ not published in Google Play.
   automatically transferred to cloud storage. Re-upload those audio files
   after connecting the backend. Prompt editing remains device-local.
 
-## 1. Provision cloud audio storage
+## 1. Connect your Cloudflare account — easiest dashboard method
 
-A Cloudflare account is required. GitHub Actions build the APK; GitHub
-itself is NOT used to serve audio. Do not put MP3, WAV, FLAC, M4A or private
-credentials into a public GitHub repository.
+You do not need to install a terminal, share credentials, or raise your
+GitHub Actions budget. Cloudflare Workers Builds supports direct GitHub
+integration.
 
-1. Create an R2 bucket named `green-bat-music` in the Cloudflare dashboard
-   (Standard storage). Note R2 may require billing activation even if
-   usage stays within the free allowance.
-2. In a trusted local terminal or Cloudflare-supported development
-   environment, copy `worker/wrangler.toml.example` to
-   `worker/wrangler.toml`.
-3. From the `worker/` directory, run `npx wrangler login`.
-4. Run `npx wrangler secret put ADMIN_TOKEN` and supply a unique random
-   secret of at least 32 characters. Do not paste it into chat, GitHub,
-   source code, workflow logs or the APK.
-5. Run `npx wrangler deploy` to deploy the R2 streaming Worker. Save its
-   HTTPS URL (for example `https://green-bat-music.account.workers.dev`).
-6. Confirm `https://YOUR-WORKER/health` returns `{"ok":true}` and
-   `https://YOUR-WORKER/library` returns an empty `tracks` and
-   `albums` catalog.
+1. In [Cloudflare R2](https://dash.cloudflare.com/?to=/:account/r2),
+   create a **Standard** storage bucket named `green-bat-music`.
+   Keep the bucket PRIVATE (no public bucket URL). R2 may require billing
+   activation, even if usage remains inside its free allowance; review the
+   dashboard's billing and alerts before enabling it.
+2. Open **Workers & Pages → Create application → GitHub** (the interface
+   may call this `Import a repository`). Authorize your GitHub account
+   in Cloudflare if prompted.
+3. Select **`mvolkert84/green-bat-prompt-vault`** and set:
+   - Worker name: **`green-bat-music-cloud`**
+   - Production branch: **`feature/green-bat-cloud-apk-2026-11`**
+   - Root directory: **`worker`**
+   - Build command: leave empty
+   - Deploy command: **`npx wrangler deploy`**
+   - Worker configuration: existing `worker/wrangler.toml` (contains
+     R2 binding `MUSIC_BUCKET` to `green-bat-music`)
+4. Select **Save and Deploy**. Note the generated HTTPS
+   `https://green-bat-music-cloud.<your-subdomain>.workers.dev` URL.
+   Creating the Worker does not automatically upload songs.
+5. Under **Workers & Pages → green-bat-music-cloud →
+   Settings → Variables and Secrets**, create a **Secret** named
+   `ADMIN_TOKEN` with a new random value of at least 32 characters.
+   Keep it in your password manager. Do not paste it into chat, GitHub
+   source files, build settings, or screenshots.
+6. Check the public URL's `/health` endpoint returns
+   `{"ok":true}` and `/library` returns a JSON library with empty
+   `tracks` and `albums` arrays. If `/health` returns an error,
+   inspect the Worker build logs and R2 binding before proceeding.
+
+Cloudflare Git integration deploys changes to the configured production
+branch. Cloudflare's dashboard may require a slightly different sequence
+or labels. The Worker name must match the `name` in Wrangler config.
+
+**After deployment:** Share only the public `workers.dev` URL with
+the developer so they can add it to `cloud-config.js` and rebuild
+the APK. Never share the `ADMIN_TOKEN` secret.
+
+### Alternative: manual Wrangler deployment
+
+From `worker/`, run `npx wrangler login`, then
+`npx wrangler deploy`. To add the administrator key use
+`npx wrangler secret put ADMIN_TOKEN` and enter the value privately.
+The tracked `worker/wrangler.toml` file is already configured.
 
 The Worker enforces administrator authorization and generates audio IDs.
 The public audio endpoint supports HTTP range requests for playback and
