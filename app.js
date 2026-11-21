@@ -212,25 +212,64 @@
     return library;
   }
 
+
+  // Import the new approved blues-rock/trap group once on saved devices.
+  // Merge into a pre-existing locally created Alan Walker Band if present.
+  // Keep all local edits and other groups; do not re-add removed presets later.
+  function addApprovedAlanWalkerPack(library) {
+    const marker = 'greenbat-alan-walker-band-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const original = seed.groups.find(group => group.id === 'alan-walker-band');
+      if (!original) return library;
+      const existing = library.groups.find(group => group.id === 'alan-walker-band' || group.name.trim().toLowerCase() === 'alan walker band');
+      if (!existing) {
+        library.groups.push(normalizeGroup(original));
+      } else {
+        const existingIds = new Set(existing.prompts.map(prompt => prompt.id));
+        const missing = original.prompts.filter(prompt => !existingIds.has(prompt.id));
+        if (missing.length) existing.prompts.push(...missing.map(normalizePrompt));
+      }
+      localStorage.setItem(STORE, JSON.stringify(library));
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* Retain saved content when storage is unavailable */ }
+    return library;
+  }
+
   function getSaved() {
+    const migrations = [
+      addApprovedVertigoPack,
+      addApprovedEtePack,
+      addApprovedLooseChangePack,
+      addApprovedAfterDarkPack,
+      applyEverAfterRebuild,
+      replacePillarsPack,
+      addApprovedOblivionPack,
+      addApprovedAlanWalkerPack
+    ];
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return addApprovedOblivionPack(replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved))))))));
+      if (saved && Array.isArray(saved.groups)) {
+        return migrations.reduce((library, migrate) => migrate(library), normalizeLibrary(saved));
+      }
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return addApprovedOblivionPack(replacePillarsPack(applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy))))))));
+      if (legacy && Array.isArray(legacy.groups)) {
+        return migrations.reduce((library, migrate) => migrate(library), normalizeLibrary(legacy));
+      }
     } catch (e) { /* storage unavailable */ }
-    // A fresh install already includes this pack in its seed. Mark it as
-    // applied so removing a bundled prompt won't cause it to return on reload.
+    // Fresh installs already have all shipped packs. Never reimport deleted presets.
     try {
-      localStorage.setItem('greenbat-vertigo-pack-2026-11', 'applied');
-      localStorage.setItem('greenbat-ete-pack-2026-11', 'applied');
-      localStorage.setItem('greenbat-loose-change-pack-2026-11', 'applied');
-      localStorage.setItem('greenbat-after-dark-pack-2026-11', 'applied');
-      localStorage.setItem('greenbat-ever-after-rebuild-2026-11', 'applied');
-      localStorage.setItem('greenbat-pillars-rebuild-2026-11', 'applied');
-      localStorage.setItem('greenbat-oblivion-pack-2026-11', 'applied');
-    }
-    catch (e) { /* storage unavailable */ }
+      [
+        'greenbat-vertigo-pack-2026-11',
+        'greenbat-ete-pack-2026-11',
+        'greenbat-loose-change-pack-2026-11',
+        'greenbat-after-dark-pack-2026-11',
+        'greenbat-ever-after-rebuild-2026-11',
+        'greenbat-pillars-rebuild-2026-11',
+        'greenbat-oblivion-pack-2026-11',
+        'greenbat-alan-walker-band-pack-2026-11'
+      ].forEach(marker => localStorage.setItem(marker, 'applied'));
+    } catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
   }
 
