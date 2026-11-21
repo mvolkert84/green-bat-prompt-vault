@@ -1,7 +1,7 @@
 {
- "name": "Green Bat Music · Prompt Vault",
- "short_name": "Prompt Vault",
- "description": "Suno style prompt library for Green Bat Music groups",
+ "name": "Green Bat Music Vault",
+ "short_name": "Music Vault",
+ "description": "Offline playlists, albums and Suno style prompts for Green Bat Music groups",
  "id": "./index.html",
  "start_url": "./index.html",
  "scope": "./",
