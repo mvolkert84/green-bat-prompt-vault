@@ -546,6 +546,46 @@
           "text": "Heavy early-2000s nu-metal energy: detuned stop-start guitars, chest-hitting bass, hard live drums, restrained turntable texture and tense eerie verses. Rhythmic streetwise rap vocals alternate with urgent rough-edged melodic singing. Big emotionally charged chorus, thick layered guitar dynamics, raw grit and no modern pop-trap sheen.",
           "favorite": false,
           "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-8",
+          "title": "Asphalt Funk",
+          "category": "Funk Metal",
+          "text": "Underground 90s funk-metal and East Coast street-rap hybrid around 98 BPM. Rubbery slap-inflected bass, muted wah-guitar scratches, stop-start down-tuned riffs, dusty boom-bap kick, dry snare, ghost-note live drums and sparse DJ cuts. Gritty tightly pocketed male rap verses drive a muscular half-sung call-and-response rock hook. Focus on swagger, rhythmic push-pull and a raw basement-club mix. No disco gloss, glossy synths or trap sheen.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "state-of-tension-9",
+          "title": "Underpass Cypher",
+          "category": "Boom Bap",
+          "text": "Underground mid-90s cypher energy fused with stripped-down street rock around 92 BPM. Dusty sampled drum breaks, a deep relentless bassline, vinyl grit, tense minor-key guitar loops, hard snare cracks and occasional turntable cuts. Fierce articulate male rap verses with shifting cadences stay front and center while short distorted guitar replies punctuate the bars. Refrain is shouted and memorable rather than polished or pop-melodic. Raw concrete-room feel, no trap drums or radio sheen.",
+          "favorite": false,
+          "origin": "new"
+        },
+        {
+          "id": "state-of-tension-10",
+          "title": "Rusted Frequency",
+          "category": "Industrial",
+          "text": "Dark analog-industrial rap rock grounded in 90s street hip-hop. Crunchy looped breakbeats, heavy sub-bass, rusty gated guitar riffs, metallic percussion, tape-warble and distant radio-static textures. Tight confrontational male rap verses cut through sparse mechanical grooves; the chorus expands into a rough melodic alternative-metal hook with a powerful live-kit lift. Keep it gritty and claustrophobic, with electronics as unsettling texture rather than a dance drop. No glossy futuristic EDM production.",
+          "favorite": false,
+          "origin": "new"
+        },
+        {
+          "id": "state-of-tension-11",
+          "title": "Curbside Riot",
+          "category": "Punk / Hardcore",
+          "text": "Explosive 90s hardcore punk and underground street-rap collision around 112 BPM. Razor-edged palm-muted guitar chords, overdriven bass, hard live drums with rapid snare fills and a heavy hip-hop backbeat. Commanding rhythmically precise male rap verses snap into raw gang-shouted refrains and short muscular riff breaks. Tense, fast, confrontational and tightly arranged, with gritty rehearsal-room punch. Preserve the hip-hop groove beneath the punk velocity; avoid metalcore breakdowns, pop hooks and synthetic trap polish.",
+          "favorite": false,
+          "origin": "new"
+        },
+        {
+          "id": "state-of-tension-12",
+          "title": "Concrete Soul",
+          "category": "Soul / Rock",
+          "text": "Soul-stained underground rap rock with a 90s East Coast backbone and restrained alternative-metal weight. Warm Rhodes chords, dusty soul-sample fragments, a thick melodic bassline and laid-back boom-bap drums sit beneath clean-to-gritty electric guitar swells. Intimate incisive male rap verses give way to a worn soulful sung refrain, then a heavy guitar-driven chorus release. Cinematic but street-level, reflective without sentimentality. Keep the rhythm organic and the vocals human; no glossy R&B production or modern trap effects.",
+          "favorite": false,
+          "origin": "new"
         }
       ]
     },
