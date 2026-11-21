@@ -78,7 +78,6 @@
     return library;
   }
 
-
   // Add five State of Tension variations once to existing device libraries.
   // Do not overwrite local edits/favorites, resurrect removed groups or re-add deleted presets.
   function addStateOfTensionPack(library) {
