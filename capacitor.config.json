@@ -1,0 +1,12 @@
+{
+  "appId": "com.greenbatmusic.player",
+  "appName": "Green Bat Music",
+  "webDir": "www",
+  "backgroundColor": "#0b0906",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

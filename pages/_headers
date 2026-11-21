@@ -1,0 +1,11 @@
+# Green Bat Music — Cloudflare Pages static web player
+# Keep entry-point files fresh so changes to the catalog endpoint and player
+# propagate to Chromebook installations without forcing an uninstall.
+/index.html
+  Cache-Control: no-cache
+/cloud-config.js
+  Cache-Control: no-store
+/service-worker.js
+  Cache-Control: no-store
+/manifest.webmanifest
+  Cache-Control: no-cache

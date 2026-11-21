@@ -1,5 +1,36 @@
 # Green Bat Music Vault
 
+**Two delivery formats, one cloud music catalog:** the same underground
+record-store player runs as an Android APK and as an installable Chromebook
+web app. Both connect to the Cloudflare Worker
+`https://green-bat-prompt-vault.mvolkert84.workers.dev`, which streams
+songs from the existing Cloudflare R2 bucket.
+
+**Chromebook and desktop:** Deploy a **separate Cloudflare Pages project**
+from the existing `feature/green-bat-cloud-apk-2026-11` branch.
+Use repository root, `npm run build:web`, and output folder `www`.
+Then open the `pages.dev` URL in Chrome and select **Install page as app**.
+Full steps: [Chromebook web player](docs/CHROMEBOOK_WEB_PLAYER.md).
+
+**Android phones:** Build/download the debug APK from the
+**Green Bat Music Android APK** GitHub Actions workflow on the same branch.
+Full steps: [Android and cloud setup](docs/ANDROID_CLOUD_SETUP.md).
+
+**Important scope:**
+- The shared cloud catalog includes albums, song metadata, lyrics, and streamed audio.
+- It refreshes on opening, resuming, reconnecting, and periodically.
+- No offline song downloads are included.
+- Device-local prompt edits, favorites, and older local audio uploads do not
+  sync automatically.
+- Only the owner with the Cloudflare Worker `ADMIN_TOKEN` can upload/edit
+  shared tracks. The streaming endpoint is publicly accessible.
+- GitHub `main` and the original live GitHub Pages Vault remain unchanged
+  until a separate merge is approved.
+
+---
+
+## Previous music-library feature branch documentation
+
 A mobile-first installable web app for listening to Green Bat Music and collecting Suno style prompts.
 
 ## Included
