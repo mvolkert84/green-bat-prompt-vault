@@ -44,11 +44,17 @@ jobs:
       - name: Check player scripts
         run: npm run check
 
+      - name: Test cloud streaming service
+        run: npm test
+
       - name: Package existing Underground Record Vault assets
         run: npm run build:web
 
       - name: Create Android project
         run: npx cap add android
+
+      - name: Install Green Bat launcher icon
+        run: node scripts/install-android-icon.mjs
 
       - name: Sync web assets to Android
         run: npx cap sync android
