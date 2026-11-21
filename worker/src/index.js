@@ -97,7 +97,10 @@ async function handler(request, env) {
     const file = form.get('file');
     if (!file || typeof file.stream !== 'function' || !file.size) return fail('Audio file required');
     if (file.size > MAX_AUDIO_BYTES) return fail('Audio files must be 50 MB or smaller', 413);
-    const type = safe(file.type || '', 80).toLowerCase();
+    const extension = safe(file.name || '', 120).toLowerCase().split('.').pop();
+    const fallbackTypes = {mp3:'audio/mpeg',m4a:'audio/mp4',aac:'audio/aac',wav:'audio/wav',
+      flac:'audio/flac',ogg:'audio/ogg',opus:'audio/ogg',webm:'audio/webm'};
+    const type = safe(file.type || fallbackTypes[extension] || '', 80).toLowerCase();
     if (!contentTypes.has(type)) return fail('Use MP3, M4A, AAC, WAV, FLAC, OGG or WebM audio');
     const id = crypto.randomUUID();
     const track = trackData(form, id);
