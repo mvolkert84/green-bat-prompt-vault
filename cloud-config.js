@@ -1,4 +1,3 @@
-// Set this to the HTTPS URL of your deployed Green Bat Music Cloudflare Worker.
-// This is a public endpoint, NOT a password or API secret.
-// Example: https://green-bat-music.your-account.workers.dev
-window.GREEN_BAT_CLOUD_CONFIG = { endpoint: '' };
+// Green Bat Music Cloudflare Worker URL (public). Do not store secrets here.
+// The administrator token is entered privately in the app after deployment.
+window.GREEN_BAT_CLOUD_CONFIG = { endpoint: 'https://green-bat-prompt-vault.mvolkert84.workers.dev' };
