@@ -78,6 +78,28 @@
     return library;
   }
 
+
+  // Add five State of Tension variations once to existing device libraries.
+  // Do not overwrite local edits/favorites, resurrect removed groups or re-add deleted presets.
+  function addStateOfTensionPack(library) {
+    const marker = 'greenbat-state-of-tension-pack-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'state-of-tension');
+      const original = seed.groups.find(group => group.id === 'state-of-tension');
+      if (!target || !original) return library;
+      const existingIds = new Set(target.prompts.map(prompt => prompt.id));
+      const additions = original.prompts.filter(prompt =>
+        /^state-of-tension-(?:8|9|10|11|12)$/.test(prompt.id) && !existingIds.has(prompt.id));
+      if (additions.length) {
+        target.prompts.push(...additions.map(normalizePrompt));
+        localStorage.setItem(STORE, JSON.stringify(library));
+      }
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; keep existing local library */ }
+    return library;
+  }
+
   // Bring approved Enter The End prompts into an existing device library once.
   // Never recreate deleted groups, overwrite matching IDs, or change saved favorites.
   function addApprovedEtePack(library) {
@@ -242,6 +264,7 @@
       addApprovedEtePack,
       addApprovedLooseChangePack,
       addApprovedAfterDarkPack,
+      addStateOfTensionPack,
       applyEverAfterRebuild,
       replacePillarsPack,
       addApprovedOblivionPack,
@@ -264,6 +287,7 @@
         'greenbat-ete-pack-2026-11',
         'greenbat-loose-change-pack-2026-11',
         'greenbat-after-dark-pack-2026-11',
+        'greenbat-state-of-tension-pack-2026-11',
         'greenbat-ever-after-rebuild-2026-11',
         'greenbat-pillars-rebuild-2026-11',
         'greenbat-oblivion-pack-2026-11',
