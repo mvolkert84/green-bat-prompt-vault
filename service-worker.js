@@ -1,11 +1,11 @@
-const CACHE = 'green-bat-prompt-vault-underground-photo-v8-oblivion';
+const CACHE = 'green-bat-prompt-vault-underground-photo-v9-alan-walker-band';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=underground-photo-v1',
-  './app.js?v=oblivion-2026-11',
-  './starter-data.js?v=oblivion-2026-11',
+  './app.js?v=alan-walker-band-2026-11',
+  './starter-data.js?v=alan-walker-band-2026-11',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
