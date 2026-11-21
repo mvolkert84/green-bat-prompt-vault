@@ -274,40 +274,104 @@
     {
       "id": "ever-after",
       "name": "Ever After Project",
-      "genre": "Industrial art rock · Dark alternative",
+      "genre": "Gothic Pop Metal · Industrial Horror Rock",
       "color": "#8f95b7",
       "monogram": "E",
-      "description": "Psychological tension, hypnotic bass and restrained menace",
+      "description": "Vampiric gothic metal blending seductive dark pop, industrial horror grooves, and theatrical melodic hooks",
       "prompts": [
         {
           "id": "ever-after-1",
-          "title": "Underworld Core",
+          "title": "Crimson Covenant",
           "category": "Core",
-          "text": "Dark modern alternative metal and industrial art rock with hypnotic bass, dry mechanical percussion, dissonant guitar textures, subterranean synth pulses and tense atmospheric detail. Intimate brooding male vocal, clipped restrained verses and controlled bursts of rage. Psychological, dirty, claustrophobic and elegant without romantic gothic melodrama, fantasy orchestration or ballad softness.",
+          "text": "Gothic industrial pop metal with sleazy horror-rock grooves, thick distorted guitars, sinister synth textures, and hypnotic basslines. Dark charismatic male vocals alternate between seductive low-register verses, gritty snarls, and soaring melodic choruses. Mechanical drums collide with explosive live percussion, haunting atmospheric layers, and infectious pop-metal hooks. Vampiric glamour, nocturnal danger, and theatrical darkness. Polished modern production with dirty industrial character, massive choruses, and a relentless groove.",
           "favorite": true,
           "origin": "reconstructed"
         },
         {
           "id": "ever-after-2",
-          "title": "Subterranean Pulse",
-          "category": "Slow Burn",
-          "text": "Minimal industrial art-rock slow burn with a repeating bass figure, distant metallic impacts, fractured electronic rhythm, spare dissonant guitar and cold low drones. Close, dry, unsettling male vocal gradually intensifies from a whisper to a sharp cathartic release. Avoid sweeping strings, sentimental melodies and theatrical gothic cliché.",
+          "title": "Graveyard Shift",
+          "category": "Horror Groove",
+          "text": "Filthy horror-groove metal blending distorted funk-infused guitar riffs, pounding industrial drums, monstrous basslines, and twisted vintage horror samples. Sinister male vocals deliver rhythmic snarling verses, whispered threats, and explosive melodic hooks. Heavy syncopated grooves, psychedelic guitar effects, gritty analog distortion, and sleazy midnight atmosphere. Driving danceable metal rhythms with a rebellious underground feel. Raw, theatrical, infectious, and dangerous, with strong memorable choruses.",
           "favorite": false,
           "origin": "reconstructed"
         },
         {
           "id": "ever-after-3",
-          "title": "Machine Heart",
-          "category": "Heavy",
-          "text": "Groove-driven industrial alternative metal with grinding guitar, pulsing synth bass, sharp programmed accents, dense live drums and dark hypnotic repetition. Dry sinister verses, layered half-spoken vocals and a raw explosive chorus. Modern controlled menace, heavy low end and spatial tension rather than ornate gothic drama.",
+          "title": "Velvet Fang",
+          "category": "Dark Pop",
+          "text": "Seductive gothic pop metal with deep pulsing bass, shimmering darkwave synthesizers, atmospheric distorted guitars, and slow hypnotic rhythms. Intimate smoky male vocals transition from breathy low-register melodies into rich, emotionally charged choruses with gritty edges. Elegant nocturnal production, subtle industrial percussion, haunting harmonies, and velvet-smooth melodies. Vampiric romance with a dangerous undercurrent. Beautiful but sinister, balancing dark pop accessibility with weighty gothic metal instrumentation.",
           "favorite": false,
           "origin": "reconstructed"
         },
         {
           "id": "ever-after-4",
-          "title": "Haunted Marionette",
-          "category": "Experimental",
-          "text": "Unsettling art-rock soundscape built around a detuned upright piano, eerie waltz motion, warped music-box fragments, pizzicato violin, scraping strings, creaking wood, toy percussion, faint chains and subsonic drones. Quiet breathy theatrical vocals and deeply psychological unease. No romantic gothic beauty or traditional anthemic metal chorus.",
+          "title": "Neon Coffin",
+          "category": "Electronic",
+          "text": "High-energy industrial gothic metal fused with electronic body music, dark electro, and sinister dance-pop production. Aggressive distorted guitars punch through driving four-on-the-floor electronic drums, pulsating analog synth bass, glitching samples, and metallic percussion. Dark commanding male vocals alternate rhythmic verses with huge melodic pop-metal choruses. Cold neon atmosphere, distorted electronic breakdowns, mechanical tension, and explosive rhythmic transitions. A dark underground nightclub colliding with a heavy metal concert.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-5",
+          "title": "Black Mass Boulevard",
+          "category": "Heavy",
+          "text": "Aggressive gothic industrial metal with crushing down-tuned guitar riffs, thunderous bass, grinding mechanical textures, and explosive live drums. Sinister commanding male vocals shift between rasped rhythmic verses, menacing whispers, and powerful melodic choruses. Dark horror atmosphere, heavy syncopated grooves, eerie electronic undertones, and occasional harsh vocal accents. Intense and muscular with dramatic tension, massive guitar-driven hooks, and polished production. Preserve gothic elegance beneath the brutality.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-6",
+          "title": "Cathedral Static",
+          "category": "Atmospheric",
+          "text": "Atmospheric gothic pop metal combining haunting cathedral organ tones, distant choral textures, cold synthesizers, melodic distorted guitars, and deep resonant bass. Brooding male vocals deliver intimate mysterious verses before rising into dramatic hook-driven choruses. Echoing percussion, restrained industrial pulses, reverberating guitar harmonies, and dark cinematic atmosphere. Elegant gothic imagery, supernatural tension, and ancient grandeur filtered through modern alternative metal production. Haunting rather than orchestral, powerful rather than sentimental.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-7",
+          "title": "Death Disco",
+          "category": "Dance",
+          "text": "Gothic dance metal fused with dark disco, industrial rock, and sleazy horror funk. Thick rhythmic guitar riffs ride alongside rubbery distorted basslines, vintage synthesizer stabs, funky percussion, and pounding dance beats. Charismatic sinister male vocals blend swaggering half-spoken verses, gritty melodic delivery, and infectious anthemic choruses. Metallic accents, psychedelic effects, and seductive nightclub energy. Groovy, darkly playful, provocative, and heavy, with relentless rhythmic momentum and polished pop-metal hooks.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-8",
+          "title": "Blood Moon Radio",
+          "category": "Melodic",
+          "text": "Modern gothic pop metal with infectious dark alternative rock melodies, punchy distorted guitar riffs, atmospheric electronic layers, and driving bass. Rich charismatic male vocals balance seductive verse melodies, controlled grit, and enormous radio-ready choruses. Polished drums, tightly arranged guitars, moody synth flourishes, and dramatic builds. Sinister nocturnal atmosphere without sacrificing catchy songwriting. Dark romantic imagery, energetic melodic hooks, and powerful contemporary production with a distinctive industrial horror-rock undercurrent.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-9",
+          "title": "Midnight Cinema",
+          "category": "Cinematic",
+          "text": "Cinematic horror-inspired gothic metal blending vintage exploitation-film synthesizers, eerie analog effects, sinister guitar riffs, and pounding industrial percussion. Distorted bass, ghostly background voices, warped tape textures, and dramatic rhythmic transitions create a retro supernatural atmosphere. Theatrical raspy male vocals deliver ominous verses and explosive melodic pop-metal choruses. Psychedelic horror imagery, tense instrumental passages, and dirty modern production. A sinister midnight horror film transformed into an infectious heavy rock anthem.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-10",
+          "title": "Kiss of the Machine",
+          "category": "Nu-Metal",
+          "text": "Dark gothic nu-metal fused with industrial rock and haunting pop melodies. Deep down-tuned syncopated guitar riffs, distorted electronic bass, tight programmed drum accents, and crushing live percussion create a heavy hypnotic groove. Brooding male vocals alternate whispered rhythmic delivery, gritty melodic aggression, and huge atmospheric choruses. Glitching electronics, sinister synth pulses, mechanical textures, and dynamic drops. Modern alternative-metal production with gothic sensuality, horror-rock attitude, and infectious hook-driven songwriting.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-11",
+          "title": "The Last Waltz",
+          "category": "Slow Burn",
+          "text": "Slow-burning gothic pop-metal ballad with haunting clean guitars, deep resonant bass, melancholic piano accents, and dark atmospheric synthesizers. Intimate seductive male vocals begin with restrained vulnerability and gradually build toward powerful gritty melodic choruses. Slow deliberate percussion, ominous industrial textures, dramatic guitar swells, and emotionally charged dynamics. Tragic vampiric romance, elegant darkness, and cinematic tension. Heavy distorted guitars emerge during climactic sections, maintaining a brooding metal identity.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "ever-after-12",
+          "title": "Pale Dawn",
+          "category": "Darkwave",
+          "text": "Darkwave gothic pop metal blending classic post-punk basslines, shimmering chorus-soaked guitars, icy analog synthesizers, and driving alternative metal rhythms. Deep brooding male vocals deliver hypnotic melodic verses with mysterious intimacy before erupting into powerful distorted guitar-driven choruses. Propulsive bass, atmospheric reverb, subtle industrial percussion, and haunting layered harmonies. Cold nocturnal atmosphere, seductive melancholy, and strong melodic hooks. Retro gothic character fused with contemporary heavy rock production.",
           "favorite": false,
           "origin": "reconstructed"
         }

@@ -144,12 +144,33 @@
     return library;
   }
 
+
+  // One-time replacement of the four legacy Ever After presets with the
+  // approved gothic pop-metal set. Preserve user-created additional prompts.
+  function applyEverAfterRebuild(library) {
+    const marker = 'greenbat-ever-after-rebuild-2026-11';
+    try {
+      if (localStorage.getItem(marker) === 'applied') return library;
+      const target = library.groups.find(group => group.id === 'ever-after');
+      const original = seed.groups.find(group => group.id === 'ever-after');
+      if (!target || !original) return library; // Never recreate a deleted group.
+      const bundledIds = new Set(original.prompts.map(prompt => prompt.id));
+      const personalAdditions = target.prompts.filter(prompt => !bundledIds.has(prompt.id));
+      target.prompts = [...original.prompts.map(normalizePrompt), ...personalAdditions];
+      target.genre = original.genre;
+      target.description = original.description;
+      localStorage.setItem(STORE, JSON.stringify(library));
+      localStorage.setItem(marker, 'applied');
+    } catch (e) { /* best-effort upgrade; preserve in-memory library */ }
+    return library;
+  }
+
   function getSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE));
-      if (saved && Array.isArray(saved.groups)) return addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved)))));
+      if (saved && Array.isArray(saved.groups)) return applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(saved))))));
       const legacy = JSON.parse(localStorage.getItem('greenbat-prompt-vault-v1'));
-      if (legacy && Array.isArray(legacy.groups)) return addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy)))));
+      if (legacy && Array.isArray(legacy.groups)) return applyEverAfterRebuild(addApprovedAfterDarkPack(addApprovedLooseChangePack(addApprovedEtePack(addApprovedVertigoPack(normalizeLibrary(legacy))))));
     } catch (e) { /* storage unavailable */ }
     // A fresh install already includes this pack in its seed. Mark it as
     // applied so removing a bundled prompt won't cause it to return on reload.
@@ -158,6 +179,7 @@
       localStorage.setItem('greenbat-ete-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-loose-change-pack-2026-11', 'applied');
       localStorage.setItem('greenbat-after-dark-pack-2026-11', 'applied');
+      localStorage.setItem('greenbat-ever-after-rebuild-2026-11', 'applied');
     }
     catch (e) { /* storage unavailable */ }
     return normalizeLibrary(seed);
