@@ -4,7 +4,7 @@ A lightweight, mobile-first installable web app (PWA), made for collecting, edit
 
 ## Included
 - 8 music groups: Vertigo, After Dark, Loose Change, Ever After Project, Pillars, State of Tension, Enter The End, 4th Movement
-- 62 editable starter prompts across core styles and alternate variations
+- 70 editable starter prompts across core styles and alternate variations
 - One-tap **Copy**; searchable groups and style prompts; category filters; star favorites
 - Add, edit and remove music groups or style prompts
 - Suno-oriented 1,000-character limit and live count
