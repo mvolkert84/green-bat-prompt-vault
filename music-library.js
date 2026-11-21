@@ -88,6 +88,9 @@
     const deck = document.getElementById('musicDeck');
     const audio = new Audio();
     audio.preload = 'metadata';
+    const cloud = window.GreenBatCloudClient?.create();
+    const isCloud = () => Boolean(cloud?.enabled);
+    const canEdit = () => !isCloud() || cloud.admin;
     let current = null;
     let currentAlbum = null;
     let currentGroup = null;
@@ -101,6 +104,41 @@
     let uploadingGroup = '';
     let viewRequest = 0;
     let modalReturn = null;
+
+    function libraryTools() {
+      if (!isCloud()) return '<button type="button" class="btn primary" data-music="upload">Upload songs</button>' +
+        '<button type="button" class="btn ghost" data-music="new-album">New album</button>';
+      if (!cloud.admin) return '<button type="button" class="btn ghost sm" data-music="cloud-login">Admin sign-in</button>';
+      return '<button type="button" class="btn primary" data-music="upload">Upload songs</button>' +
+        '<button type="button" class="btn ghost" data-music="new-album">New album</button>' +
+        '<button type="button" class="btn ghost sm" data-music="cloud-signout">Sign out</button>';
+    }
+    function cloudStatus() {
+      if (!isCloud()) return '';
+      const message = cloud.error ? 'Cloud unavailable · ' + cloud.error :
+        cloud.ready ? 'Streaming library · automatically synced' : 'Connecting to cloud library…';
+      return '<p class="music-cloud-status" role="status">' + esc(message) + '</p>';
+    }
+    function adminDialog(trigger) {
+      showEditor('Cloud library administrator', '<form id="musicCloudLoginForm">' +
+        '<label class="field"><span>Administrator key</span><input name="token" type="password" autocomplete="off" required></label>' +
+        '<p class="music-form-note">Listeners do not need this key. It is never included in the APK.</p>' +
+        '<p class="music-form-status" role="status"></p>' +
+        '<button class="btn primary" type="submit">Sign in</button></form>', trigger);
+    }
+    async function login(form) {
+      const button = form.querySelector('button[type="submit"]');
+      const status = form.querySelector('[role="status"]');
+      button.disabled = true;
+      try {
+        await cloud.signIn(form.elements.token.value);
+        form.elements.token.value = '';
+        finishEditor(form);
+        refresh(musicGroup);
+        toast('Administrator access enabled');
+      } catch (error) { status.textContent = error.message; }
+      finally { button.disabled = false; }
+    }
 
     function report(error) {
       toast(error?.name === 'QuotaExceededError' ?
@@ -127,7 +165,7 @@
           <span class="music-track-copy"><strong>${esc(track.title)}</strong>${subtitle ? `<small>${esc(subtitle)}</small>` : ''}</span>
           <span class="music-track-time">${time(track.duration)}</span>
         </button>
-        ${button('edit-track', 'Edit ' + esc(track.title), 'more', `data-id="${esc(track.id)}"`)}
+        ${canEdit() ? button('edit-track', 'Edit ' + esc(track.title), 'more', `data-id="${esc(track.id)}"`) : ''}
       </li>`;
     }
 
@@ -135,10 +173,7 @@
       const active = albums.find(album => album.id === albumFilter);
       const visible = playlist();
       panel.setAttribute('aria-busy', 'false');
-      panel.innerHTML = `<div class="record-library-tools">
-          <button type="button" class="btn primary" data-music="upload">Upload songs</button>
-          <button type="button" class="btn ghost" data-music="new-album">New album</button>
-        </div>
+      panel.innerHTML = `<div class="record-library-tools">${libraryTools()}</div>${cloudStatus()}
         ${albums.length ? `<div class="record-albums" aria-label="Albums">
           <button type="button" class="record-album-card all-tracks" data-music="album" data-id="" aria-pressed="${!active}">
             <span class="record-album-thumb">${icon('disc')}</span><span><strong>All tracks</strong><small>${tracks.length} songs</small></span>
@@ -150,7 +185,7 @@
         </div>` : ''}
         <div class="record-playlist-head">
           <h2>${esc(active?.title || 'Playlist')} <small>${visible.length}</small></h2>
-          <div>${active ? `<button type="button" class="btn ghost sm" data-music="edit-album" data-id="${esc(active.id)}">Edit album</button>` : ''}
+          <div>${active && canEdit() ? `<button type="button" class="btn ghost sm" data-music="edit-album" data-id="${esc(active.id)}">Edit album</button>` : ''}
           ${visible.length ? '<button type="button" class="btn sm" data-music="play-list">Play all</button>' : ''}</div>
         </div>
         ${visible.length ? `<ol class="record-playlist">${visible.map(trackRow).join('')}</ol>` :
@@ -166,7 +201,9 @@
       const request = ++viewRequest;
       panel.setAttribute('aria-busy', 'true');
       try {
-        const [nextTracks, nextAlbums] = await getGroupMusic(group.id);
+        const [localTracks, localAlbums] = await getGroupMusic(group.id);
+        const nextTracks = [...localTracks, ...(cloud?.library.tracks || []).filter(track => track.groupId === group.id)];
+        const nextAlbums = [...localAlbums, ...(cloud?.library.albums || []).filter(album => album.groupId === group.id)];
         if (request !== viewRequest || !panel.isConnected) return;
         tracks = nextTracks;
         albums = nextAlbums.sort((a, b) => a.added - b.added);
@@ -197,11 +234,12 @@
     }
 
     function uploadDialog(trigger) {
+      if (!canEdit()) { toast('Administrator access required to upload music'); return; }
       if (uploadingGroup) { toast('A song upload is already in progress.'); return; }
       showEditor('Upload songs', `<form id="musicUploadForm">
         <label class="field"><span>Audio files</span><input type="file" name="files" accept="${fileTypes}" multiple required></label>
         <label class="field"><span>Album</span><select name="album">${albumOptions(albumFilter)}</select></label>
-        <p class="music-form-note">MP3, WAV, FLAC, M4A and other formats supported by this browser. Songs are saved on this device.</p>
+        <p class="music-form-note">${isCloud() ? 'Music will stream to everyone with the player. MP3 or M4A recommended; 50 MB maximum per song.' : 'Songs are saved on this device only until cloud storage is connected.'}</p>
         <p class="music-form-status" role="status"></p>
         <button class="btn primary" type="submit">Add to library</button>
       </form>`, trigger);
@@ -252,18 +290,23 @@
               artist: tags.artist || '', lyrics: tags.lyrics || '',
               number: Math.min(metadataNumber(tags.number), 9999)
             };
-            await transaction(['tracks', 'audio', 'albums'], 'readwrite', tx => {
-              const write = () => {
-                tx.objectStore('tracks').put(track);
-                tx.objectStore('audio').put(file, track.id);
-              };
-              if (!track.albumId) { write(); return; }
-              const request = tx.objectStore('albums').get(track.albumId);
-              request.onsuccess = () => {
-                if (request.result?.groupId !== groupId) track.albumId = '';
-                write();
-              };
-            });
+            if (isCloud()) {
+              if (!cloud.admin) throw new Error('Administrator sign-in required');
+              await cloud.upload(file, track);
+            } else {
+              await transaction(['tracks', 'audio', 'albums'], 'readwrite', tx => {
+                const write = () => {
+                  tx.objectStore('tracks').put(track);
+                  tx.objectStore('audio').put(file, track.id);
+                };
+                if (!track.albumId) { write(); return; }
+                const request = tx.objectStore('albums').get(track.albumId);
+                request.onsuccess = () => {
+                  if (request.result?.groupId !== groupId) track.albumId = '';
+                  write();
+                };
+              });
+              }
             completed.push(file);
           } catch (error) {
             failed.push(`${file.name} (${error.name === 'QuotaExceededError' ? 'device storage full' : error.message})`);
@@ -304,7 +347,8 @@
           const artwork = artworkFile ? await processArtwork(artworkFile) :
             form.elements.removeArtwork?.checked ? '' : existing?.artwork || '';
           const album = {id: id || uid(), groupId, title, artwork, added: existing?.added || Date.now()};
-          await transaction(['albums'], 'readwrite', tx => tx.objectStore('albums').put(album));
+          if (isCloud()) await cloud.saveAlbum(album);
+          else await transaction(['albums'], 'readwrite', tx => tx.objectStore('albums').put(album));
           if (groupId === musicGroup) albumFilter = album.id;
           if (current?.albumId === album.id) { currentAlbum = album; updatePlayerInfo(); }
         } else {
@@ -312,7 +356,8 @@
           if (!existing) return;
           const track = {...existing, title, artist: form.elements.artist.value.trim(),
             albumId: form.elements.album.value, number: metadataNumber(form.elements.number.value)};
-          await transaction(['tracks', 'albums'], 'readwrite', tx => {
+          if (existing.remote) await cloud.saveTrack(track);
+          else await transaction(['tracks', 'albums'], 'readwrite', tx => {
             const put = () => tx.objectStore('tracks').put(track);
             if (!track.albumId) { put(); return; }
             const request = tx.objectStore('albums').get(track.albumId);
@@ -342,7 +387,8 @@
       trigger.disabled = true;
       try {
         if (isAlbum) {
-          await transaction(['tracks', 'albums'], 'readwrite', tx => {
+          if (item.remote) await cloud.deleteAlbum(id);
+          else await transaction(['tracks', 'albums'], 'readwrite', tx => {
             const store = tx.objectStore('tracks');
             const cursor = store.index('group').openCursor(item.groupId);
             cursor.onsuccess = () => {
@@ -360,7 +406,8 @@
             updatePlayerInfo();
           }
         } else {
-          await transaction(['tracks', 'audio'], 'readwrite', tx => {
+          if (item.remote) await cloud.deleteTrack(id);
+          else await transaction(['tracks', 'audio'], 'readwrite', tx => {
             tx.objectStore('tracks').delete(id);
             tx.objectStore('audio').delete(id);
           });
@@ -507,17 +554,26 @@
       if (!track) return;
       const request = ++playRequest;
       try {
-        const [file, album] = await read(['audio', 'albums'], tx =>
-          [tx.objectStore('audio').get(track.id), tx.objectStore('albums').get(track.albumId || '')]);
+        let file = null;
+        let album = null;
+        if (track.remote && isCloud()) {
+          album = (cloud.library.albums || []).find(item => item.id === track.albumId) || null;
+          if (!track.audioUrl || !track.audioUrl.startsWith(cloud.endpoint + '/audio/')) {
+            toast('This streaming URL is invalid.'); return;
+          }
+        } else {
+          [file, album] = await read(['audio', 'albums'], tx =>
+            [tx.objectStore('audio').get(track.id), tx.objectStore('albums').get(track.albumId || '')]);
+          if (!file) { toast('This audio file is unavailable on this device.'); return; }
+        }
         if (request !== playRequest) return;
-        if (!file) { toast('This audio file is unavailable on this device.'); return; }
         audio.pause();
-        if (source) URL.revokeObjectURL(source);
+        if (source && source.startsWith('blob:')) URL.revokeObjectURL(source);
         current = track;
         currentAlbum = album;
         currentGroup = getGroup(track.groupId);
         queue = nextQueue;
-        source = URL.createObjectURL(file);
+        source = track.remote ? track.audioUrl : URL.createObjectURL(file);
         audio.src = source;
         updatePlayerInfo(true);
         await playAudio(request);
@@ -529,7 +585,7 @@
       audio.pause();
       audio.removeAttribute('src');
       audio.load();
-      if (source) URL.revokeObjectURL(source);
+      if (source && source.startsWith('blob:')) URL.revokeObjectURL(source);
       source = '';
       current = null;
       currentAlbum = null;
@@ -603,6 +659,8 @@
           Array.from(panel.querySelectorAll('[data-music="album"]')).find(item => item.dataset.id === id)?.focus();
           break;
         }
+        case 'cloud-login': if (isCloud()) adminDialog(control); break;
+        case 'cloud-signout': if (isCloud()) { cloud.signOut(); refresh(musicGroup); } break;
         case 'upload': uploadDialog(control); break;
         case 'new-album': albumDialog(null, control); break;
         case 'edit-album': albumDialog(albums.find(album => album.id === id), control); break;
@@ -614,6 +672,7 @@
 
     document.addEventListener('submit', event => {
       const form = event.target;
+      if (form.id === 'musicCloudLoginForm') { event.preventDefault(); login(form); }
       if (form.id === 'musicUploadForm') { event.preventDefault(); saveUploads(form, musicGroup); }
       if (['musicAlbumForm', 'musicTrackForm'].includes(form.id)) { event.preventDefault(); saveEdit(form, musicGroup); }
     });
@@ -622,6 +681,7 @@
       if (source) audio.currentTime = Number(event.target.value);
     });
     deck.addEventListener('click', event => { if (event.target === deck) deck.close(); });
+    cloud?.start(() => { if (musicGroup) refresh(musicGroup); });
     return {render, deleteGroup, updatePlayerInfo};
   }
 
