@@ -3,8 +3,8 @@
 A lightweight, mobile-first installable web app (PWA), made for collecting, editing and copying music style prompts into Suno. No account, API key, subscription, or backend required.
 
 ## Included
-- 9 music groups: Vertigo, After Dark, Loose Change, Ever After Project, Pillars, State of Tension, Enter The End, 4th Movement, Oblivion
-- 91 editable starter prompts across core styles and alternate variations
+- 10 music groups: Vertigo, After Dark, Loose Change, Ever After Project, Pillars, State of Tension, Enter The End, 4th Movement, Oblivion, Alan Walker Band
+- 103 editable starter prompts across core styles and alternate variations
 - One-tap **Copy**; searchable groups and style prompts; category filters; star favorites
 - Add, edit and remove music groups or style prompts
 - Suno-oriented 1,000-character limit and live count
@@ -31,6 +31,6 @@ A lightweight, mobile-first installable web app (PWA), made for collecting, edit
 - The app makes no external requests and uses no analytics. It is not affiliated with Suno.
 
 ## Updating the app
-Modify the source files in your GitHub repository to update the app for everyone. Starter data updates won't overwrite saved personal edits by default. The November 2026 Oblivion release adds the new group and its 12 approved styles once to existing saved libraries, retaining all other groups and user changes. Exception: the November 2026 Pillars rebuild replaces the previous three Pillars prompts with 12 new styles once per existing device; the old local Pillars list is backed up to `greenbat-pillars-before-rebuild-2026-11`. The service worker uses a versioned cache; bump the cache version in `service-worker.js` if changing shipped assets.
+Modify the source files in your GitHub repository to update the app for everyone. Starter data updates won't overwrite saved personal edits by default. The November 2026 Oblivion and Alan Walker Band releases each add a new group with 12 approved styles once to existing saved libraries, retaining all other groups and user changes. An existing local group named Alan Walker Band receives the new presets without being duplicated. Exception: the November 2026 Pillars rebuild replaces the previous three Pillars prompts with 12 new styles once per existing device; the old local Pillars list is backed up to `greenbat-pillars-before-rebuild-2026-11`. The service worker uses a versioned cache; bump the cache version in `service-worker.js` if changing shipped assets.
 
 For a simple desktop preview, run `python3 -m http.server 8000` in this directory, then visit `http://localhost:8000`. Installing as an Android PWA requires HTTPS (GitHub Pages provides it).
