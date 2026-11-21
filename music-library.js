@@ -222,8 +222,9 @@
       if (group && panel && groupId === musicGroup) render(panel, group);
     }
 
-    function albumOptions(selected) {
-      return '<option value="">No album</option>' + albums.map(album =>
+    function albumOptions(selected, remote = isCloud()) {
+      const matching = albums.filter(album => !isCloud() || Boolean(album.remote) === remote);
+      return '<option value="">No album</option>' + matching.map(album =>
         `<option value="${esc(album.id)}" ${album.id === selected ? 'selected' : ''}>${esc(album.title)}</option>`).join('');
     }
 
@@ -260,7 +261,7 @@
       showEditor('Edit track', `<form id="musicTrackForm" data-id="${esc(track.id)}">
         <label class="field"><span>Title</span><input name="title" required maxlength="180" value="${esc(track.title)}"></label>
         <label class="field"><span>Artist</span><input name="artist" maxlength="180" value="${esc(track.artist)}"></label>
-        <label class="field"><span>Album</span><select name="album">${albumOptions(track.albumId)}</select></label>
+        <label class="field"><span>Album</span><select name="album">${albumOptions(track.albumId, Boolean(track.remote))}</select></label>
         <label class="field"><span>Track number</span><input type="number" name="number" min="1" max="9999" value="${track.number || ''}"></label>
         <div class="music-form-actions"><button class="btn primary" type="submit">Save track</button>
         <button class="btn danger" type="button" data-music="delete-track" data-id="${esc(track.id)}">Remove song</button></div>
@@ -347,7 +348,7 @@
           const artwork = artworkFile ? await processArtwork(artworkFile) :
             form.elements.removeArtwork?.checked ? '' : existing?.artwork || '';
           const album = {id: id || uid(), groupId, title, artwork, added: existing?.added || Date.now()};
-          if (isCloud()) await cloud.saveAlbum(album);
+          if (isCloud() && (!existing || existing.remote)) await cloud.saveAlbum(album);
           else await transaction(['albums'], 'readwrite', tx => tx.objectStore('albums').put(album));
           if (groupId === musicGroup) albumFilter = album.id;
           if (current?.albumId === album.id) { currentAlbum = album; updatePlayerInfo(); }
