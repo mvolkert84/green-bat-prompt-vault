@@ -1,11 +1,11 @@
-const CACHE = 'green-bat-prompt-vault-underground-photo-v6-pillars-rebuild';
+const CACHE = 'green-bat-prompt-vault-underground-photo-v7-ever-after-pillars';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=underground-photo-v1',
-  './app.js?v=pillars-rebuild-2026-11',
-  './starter-data.js?v=pillars-rebuild-2026-11',
+  './app.js?v=ever-after-pillars-2026-11',
+  './starter-data.js?v=ever-after-pillars-2026-11',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
