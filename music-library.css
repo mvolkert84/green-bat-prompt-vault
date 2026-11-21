@@ -318,3 +318,6 @@
   .turntable-record { animation: none; }
   .tonearm { transition: none; }
 }
+
+/* Lightweight cloud sync status; retains the underground record-store styling. */
+.music-cloud-status { margin: 0 0 12px; font-size: .78rem; line-height: 1.4; opacity: .72; letter-spacing: .02em; }
