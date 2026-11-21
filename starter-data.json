@@ -818,6 +818,112 @@
           "origin": "approved"
         }
       ]
+    },
+    {
+      "id": "alan-walker-band",
+      "name": "Alan Walker Band",
+      "genre": "Blues rock · Trap · Whiskey soul",
+      "color": "#b68a4f",
+      "monogram": "AW",
+      "description": "Whiskey-soaked electric blues, weathered Southern storytelling, soulful guitar solos and hard-hitting trap grooves",
+      "prompts": [
+        {
+          "id": "alan-walker-band-1",
+          "title": "Whiskey & Wire",
+          "category": "Core",
+          "text": "Modern whiskey-soaked blues rock fused with Southern hip-hop grit and restrained trap percussion. Stinging electric blues guitar bends, warm organ, thick bass guitar, live kick and snare layered with deep 808 weight and crisp rolling hats. Weathered, soulful male lead moves between conversational half-rapped storytelling and raspy melodic choruses. Strong call-and-response guitar fills, smoky late-night atmosphere, authentic band dynamics and a memorable blues-rock hook. Polished but rough-edged production; no EDM drops or cartoonish trap ad-libs.",
+          "favorite": true,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-2",
+          "title": "Backroad 808",
+          "category": "Trap / Southern",
+          "text": "Southern blues-trap with a deep rolling 808, sharp snare, syncopated trap hats and swampy electric guitar riffs. Low, gravelly male verses delivered in rhythmic spoken-sung cadence, opening into a soulful blues-rock chorus. Bottleneck slide guitar answers the vocal phrases; live bass and kick add physical weight under the programmed groove. Backroad swagger, dusty harmonica accents, dark minor-key tension and confident head-nod pacing. Keep the blues instruments upfront, the trap low end tight, and the production raw but clear.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-3",
+          "title": "Rustbelt Revival",
+          "category": "Blues Rock",
+          "text": "Hard-driving contemporary blues rock with fiery Texas-style lead guitar, muscular live drums, thick bass and a subtle modern trap undercurrent. Raw male vocal swagger, gritty rhythmic verses, big unpolished melodic hooks and extended expressive guitar solos with sustained bends and biting vibrato. Distorted rhythm guitars push a heavy shuffle into a straight-ahead stomping chorus while sparse 808 hits reinforce the downbeats. Sweat, grit and road-worn conviction; wide analog guitar tones with punchy modern low end, never generic arena rock.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-4",
+          "title": "Last Call Lament",
+          "category": "Slow Burn",
+          "text": "Intimate late-night whiskey blues with a slow hip-hop heartbeat and restrained trap textures. Fingerpicked electric guitar, aching slide bends, muted rimshot snare, sparse 808 pulses, distant Hammond organ and warm bass guitar leave air around a cracked, soulful male voice. Half-spoken verses feel like confessions across an empty bar; a weary melodic refrain slowly blooms into a searing guitar solo. Dark, reflective and human, with natural room ambience, patient dynamics and no oversized drop or glossy pop vocal treatment.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-5",
+          "title": "Delta After Dark",
+          "category": "Delta / Slide",
+          "text": "Dusty Delta-inspired blues colliding with hypnotic minimalist trap. Raw resonator and bottleneck slide guitar, foot-stomp percussion, ghostly harmonica, deep sub bass, ticking hi-hats and a dry backbeat. A rough, expressive male lead trades rhythmic talk-singing for moaning blues refrains, with short guitar answers between lines. Keep the arrangement sparse, repetitive and magnetic, building tension through changing slide phrases rather than adding layers. Swamp air, weathered wood, midnight crossroads atmosphere and an earthy contemporary mix.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-6",
+          "title": "Smokestack Gospel",
+          "category": "Gospel / Soul",
+          "text": "Soulful blues-rock and Southern gospel warmth over a slow, hard hip-hop pocket. Hammond organ swells, expressive electric guitar, thick bass, clapping backbeat, warm piano and subdued 808 accents support a weathered male lead with powerful blues phrasing. Background gospel harmonies lift the chorus without turning it into a full choir spectacle. Verses carry hard-lived storytelling; a soaring guitar solo rises after the final chorus. Spiritual tension, redemption and smoke-filled soul, with honest analog textures and modern drum clarity.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-7",
+          "title": "Barrelhouse Bounce",
+          "category": "Shuffle / Bounce",
+          "text": "Up-tempo barrelhouse blues-rock with a swinging boogie piano, clipped electric-guitar riffs, walking bass and a greasy live drum shuffle interlocked with trap hats and selective 808 thumps. Gravelly male sing-rap verses snap tightly to the groove; a catchy rough-edged chorus invites call-and-response without novelty. Harmonica punches and bright slide licks answer the vocal, leading to an energetic blues guitar break. Barroom electricity, loose shoulders, unmistakable Southern bounce and tight modern studio punch.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-8",
+          "title": "Midnight Switchblade",
+          "category": "Noir / Cinematic",
+          "text": "Dark cinematic blues-trap with ominous tremolo guitar, haunted organ drones, low slide-guitar cries and a sparse heartbeat kick beneath sub-heavy 808s. Crisp trap percussion cuts through roomy live snare accents. A deep, smoky male vocal delivers tense half-rapped verses before climbing into a desperate, melodic blues-rock refrain. Minor-key guitar motifs evolve into a long, emotional solo as distorted guitars surge near the ending. Dangerous neon-noir atmosphere, deliberate pacing, dramatic restraint and a gritty widescreen mix.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-9",
+          "title": "Broken Neon",
+          "category": "Soul / R&B",
+          "text": "Moody whiskey blues fused with 90s soul warmth and contemporary trap drums. Velvet Rhodes chords, clean electric guitar with expressive blues bends, rounded bass, brushed snare details, soft trap hats and controlled 808 sub create a late-night pocket. An intimate, husky male voice alternates between melodic R&B phrasing and grounded storytelling rap; layered backing harmonies widen an aching chorus. Subtle organ and guitar-response lines keep the roots intact. Warm, intimate and understated, with no glossy vocal runs or oversized synthetic builds.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-10",
+          "title": "Fuzz & Gravel",
+          "category": "Heavy / Fuzz",
+          "text": "Heavy blues-rock trap built from snarling fuzz guitar, low swaggering riffs, punchy live toms, thick electric bass and a gritty half-time 808 groove. Tough, raspy male vocals deliver clipped rhythmic verses and a forceful, soulful blues chorus. Stuttering hi-hats and hard snare cracks create modern urgency while slide guitar, wah inflections and a muscular improvised solo keep the sound unmistakably rooted in blues. Dark garage-room attitude, dynamic stops and raw distortion with clean low-frequency separation; not metalcore or festival trap.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-11",
+          "title": "Porchlight Confession",
+          "category": "Acoustic / Intimate",
+          "text": "Stripped-down acoustic whiskey blues with a quiet trap-inflected pulse. Weathered fingerpicked steel-string guitar, intimate dobro slide, warm upright-style bass, soft brushed percussion, distant 808 heartbeat and barely audible hi-hat ticks. A close-miked gravelly male storyteller moves between low spoken-sung verses and a fragile, soulful chorus. Small harmonica phrases and delicate guitar fills create space between lines. Southern night stillness, tape warmth, unresolved emotion and restrained organic production; no dense electronics or stadium-sized arrangement.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "alan-walker-band-12",
+          "title": "Blacktop Thunder",
+          "category": "Anthem / Guitar Solo",
+          "text": "High-energy Southern blues-rock and trap crossover with sharp electric guitar hooks, driving live drums, rolling bass, commanding 808 downbeats and syncopated trap fills. Gritty, charismatic male verses use tight hip-hop cadence; the chorus breaks wide into a full-throated blues-rock melody with backing shouts kept tasteful. Push the bridge into an extended blazing guitar solo with expressive bends, fast blues runs and a final band-wide stop before the last refrain. Highway-at-night momentum, whiskey grit, triumphant resilience and a polished, powerful mix.",
+          "favorite": false,
+          "origin": "approved"
+        }
+      ]
     }
   ]
 }
