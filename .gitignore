@@ -1,0 +1,12 @@
+node_modules/
+www/
+android/
+dist/
+worker/.wrangler/
+worker/wrangler.toml
+*.apk
+*.aab
+*.jks
+*.keystore
+.env
+.env.*
