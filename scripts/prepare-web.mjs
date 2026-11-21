@@ -21,6 +21,9 @@ for (const name of files) {
 for (const name of directories) {
   fs.cpSync(path.join(root, name), path.join(output, name), {recursive:true});
 }
+// Cloudflare Pages uses _headers from its published output directory.
+// Copying it is harmless for Capacitor's local Android assets.
+fs.copyFileSync(path.join(root, 'pages', '_headers'), path.join(output, '_headers'));
 const html = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
 for (const script of ['cloud-config.js', 'cloud-client.js', 'music-library.js']) {
   if (!html.includes('./' + script)) throw new Error('Player HTML does not load ' + script);
