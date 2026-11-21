@@ -1,6 +1,6 @@
 # Green Bat Music — Cloudflare Worker
 # This configuration contains no secrets and can be connected directly to GitHub.
-name = "green-bat-music-cloud"
+name = "green-bat-prompt-vault"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
 
