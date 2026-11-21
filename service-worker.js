@@ -1,4 +1,4 @@
-const CACHE = 'green-bat-prompt-vault-music-v1';
+const CACHE = 'green-bat-prompt-vault-cloud-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,8 @@ const ASSETS = [
   './record-vault.css?v=underground-photo-v1',
   './music-library.css?v=1',
   './audio-tags.js?v=1',
+  './cloud-config.js?v=1',
+  './cloud-client.js?v=1',
   './music-library.js?v=1',
   './app.js?v=music-vault-1',
   './starter-data.js?v=alan-walker-band-2026-11',
