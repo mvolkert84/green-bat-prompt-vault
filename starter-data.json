@@ -712,6 +712,112 @@
           "origin": "reconstructed"
         }
       ]
+    },
+    {
+      "id": "oblivion",
+      "name": "Oblivion",
+      "genre": "Celestial prog rock · Atmospheric post-rock",
+      "color": "#9fa6e8",
+      "monogram": "O",
+      "description": "Cosmic progressive rock, intricate rhythms, soaring guitar and cinematic post-rock atmosphere",
+      "prompts": [
+        {
+          "id": "oblivion-1",
+          "title": "Event Horizon",
+          "category": "Core",
+          "text": "Atmospheric progressive rock with celestial post-rock expansiveness and intricate progressive metal musicianship. Crystalline clean guitar arpeggios, soaring melodic leads, complex bass movement, expressive drums with shifting time signatures, and vast analog synthesizer textures. Balance technical instrumental passages with emotionally powerful melodies, cosmic ambience, and slow-building crescendos. Expressive clean male vocals with spacious harmonies, extended instrumental sections, fluid guitar solos, and a cinematic sense of scale. Organic, expansive production with exceptional instrumental clarity.",
+          "favorite": true,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-2",
+          "title": "Astral Drift",
+          "category": "Ambient / Instrumental",
+          "text": "Ethereal instrumental progressive post-rock drifting through expansive celestial soundscapes. Delicate delay-soaked guitar arpeggios, shimmering reverberant leads, warm synthesizer drones, deep melodic bass, and restrained atmospheric percussion. Gradual harmonic evolution, subtle rhythmic complexity, and enormous emotional crescendos emerging from near silence. Clean guitars slowly transform into towering walls of luminous distortion before fading into cosmic ambience. No vocals. Spacious cinematic production, organic dynamics, hypnotic melodic repetition, and an immense sense of isolation and wonder.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-3",
+          "title": "Quantum Architecture",
+          "category": "Technical",
+          "text": "Highly technical progressive rock and metal with sophisticated polyrhythms, rapidly shifting meters, intricate guitar and keyboard interplay, and virtuosic instrumental passages. Precision drumming, fluid melodic bass runs, angular guitar riffs, cascading synthesizer sequences, and elaborate unison instrumental sections. Alternate complex high-energy movements with spacious celestial interludes and soaring melodic themes. Extended guitar and keyboard solos, unexpected transitions, and dynamic progressive arrangements. Primarily instrumental with meticulous yet organic production and strong melodic continuity.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-4",
+          "title": "Dying Sun",
+          "category": "Slow Burn",
+          "text": "Melancholic atmospheric progressive rock with slow-burning celestial post-rock arrangements. Fragile clean guitar melodies, haunting piano, distant analog synth pads, warm fretless-style bass, and restrained live drums. Gradually introduce layered harmonies, subtle odd-meter passages, and emotionally expressive guitar leads. Intimate clean male vocals float above spacious verses before the arrangement develops into towering distorted guitar crescendos and soaring melodic solos. Patient pacing, dramatic dynamic contrast, bittersweet harmonic movement, and expansive cinematic production.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-5",
+          "title": "Gravitational Collapse",
+          "category": "Heavy",
+          "text": "Dark atmospheric progressive metal with crushing low-tuned guitar riffs, shifting polymetric grooves, thunderous live drums, prominent technical bass, and ominous celestial synthesizers. Powerful distorted guitar movements contrast with crystalline clean passages and vast post-rock atmospheres. Complex rhythmic transitions, fluid instrumental interplay, melodic lead guitar solos, and explosive dynamic crescendos. Strong clean male vocals with dramatic melodic intensity, layered harmonies, and soaring refrains. Heavy but never chaotic, maintaining space, emotional depth, intricate composition, and cinematic production.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-6",
+          "title": "Tidal Mechanics",
+          "category": "Groove / Rhythm",
+          "text": "Rhythmically adventurous progressive rock driven by intricate melodic bass lines, syncopated guitar patterns, and highly expressive live drumming. Interlocking instrumental grooves, fluid odd-time signatures, luminous analog keyboards, and sweeping celestial guitar textures. Energetic progressive arrangements shift effortlessly between tight rhythmic passages, airy atmospheric breakdowns, and soaring melodic guitar solos. Clear melodic male vocals with memorable progressive rock phrasing and layered harmonies. Warm organic production, punchy bass presence, and a balance of technical precision and natural groove.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-7",
+          "title": "Nebula Cathedral",
+          "category": "Symphonic",
+          "text": "Majestic symphonic progressive rock blending intricate electric guitar arrangements, sweeping orchestral strings, celestial synthesizers, resonant piano, and powerful organic drums. Expansive harmonic progressions, sophisticated rhythmic changes, atmospheric post-rock passages, and towering cinematic crescendos. Lyrical lead guitar solos weave through layered orchestral textures and evolving synthesizer melodies. Expressive clean male vocals supported by ethereal choral harmonies and dramatic melodic refrains. Grand yet intimate, balancing progressive complexity with emotional depth and vast cosmic atmosphere.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-8",
+          "title": "Pulsar Engine",
+          "category": "Electronic",
+          "text": "Futuristic progressive rock merging intricate live musicianship with pulsing analog synthesizer sequences and atmospheric electronic textures. Propulsive bass grooves, precise odd-meter drums, arpeggiated synth patterns, crystalline delayed guitars, and soaring melodic leads. Layered electronic rhythms evolve beneath organic progressive rock arrangements, creating hypnotic momentum and expansive celestial atmosphere. Occasional heavy guitar surges, extended synthesizer and guitar solos, and dramatic instrumental transitions. Clean melodic vocals with subtle electronic processing, wide stereo production, and luminous futuristic energy.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-9",
+          "title": "Perpetual Motion",
+          "category": "Upbeat",
+          "text": "Energetic melodic progressive rock with bright interlocking guitar riffs, adventurous bass melodies, dynamic live percussion, and vibrant analog keyboard passages. Rapid but fluid rhythmic changes, occasional odd-time grooves, extended instrumental bridges, and exhilarating melodic guitar solos. Maintain an uplifting celestial atmosphere through shimmering synth layers, expansive reverberant guitars, and memorable harmonic progressions. Strong expressive clean male vocals with soaring choruses and sophisticated melodic phrasing. Lively organic production, clear instrumental separation, and constant forward momentum.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-10",
+          "title": "The Empty Between",
+          "category": "Minimal / Ambient",
+          "text": "Minimalist atmospheric progressive rock built around intimate clean guitar fingerpicking, delicate piano motifs, soft analog synthesizer drones, melodic bass, and sparse expressive percussion. Subtle unconventional time signatures, patient harmonic development, and gently shifting instrumental textures create an introspective celestial atmosphere. Quiet clean male vocals with restrained emotional delivery and distant layered harmonies. Occasional expressive lead guitar phrases emerge from long ambient passages without overwhelming the arrangement. Warm spacious production, natural dynamics, and profound emotional restraint.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-11",
+          "title": "Infinite Spiral",
+          "category": "Psychedelic",
+          "text": "Psychedelic atmospheric progressive rock with swirling vintage analog synthesizers, hypnotic guitar delay patterns, fluid bass grooves, and intricate evolving drum rhythms. Repeating melodic motifs gradually transform through unconventional chord progressions, shifting meters, extended instrumental improvisation, and expansive post-rock crescendos. Introduce expressive wah-inflected guitar solos, vintage keyboard leads, reverse guitar textures, and immersive celestial ambience. Sparse ethereal male vocals with subtle layered harmonies. Organic psychedelic production, deep stereo movement, and an immersive cosmic character.",
+          "favorite": false,
+          "origin": "approved"
+        },
+        {
+          "id": "oblivion-12",
+          "title": "Beyond the Observable",
+          "category": "Epic / Suite",
+          "text": "Epic multi-movement progressive rock blending technical progressive metal, expansive celestial post-rock, symphonic textures, and atmospheric ambient passages. Begin with delicate piano, crystalline guitar, and distant synthesizer drones before evolving into intricate odd-meter rhythms, powerful melodic vocals, elaborate guitar and keyboard interplay, and soaring instrumental solos. Reprise musical themes across contrasting movements, alternating heavy rhythmic sections with weightless ambient interludes. Build toward a monumental emotionally uplifting finale with layered guitars, orchestral synthesizers, and cinematic crescendos. Grand organic production.",
+          "favorite": false,
+          "origin": "approved"
+        }
+      ]
     }
   ]
 }
