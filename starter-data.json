@@ -380,32 +380,104 @@
     {
       "id": "pillars",
       "name": "Pillars",
-      "genre": "Urban hip-hop · Soul",
+      "genre": "Southern hip-hop · Crunk · Psychedelic trap",
       "color": "#7bb6dc",
       "monogram": "P",
-      "description": "Street-level resilience, bold rhythm and grounded hooks",
+      "description": "Southern swagger, punchline rap, psychedelic trap textures and explosive crunk hooks",
       "prompts": [
         {
-          "id": "pillars-1",
-          "title": "Urban Soul Core",
+          "id": "pillars-2026-11-1",
+          "title": "Southern Collision",
           "category": "Core",
-          "text": "Grounded urban hip-hop with hard punchy drums, deep rounded bass, soulful minor-key samples, atmospheric piano and occasional warm guitar or organ. Confident believable male rap verses, strong rhythmic pocket and memorable melodic hooks. Lyrics-forward arrangement, resilient street-level character, premium tight studio mix. Avoid shiny pop clichés.",
+          "text": "Modern Southern hip-hop fusion with a razor-sharp, animated punchline rapper at the center, psychedelic melodic trap textures, and explosive crunk call-and-response energy. Hard 808 subs, snapping claps, rolling hi-hats, brass and synth stabs, distorted bass accents. Verses switch between nimble rhythmic wordplay and syrupy pitched melodic layers; choruses hit with commanding crowd shouts and huge repeatable hooks. Dynamic beat stops, sudden bass drops, playful swagger, dark neon atmosphere, polished club-ready low end. Distinct rap, melodic and hype vocal roles.",
           "favorite": true,
           "origin": "reconstructed"
         },
         {
-          "id": "pillars-2",
-          "title": "Boom-Bap Foundations",
-          "category": "90s",
-          "text": "Classic 90s East Coast boom-bap with thick kicks, dry cracking snares, dusty piano loops, chopped soul accents and warm bass. Direct street storytelling rap vocals, restrained sung hook, subtle vinyl patina and an honest neighborhood atmosphere. No trap rolls or oversized cinematic trailer drums.",
+          "id": "pillars-2026-11-2",
+          "title": "Crunk Riot",
+          "category": "Crunk",
+          "text": "High-octane Southern crunk and modern trap fusion. Thunderous 808 kicks, distorted sub-bass, sharp claps, pounding toms, frantic hi-hat rolls and aggressive brass stabs. Commanding shouted hooks, rowdy call-and-response chants, explosive hype ad-libs and confident rapid-fire rap verses filled with rhythmic punchlines. Minimal melodic distractions, abrupt instrumental dropouts, bass-heavy transitions and relentless crowd-moving energy. Raw attitude with precise modern production, built for maximum intensity.",
           "favorite": false,
           "origin": "reconstructed"
         },
         {
-          "id": "pillars-3",
-          "title": "Resilience Anthem",
+          "id": "pillars-2026-11-3",
+          "title": "Astro Smoke",
+          "category": "Psychedelic",
+          "text": "Wide-screen psychedelic Southern trap with floating analog synths, eerie reversed melodies, swirling delays, deep elastic 808s and crisp half-time drums. Charismatic rhythmic rap verses cut through hazy vocal layers, pitch-shifted harmonies and drifting melodic hooks. Sudden crunk vocal accents and aggressive bass interruptions inject energy without destroying the hypnotic atmosphere. Cinematic spatial effects, dark futuristic textures, surreal transitions and a powerful low-end groove. Dreamlike but still hard-hitting.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-4",
+          "title": "Dirty South Legacy",
+          "category": "Throwback",
+          "text": "Early-2000s Southern club rap reimagined with modern trap production. Bouncy drum-machine kicks, rattling snares, handclaps, bright brass riffs, playful synth melodies and thick rolling bass. Charismatic, animated rap delivery with clever punchlines, rapid rhythmic switches and confident Southern attitude. Boisterous shouted ad-libs, crowd-response choruses and infectious dance-floor hooks. Nostalgic Dirty South swagger with contemporary 808 depth, polished punch and lively arrangements. Fun without becoming novelty rap.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-5",
+          "title": "Double-Time Detonator",
+          "category": "Technical",
+          "text": "Aggressive technical Southern hip-hop driven by exceptionally nimble rap cadences and complex rhythmic wordplay. Fast double-time verses, unexpected pauses, internal-rhyme pockets and dramatic shifts between laid-back swagger and explosive delivery. Tight trap percussion, restless hi-hat patterns, syncopated 808 bass, chopped vocal accents and sharp synth stabs. A dark atmospheric melodic refrain provides contrast before shouted crunk hooks detonate. Instrumentation leaves room for lyrical precision, breath control and commanding vocal personality.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-6",
+          "title": "Afterhours Haze",
+          "category": "Melodic",
+          "text": "Moody late-night Southern trap with atmospheric R&B undertones, hazy synth pads, ghostly vocal harmonies, deep rounded 808s and spacious half-time percussion. Smooth, low-register melodic hooks contrast with charismatic conversational rap verses and subtle rhythmic punchlines. Restrained crunk ad-libs appear as distant echoes before heavier bass-driven chorus transitions. Seductive, nocturnal and psychedelic, with warm analog textures, slow filter sweeps and immersive stereo depth. Maintain Southern swagger without forcing constant aggression.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-7",
+          "title": "Bounce District",
+          "category": "Bounce",
+          "text": "Explosive Southern club hip-hop fused with New Orleans-inspired bounce rhythms and modern trap production. Rapid syncopated kick patterns, handclaps, energetic percussion loops, rubbery bass, bright brass hits and playful keyboard riffs. Animated call-and-response rap delivery, clever rhythmic phrases, short shouted commands and rowdy crowd chants. Catchy repetitive hooks, quick beat breaks and unexpected percussion switches. Constant forward momentum, playful street-party confidence and hard modern 808 impact without generic dance-pop melodies.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-8",
+          "title": "Funk Authority",
+          "category": "Funk",
+          "text": "Bass-driven Southern hip-hop fused with slick P-funk grooves, syncopated rhythm guitar, talkbox accents, vintage synthesizers and tight live-feeling drums. Elastic funk basslines interlock with thick modern 808s and crisp trap hi-hats. Charismatic punchline-heavy rap verses ride the pocket with exaggerated rhythmic confidence. Psychedelic melodic layers add a hazy modern edge, while explosive crunk-style chants energize the choruses. Infectious swagger, clever musical breaks, playful bass fills and polished contemporary funk-rap production.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-9",
+          "title": "Rave Collision",
+          "category": "EDM",
+          "text": "Futuristic Southern trap and crunk fused with dark electro-rave production. Massive distorted 808s, gritty synthesizer bass, pulsing electronic arpeggios, razor-sharp percussion and explosive rhythmic drops. Aggressive rapid-fire rap verses alternate with hypnotic processed melodic phrases and commanding shouted crowd hooks. Club-driven tension builds, unexpected beat switches, syncopated synth stabs and heavy electronic breakdowns. Underground warehouse atmosphere with Southern hip-hop attitude. Avoid generic festival-pop choruses and predictable EDM formulas.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-10",
+          "title": "Houston Slow Roll",
+          "category": "Slow Burn",
+          "text": "Houston-inspired Southern hip-hop with a slow, syrupy chopped-and-screwed atmosphere and modern psychedelic trap details. Deep sustained sub-bass, crawling drum grooves, detuned synthesizers, chopped vocal repetitions, pitch-dropped echoes and spacious reverb. Laid-back but sharply articulated rap delivery, clever rhythmic phrasing and hypnotic melodic vocal layers. Occasional double-time passages and distant crunk calls provide contrast. Heavy nocturnal cruising energy, warped sonic textures, rich bass resonance and a deliberately unhurried groove.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-11",
+          "title": "Victory Lap",
           "category": "Anthem",
-          "text": "Modern inspirational street hip-hop with weighty live-feeling drums, rich low bass, piano chords and a subtle soaring soulful vocal layer. Gritty controlled rap delivery and a confident melodic chorus. Patient builds and grounded emotion, motivational without preachy or sentimental writing.",
+          "text": "Cinematic Southern hip-hop anthem blending charismatic rapid-fire rap, psychedelic trap atmosphere and triumphant crunk energy. Towering brass lines, dramatic synth chords, thunderous 808s, stomping drums and sharp snare rolls. Confident punchline-driven verses build into enormous shouted call-and-response hooks supported by layered melodic vocals. Strategic beat dropouts, rising tension, explosive transitions and unforgettable crowd chants. Celebratory, dominant and motivational without sentimental lyrics, orchestral excess or generic sports-commercial clichés.",
+          "favorite": false,
+          "origin": "reconstructed"
+        },
+        {
+          "id": "pillars-2026-11-12",
+          "title": "Blacktop Pressure",
+          "category": "Dark",
+          "text": "Menacing Southern trap and industrial-tinged crunk fusion with grinding distorted bass, ominous minor-key synths, metallic percussion, thunderous 808 hits and sparse atmospheric textures. Forceful rhythmic rap verses feature sharp punchlines, unpredictable cadence changes and controlled aggression. Ghostly processed melodic vocals hover behind the beat before explosive shouted hooks cut through. Abrupt silence, crushing bass returns, gritty sound design and claustrophobic tension. Dark street-level intensity with disciplined production and unmistakable Southern hip-hop swagger.",
           "favorite": false,
           "origin": "reconstructed"
         }
