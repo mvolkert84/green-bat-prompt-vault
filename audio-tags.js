@@ -6,7 +6,7 @@
   const utf16 = new TextDecoder('utf-16le');
   const utf16be = new TextDecoder('utf-16be');
   const keys = {TITLE: 'title', ARTIST: 'artist', ALBUM: 'album', TRACKNUMBER: 'number',
-    LYRICS: 'lyrics', UNSYNCEDLYRICS: 'lyrics', UNSYNCED_LYRICS: 'lyrics', SYNCEDLYRICS: 'lyrics'};
+    LYRICS: 'lyrics', USLT: 'lyrics', UNSYNCEDLYRICS: 'lyrics', UNSYNCED_LYRICS: 'lyrics', SYNCEDLYRICS: 'lyrics'};
   const view = bytes => new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const label = (bytes, start, length) => latin.decode(bytes.subarray(start, start + length));
   const synchsafe = (bytes, start) => bytes.subarray(start, start + 4).reduce((value, byte) => value * 128 + (byte & 127), 0);

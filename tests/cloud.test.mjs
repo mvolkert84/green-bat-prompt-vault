@@ -86,6 +86,24 @@ test('public catalog, private write, stream range and synchronized edits', async
   }), {...auth, 'Content-Type':'application/json'});
   assert.equal(response.status, 200);
 
+  const artwork = 'data:image/png;base64,iVBORw0KGgo=';
+  const patchTrack = (patch, headers = auth) => call('/admin/tracks/' + id, env, 'PATCH',
+    JSON.stringify({title:'Remastered', artist:'Vertigo', albumId, number:1, ...patch}),
+    {...headers, 'Content-Type':'application/json'});
+  assert.equal((await patchTrack({artwork}, {})).status, 401);
+  assert.equal((await patchTrack({artwork:'data:image/svg+xml;base64,AAAA'})).status, 400);
+  assert.equal((await patchTrack({artwork:'data:image/png;base64,' + 'A'.repeat(250000)})).status, 400);
+  assert.equal((await patchTrack({artwork, lyrics:'New lyric'})).status, 200);
+  assert.equal((await patchTrack({})).status, 200);
+  const updated = await (await call('/library', env)).json();
+  assert.equal(updated.tracks[0].artwork, artwork);
+  assert.equal(updated.tracks[0].lyrics, 'New lyric');
+  assert.equal(updated.albums[0].artwork, '');
+  assert.equal((await patchTrack({artwork:''})).status, 200);
+  const reverted = await (await call('/library', env)).json();
+  assert.equal(reverted.tracks[0].artwork, '');
+  assert.equal(reverted.tracks[0].lyrics, 'New lyric');
+
   response = await call('/admin/albums/' + albumId, env, 'DELETE', undefined, auth);
   assert.equal(response.status, 200);
   response = await call('/library', env);
