@@ -1,8 +1,41 @@
-# Green Bat Music · Prompt Vault
+# Green Bat Music Vault
 
-A lightweight, mobile-first installable web app (PWA), made for collecting, editing and copying music style prompts into Suno. No account, API key, subscription, or backend required.
+**Two delivery formats, one cloud music catalog:** the same underground
+record-store player runs as an Android APK and as an installable Chromebook
+web app. Both connect to the Cloudflare Worker
+`https://green-bat-prompt-vault.mvolkert84.workers.dev`, which streams
+songs from the existing Cloudflare R2 bucket.
+
+**Chromebook and desktop:** Deploy a **separate Cloudflare Pages project**
+from the existing `feature/green-bat-cloud-apk-2026-11` branch.
+Use repository root, `npm run build:web`, and output folder `www`.
+Then open the `pages.dev` URL in Chrome and select **Install page as app**.
+Full steps: [Chromebook web player](docs/CHROMEBOOK_WEB_PLAYER.md).
+
+**Android phones:** Build/download the debug APK from the
+**Green Bat Music Android APK** GitHub Actions workflow on the same branch.
+Full steps: [Android and cloud setup](docs/ANDROID_CLOUD_SETUP.md).
+
+**Important scope:**
+- The shared cloud catalog includes albums, song metadata, lyrics, and streamed audio.
+- It refreshes on opening, resuming, reconnecting, and periodically.
+- No offline song downloads are included.
+- Device-local prompt edits, favorites, and older local audio uploads do not
+  sync automatically.
+- Only the owner with the Cloudflare Worker `ADMIN_TOKEN` can upload/edit
+  shared tracks. The streaming endpoint is publicly accessible.
+- GitHub `main` and the original live GitHub Pages Vault remain unchanged
+  until a separate merge is approved.
+
+---
+
+## Previous music-library feature branch documentation
+
+A mobile-first installable web app for listening to Green Bat Music and collecting Suno style prompts.
 
 ## Included
+- Group playlists with multi-file audio upload and optional albums for releases, live sets and holiday collections
+- A persistent player and full-size turntable view with embedded lyrics when available
 - 10 music groups: Vertigo, After Dark, Loose Change, Ever After Project, Pillars, State of Tension, Enter The End, 4th Movement, Oblivion, Alan Walker Band
 - 103 editable starter prompts across core styles and alternate variations
 - One-tap **Copy**; searchable groups and style prompts; category filters; star favorites
@@ -21,7 +54,13 @@ A lightweight, mobile-first installable web app (PWA), made for collecting, edit
 4. Open the resulting GitHub Pages HTTPS address in **Chrome on your Android phone**. The address typically looks like `https://YOUR-USERNAME.github.io/green-bat-prompt-vault/` (replace with your real account/repository names).
 5. Open Chrome's **⋮** menu and choose **Add to Home screen** or **Install app**. Launch it using the new home screen icon.
 
-**Note:** Opening `index.html` directly in the phone's Files app can show the basic interface, but it does not support installability/offline service worker features. Use an HTTPS host for PWA installation.
+**Note:** Use an HTTPS host to install the app and cache it for offline playback.
+
+## Music library
+- Open a group sleeve to reach its playlist. Create an album from that group or leave tracks in the group playlist. Edit a track to move it to an album or set its track number.
+- Audio compatibility depends on the browser. The app reads common ID3, MP4/M4A and Vorbis-style metadata, including embedded lyrics when present. Open **Now playing** from the dock and expand **Lyrics**.
+- Audio and albums are stored on the device in IndexedDB and are available offline after the app has cached its files. They do not sync across devices. JSON backups contain groups and prompts, so keep your original audio files.
+- Group IDs link local audio to groups. If you replace the group library with a backup or starter presets that omit a custom group, restoring a backup with that group ID makes its music visible again.
 
 ## Storage and security
 - Personal changes are stored in your browser's `localStorage` **on that device**, not in GitHub. They remain private unless you export and share them.

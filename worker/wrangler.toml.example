@@ -1,0 +1,12 @@
+name = "green-bat-music-cloud"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# Create this R2 bucket in the Cloudflare dashboard before deploying.
+[[r2_buckets]]
+binding = "MUSIC_BUCKET"
+bucket_name = "green-bat-music"
+
+# IMPORTANT:
+# Set ADMIN_TOKEN with: npx wrangler secret put ADMIN_TOKEN
+# Use a random 32+ character secret. Never commit it into GitHub.
