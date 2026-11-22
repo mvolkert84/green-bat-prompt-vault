@@ -494,7 +494,8 @@
       <div class="turntable-head"><h2 id="musicDeckTitle" class="sr-only">Now playing</h2><img class="turntable-brand" src="./assets/vault/brand-lockup.webp" alt="Green Bat Music">${button('close-player', 'Close now playing', 'close')}</div>
       <div class="turntable-stage" aria-hidden="true">
         <img class="turntable-sleeve deck-cover" alt="">
-        <div class="turntable-record"><div class="turntable-label"></div></div>
+        <div class="turntable-record"></div>
+        <div class="turntable-label"></div>
       </div>
       <div class="turntable-title"><strong data-player-title></strong><small data-player-artist></small></div>
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>

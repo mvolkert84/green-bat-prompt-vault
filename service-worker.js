@@ -1,14 +1,14 @@
-const CACHE = 'green-bat-prompt-vault-cloud-design-v2';
+const CACHE = 'green-bat-prompt-vault-cloud-design-v3';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=final-design-1',
-  './music-library.css?v=final-design-1',
+  './music-library.css?v=label-polish-1',
   './audio-tags.js?v=final-design-1',
   './cloud-config.js?v=1',
   './cloud-client.js?v=1',
-  './music-library.js?v=final-design-1',
+  './music-library.js?v=label-polish-1',
   './app.js?v=final-design-1',
   './starter-data.js?v=alan-walker-band-2026-11',
   './manifest.webmanifest',
