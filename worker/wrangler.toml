@@ -1,0 +1,15 @@
+# Green Bat Music — Cloudflare Worker
+# This configuration contains no secrets and can be connected directly to GitHub.
+name = "green-bat-prompt-vault"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# Create this R2 bucket manually in Cloudflare before first deployment.
+# Leave the bucket PRIVATE; the Worker serves streamed audio.
+[[r2_buckets]]
+binding = "MUSIC_BUCKET"
+bucket_name = "green-bat-music"
+
+# After the Worker deploys, add ADMIN_TOKEN as a secret in Cloudflare
+# Workers & Pages > green-bat-music-cloud > Settings > Variables and Secrets.
+# Generate a long random value (at least 32 characters). Never put it here.
