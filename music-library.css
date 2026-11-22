@@ -410,6 +410,9 @@
   .song-cover-editor { gap: 9px; }
 }
 @media (min-width: 900px) {
+  .turntable-stage { width: min(100%, 430px); margin-inline: auto; }
+  .vault-v3 .modal:has(#musicTrackForm) { max-height: calc(100dvh - 28px); }
+  .song-cover-editor { grid-template-columns: 156px minmax(0, 1fr); }
   .vault-v3 { --music-nav-offset: calc(80px + env(safe-area-inset-bottom)); }
   .vault-v3[data-vault-page="group"] { --music-nav-offset: calc(10px + env(safe-area-inset-bottom)); }
   .music-dock { border-radius: 9px; }
