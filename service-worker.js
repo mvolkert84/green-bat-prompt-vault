@@ -1,10 +1,10 @@
-const CACHE = 'green-bat-prompt-vault-cloud-design-v3';
+const CACHE = 'green-bat-prompt-vault-cloud-design-v4';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=final-design-1',
-  './music-library.css?v=label-polish-1',
+  './music-library.css?v=label-polish-2',
   './audio-tags.js?v=final-design-1',
   './cloud-config.js?v=1',
   './cloud-client.js?v=1',
