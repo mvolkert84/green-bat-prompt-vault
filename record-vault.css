@@ -302,33 +302,87 @@ body.vault-v3 {
 .site-header .brand-logo, .turntable-brand {
   filter: saturate(.72) sepia(.2) hue-rotate(-17deg) brightness(1.07);
 }
-.store-hero {
-  position: relative;
-  height: clamp(184px, 32.5vw, 328px);
-  margin-inline: calc(-1 * clamp(12px, 3.4vw, 34px));
-  background: url('./assets/vault/store-wall.webp') center 60% / cover no-repeat;
+[data-vault-page="home"] .site-header .brand-logo {
+  max-width: min(66vw, 270px);
+  height: clamp(49px, 17vw, 65px);
 }
-.store-hero::after {
-  content: '';
+.store-hero {
+  height: clamp(245px, 71vw, 490px);
+  margin-inline: calc(-1 * clamp(12px, 3.4vw, 34px));
+  background: linear-gradient(0deg, #0d0a06a0, transparent 18%),
+    url('./assets/vault/store-wall-mural.webp') center 52% / cover no-repeat;
+}
+.vault-v3 .store-groups-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 -3px 11px;
+  padding: 8px 8px 8px 10px;
+  border-block: 1px solid #62513b;
+  background: linear-gradient(105deg, #211c14, #0b0906 80%);
+}
+.vault-v3 .store-groups-heading h2 {
+  padding: 4px 9px;
+  border: 1px solid #9e8764;
+  border-radius: 2px;
+  color: #1d150a;
+  background: linear-gradient(120deg, #d5bc92, #e8d2ad 48%, #bfa17b);
+  box-shadow: inset 0 0 6px #4f32169c, 0 2px 6px #000;
+  font: 700 clamp(17px, 4.7vw, 25px)/1.12 var(--serif);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.vault-v3 .store-groups-heading h2::after { display: none; }
+.vault-v3 .store-groups-heading .section-note {
+  color: #e0cda9;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+[data-vault-page="home"] .group-grid.mockup-sleeve-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(7px, 2vw, 15px);
+}
+[data-vault-page="home"] .mockup-sleeve-grid .group-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid #af956f;
+  border-radius: 5px;
+  background: #120d08;
+}
+.group-card-art {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, var(--bg), transparent 26%);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
-.store-hero::before {
-  content: '';
-  position: absolute;
-  top: 28%;
-  left: 36%;
-  width: clamp(60px, 12vw, 126px);
-  aspect-ratio: 374 / 106;
-  background: url('./assets/vault/brand-lockup.webp') center / contain no-repeat;
-  opacity: .39;
-  filter: sepia(.32) saturate(.61) hue-rotate(-17deg);
-  transform: rotate(-4deg);
+.group-card-name {
+  position: relative;
+  z-index: 1;
+  padding: 1.45rem 4px .35rem;
+  color: #fff2d8;
+  background: linear-gradient(0deg, #0b0907fa 12%, #110b08e6 45%, transparent);
+  font: 700 clamp(.65rem, 2.9vw, .93rem)/1.18 system-ui, sans-serif;
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 3px #000;
 }
-.home-vault-tabs { margin: 0 auto 14px; width: min(100%, 460px); }
-[data-vault-page="home"] .vault-compact-toolbar { margin: -5px auto 16px; width: min(100%, 630px); }
+[data-vault-page="home"] .sleeve-favorite-indicator {
+  top: 3px;
+  right: 5px;
+  bottom: auto;
+  font-size: .72rem;
+  color: #d9be86;
+  text-shadow: 0 0 4px #000, 0 0 4px #000;
+}
+[data-vault-page="home"] .vault-compact-toolbar { margin: 8px auto 12px; width: min(100%, 630px); }
 [data-vault-page="home"] .search-box {
   background: linear-gradient(115deg, #251e13, #10110a);
   border-color: #6c5b42;
@@ -350,7 +404,8 @@ body.vault-v3 {
   transform: rotate(-4deg);
 }
 @media (min-width: 900px) {
-  .store-hero { background-position: center 47%; }
+  .store-hero { background-position: center 56%; }
+  [data-vault-page="home"] .group-grid.mockup-sleeve-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 @media (max-width: 609px) {
   html, .vault-v3 :is(.modal, .music-deck) {
