@@ -20,6 +20,7 @@
   let query = '';
   let category = 'All';
   let groupSearchOpen = false;
+  let homeSearchOpen = false;
   let groupSection = 'music';
   const expanded = new Set();
 
@@ -309,7 +310,7 @@
     ['oblivion', 'Oblivion'], ['alan-walker-band', 'Alan Walker Band']
   ]);
 
-  const featuredSleeves = ['vertigo', 'state-of-tension', 'enter-the-end', '4th-movement'];
+  const featuredSleeves = ['vertigo', 'enter-the-end', 'loose-change', 'after-dark', 'ever-after', 'pillars'];
   function sleeveRank(id) {
     const index = featuredSleeves.indexOf(id);
     return index === -1 ? featuredSleeves.length : index;
@@ -343,12 +344,12 @@
 
   function groupCard(g) {
     const favs = g.prompts.filter(p => p.favorite).length;
-    return '<button class="group-card record-sleeve mockup-group-card" type="button" data-group="' +
-      escapeHTML(g.id) + '" style="--accent:' + color(g.color) + '" aria-label="Open ' +
-      escapeHTML(g.name) + '">' +
-      groupThumbMarkup(g) + '<span class="sleeve-favorite-indicator" title="' +
-      favs + ' favorite prompts" aria-hidden="true">' + (favs ? '★' : '☆') +
-      '</span></button>';
+    const name = escapeHTML(g.name);
+    return `<button class="group-card record-sleeve mockup-group-card" type="button" data-group="${escapeHTML(g.id)}" aria-label="Open ${name}">
+      <img class="group-card-art" src="${escapeHTML(groupCover(g))}" alt="" loading="lazy" decoding="async">
+      <span class="group-card-name">${name}</span>
+      ${favs ? '<span class="sleeve-favorite-indicator" title="' + favs + ' favorite prompts" aria-hidden="true">★</span>' : ''}
+    </button>`;
   }
 
   function featuredCard(p) {
@@ -392,14 +393,10 @@ function renderHome() {
     const favs = allPrompts().filter(p=>p.favorite).slice(0,6);
     main.innerHTML =
       '<div class="store-hero" aria-hidden="true"></div>' +
-      '<nav class="vault-tabs home-vault-tabs" aria-label="Vault sections">' +
-          '<button type="button" class="vault-tab active" data-action="show-groups">◉ &nbsp;Music Groups</button>' +
-          '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorite Prompts</button>' +
-      '</nav>' +
-      '<div class="vault-compact-toolbar">' + searchMarkup('Search groups or style prompts…') +
-        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' +
-      '<div class="section-bar mockup-section-bar" id="musicGroupsHeading">' +
-        '<h2>Music Groups</h2><span class="section-note">' + matched.length + ' sleeves</span></div>' +
+      (homeSearchOpen ? '<div class="vault-compact-toolbar">' + searchMarkup('Search groups or style prompts…') +
+        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' : '') +
+      '<div class="section-bar mockup-section-bar store-groups-heading" id="musicGroupsHeading">' +
+        '<h2>Groups</h2><span class="section-note">' + matched.length + (matched.length === 1 ? ' group' : ' groups') + '</span></div>' +
       '<section class="group-grid mockup-sleeve-grid" aria-label="Music group sleeves">' +
         matched.map(groupCard).join('') + '</section>' +
       (matched.length ? '' : '<div class="empty-state"><h3>No matching records</h3><p>Try a different search.</p></div>') +
@@ -490,6 +487,7 @@ function renderFavorites() {
   function navigate(to, id = null, section = 'music') {
     page = to;
     groupSearchOpen = false;
+    homeSearchOpen = false;
     query = '';
     category = 'All';
     expanded.clear();
@@ -646,6 +644,7 @@ function renderFavorites() {
         break;
       case 'focus-vault-search':
         if(page==='group'&&!groupSearchOpen){groupSearchOpen=true;render();}
+        if(page==='home'&&!homeSearchOpen){homeSearchOpen=true;render();}
         document.getElementById('searchInput')?.focus();
         break;
       case 'show-groups':

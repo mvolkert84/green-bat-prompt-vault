@@ -220,11 +220,20 @@
 .turntable-head .deck-button { position: absolute; right: 6px; top: 7px; }
 .turntable-brand { width: min(50%, 212px); height: auto; }
 .turntable-stage {
+  isolation: isolate;
+  background: #100b07;
+}
+.turntable-stage::before {
+  content: '';
+  display: block;
+  aspect-ratio: 100 / 16;
+  background: radial-gradient(ellipse at bottom, #20150d, #100b07 76%);
+}
+.turntable-scene {
   position: relative;
   aspect-ratio: 1.13;
-  isolation: isolate;
-  overflow: hidden;
-  background: #18120a url('./assets/vault/turntable.webp') center / 100% 100% no-repeat;
+  background: linear-gradient(180deg, #1c130c, transparent 11%),
+    #18120a url('./assets/vault/turntable.webp') center / 100% 100% no-repeat;
   box-shadow: inset 0 -1px 5px #000c;
 }
 /* Sit the whole jacket on the photographed stand, just above the platter. */
@@ -232,7 +241,7 @@
   position: absolute;
   bottom: 54%;
   left: 47.4%;
-  width: 39.5%;
+  width: 55.3%;
   aspect-ratio: 1;
   translate: -50% 0;
   object-fit: contain;
@@ -263,13 +272,13 @@
 /* Flatten the rotating print to the angle of the photographed record. */
 .turntable-label {
   position: absolute;
-  top: 62.2%;
+  top: 62.5%;
   left: 48.1%;
-  width: 13%;
+  width: 23%;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  transform: translate(-50%, -50%) scaleY(.58);
+  transform: translate(-50%, -50%) scaleY(.49);
 }
 .turntable-label::before {
   content: '';
@@ -281,7 +290,7 @@
   animation: spin-record 4s linear infinite paused;
 }
 /* Preserve the photographed spindle above the moving label. */
-.turntable-stage::after {
+.turntable-scene::after {
   content: '';
   position: absolute;
   inset: 0;

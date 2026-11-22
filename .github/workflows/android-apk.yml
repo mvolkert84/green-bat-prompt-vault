@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/green-bat-cloud-apk-2026-11
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -15,7 +16,15 @@ permissions:
 
 jobs:
   build-apk:
-    name: Build shareable test APK
+    name: Build ${{ matrix.artifact }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - artifact: green-bat-music-test-apk
+            alongside: false
+          - artifact: green-bat-music-alongside-apk
+            alongside: true
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -50,6 +59,18 @@ jobs:
       - name: Package existing Underground Record Vault assets
         run: npm run build:web
 
+      - name: Give the alongside build a separate Android app ID
+        if: matrix.alongside
+        run: |
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          const path = 'capacitor.config.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.appId += '.alongside';
+          config.appName += ' (New)';
+          fs.writeFileSync(path, JSON.stringify(config, null, 2) + '\n');
+          JS
+
       - name: Create Android project
         run: npx cap add android
 
@@ -68,7 +89,7 @@ jobs:
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: green-bat-music-test-apk
+          name: ${{ matrix.artifact }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
