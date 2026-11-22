@@ -231,7 +231,7 @@
     function showEditor(title, html, trigger) {
       modalReturn = trigger;
       showModal(title, html);
-      document.querySelector('#modalBody form :is(input,select)')?.focus();
+      document.querySelector('#modalBody form :is(input:not([type=file]),select)')?.focus({preventScroll:true});
     }
 
     function uploadDialog(trigger) {
@@ -256,17 +256,54 @@
       </form>`, trigger);
     }
 
+    function playerCover(track, album, group) {
+      return track.artwork || album?.artwork || (group ? cover(group) : './assets/vault/blank-sleeve.webp');
+    }
+
     function trackDialog(track, trigger) {
       if (!track) return;
-      showEditor('Edit track', `<form id="musicTrackForm" data-id="${esc(track.id)}">
-        <label class="field"><span>Title</span><input name="title" required maxlength="180" value="${esc(track.title)}"></label>
-        <label class="field"><span>Artist</span><input name="artist" maxlength="180" value="${esc(track.artist)}"></label>
-        <label class="field"><span>Album</span><select name="album">${albumOptions(track.albumId, Boolean(track.remote))}</select></label>
-        <label class="field"><span>Track number</span><input type="number" name="number" min="1" max="9999" value="${track.number || ''}"></label>
-        <div class="music-form-actions"><button class="btn primary" type="submit">Save track</button>
-        <button class="btn danger" type="button" data-music="delete-track" data-id="${esc(track.id)}">Remove song</button></div>
+      const artwork = playerCover(track, albums.find(album => album.id === track.albumId), getGroup(track.groupId));
+      showEditor('Edit Song', `<form id="musicTrackForm" data-id="${esc(track.id)}">
+        <section class="song-cover-editor" aria-labelledby="songCoverTitle">
+          <img class="song-cover-preview" src="${esc(artwork)}" alt="Current song cover">
+          <div>
+            <h3 id="songCoverTitle">Song Cover Art</h3>
+            <p>Individual artwork for this track.</p>
+            <label class="song-cover-file">
+              <span class="btn primary">Change Song Cover Art</span>
+              <input type="file" name="artwork" accept="image/*" aria-label="Change song cover art">
+            </label>
+            ${track.artwork ? '<label class="music-check"><input type="checkbox" name="removeArtwork"> Use album or group artwork</label>' : ''}
+          </div>
+        </section>
+        <label class="field song-field"><span>Track title</span><input name="title" required maxlength="180" value="${esc(track.title)}"></label>
+        <label class="field song-field"><span>Artist</span><input name="artist" maxlength="180" value="${esc(track.artist)}"></label>
+        <label class="field song-field"><span>Album</span><select name="album">${albumOptions(track.albumId, Boolean(track.remote))}</select></label>
+        <label class="field song-field"><span>Track number</span><input type="number" name="number" min="1" max="9999" value="${track.number || ''}"></label>
+        <label class="field song-lyrics-field"><span>Lyrics</span><textarea name="lyrics" rows="4" maxlength="50000">${esc(track.lyrics)}</textarea></label>
+        <div class="music-form-actions">
+          <button class="btn" type="button" data-action="close-modal">Cancel</button>
+          <button class="btn primary" type="submit">Save Changes</button>
+        </div>
+        <button class="song-remove-btn" type="button" data-music="delete-track" data-id="${esc(track.id)}">Remove song</button>
       </form>`, trigger);
     }
+
+    const songArtworkOptions = {maxSide: 640, maxLength: 250000};
+
+    document.addEventListener('change', async event => {
+      const input = event.target;
+      if (!input.matches('#musicTrackForm input[name="artwork"]') || !input.files[0]) return;
+      const file = input.files[0];
+      try {
+        const artwork = await processArtwork(file, songArtworkOptions);
+        if (input.isConnected && input.files[0] === file) {
+          input.closest('form').querySelector('.song-cover-preview').src = artwork;
+        }
+      } catch (error) {
+        if (input.isConnected && input.files[0] === file) toast(error.message);
+      }
+    });
 
     async function saveUploads(form, groupId) {
       if (uploadingGroup) return;
@@ -355,8 +392,12 @@
         } else {
           const existing = tracks.find(track => track.id === id);
           if (!existing) return;
+          const file = form.elements.artwork.files[0];
+          const artwork = file ? await processArtwork(file, songArtworkOptions) :
+            form.elements.removeArtwork?.checked ? '' : existing.artwork || '';
           const track = {...existing, title, artist: form.elements.artist.value.trim(),
-            albumId: form.elements.album.value, number: metadataNumber(form.elements.number.value)};
+            albumId: form.elements.album.value, number: metadataNumber(form.elements.number.value),
+            artwork, lyrics: form.elements.lyrics.value.trim()};
           if (existing.remote) await cloud.saveTrack(track);
           else await transaction(['tracks', 'albums'], 'readwrite', tx => {
             const put = () => tx.objectStore('tracks').put(track);
@@ -369,9 +410,10 @@
           });
           queue = queue.map(item => item.id === id ? track : item);
           if (current?.id === id) {
+            const lyricsChanged = current.lyrics !== track.lyrics;
             current = track;
             currentAlbum = albums.find(album => album.id === track.albumId);
-            updatePlayerInfo();
+            updatePlayerInfo(lyricsChanged);
           }
         }
         finishEditor(form);
@@ -449,11 +491,11 @@
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>
     </div>`;
     deck.innerHTML = `<div class="turntable">
-      <div class="turntable-head"><h2 id="musicDeckTitle">Now playing</h2>${button('close-player', 'Close now playing', 'close')}</div>
+      <div class="turntable-head"><h2 id="musicDeckTitle" class="sr-only">Now playing</h2><img class="turntable-brand" src="./assets/vault/brand-lockup.webp" alt="Green Bat Music">${button('close-player', 'Close now playing', 'close')}</div>
       <div class="turntable-stage" aria-hidden="true">
         <img class="turntable-sleeve deck-cover" alt="">
-        <div class="turntable-record"><div class="turntable-label"><img class="deck-cover" alt=""></div></div>
-        <div class="tonearm"></div>
+        <div class="turntable-record"></div>
+        <div class="turntable-label"></div>
       </div>
       <div class="turntable-title"><strong data-player-title></strong><small data-player-artist></small></div>
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>
@@ -490,16 +532,17 @@
       }
       const group = getGroup(current.groupId) || currentGroup;
       const artist = current.artist || group?.name || '';
-      const artwork = currentAlbum?.artwork || (group ? cover(group) : './assets/vault/blank-sleeve.webp');
+      const artwork = playerCover(current, currentAlbum, group);
       for (const surface of surfaces) {
         surface.querySelector('[data-player-title]').textContent = current.title;
         surface.querySelector('[data-player-artist]').textContent = [artist, currentAlbum?.title].filter(Boolean).join(' · ');
         for (const image of surface.querySelectorAll('.deck-cover')) image.src = artwork;
       }
-      if (trackChanged && !current.lyrics) lyricDetails.open = false;
-      lyricDetails.hidden = !current.lyrics;
+      const lyrics = String(current.lyrics || '').trim();
+      lyricDetails.hidden = !lyrics;
       if (trackChanged) {
-        lyricSheet.textContent = current.lyrics;
+        lyricDetails.open = Boolean(lyrics);
+        lyricSheet.textContent = lyrics;
         lyricSheet.scrollTop = 0;
       }
       if ('mediaSession' in navigator && typeof MediaMetadata === 'function') {
@@ -633,7 +676,12 @@
       const {music: action, id} = control.dataset;
       const group = getGroup(musicGroup);
       switch (action) {
-        case 'open-player': if (current && !deck.open) deck.showModal(); break;
+        case 'open-player':
+          if (current && !deck.open) {
+            lyricDetails.open = !lyricDetails.hidden;
+            deck.showModal();
+          }
+          break;
         case 'close-player': deck.close(); break;
         case 'toggle': toggle(); break;
         case 'previous': step(-1); break;
@@ -682,7 +730,18 @@
       if (source) audio.currentTime = Number(event.target.value);
     });
     deck.addEventListener('click', event => { if (event.target === deck) deck.close(); });
-    cloud?.start(() => { if (musicGroup) refresh(musicGroup); });
+    cloud?.start(() => {
+      if (musicGroup) refresh(musicGroup);
+      if (!current?.remote) return;
+      const updated = cloud.library.tracks.find(track => track.id === current.id);
+      if (!updated) return;
+      const lyricsChanged = updated.lyrics !== current.lyrics;
+      current = updated;
+      currentAlbum = cloud.library.albums.find(album => album.id === updated.albumId);
+      const updates = new Map(cloud.library.tracks.map(track => [track.id, track]));
+      queue = queue.map(track => track.remote ? updates.get(track.id) || track : track);
+      updatePlayerInfo(lyricsChanged);
+    });
     return {render, deleteGroup, updatePlayerInfo};
   }
 

@@ -21,7 +21,6 @@
   let category = 'All';
   let groupSearchOpen = false;
   let groupSection = 'music';
-  let homeSearchOpen = false;
   const expanded = new Set();
 
   function normalizePrompt(p) {
@@ -392,16 +391,13 @@ function renderHome() {
       .sort((a, b) => sleeveRank(a.id) - sleeveRank(b.id));
     const favs = allPrompts().filter(p=>p.favorite).slice(0,6);
     main.innerHTML =
-      '<section class="hero vault-masthead mockup-masthead">' +
-        '<h1 class="vault-title">Green Bat<br>Music Vault</h1>' +
-        '<p class="vault-tagline">Songs, albums, and style prompts.</p>' +
-        '<nav class="vault-tabs" aria-label="Vault sections">' +
+      '<div class="store-hero" aria-hidden="true"></div>' +
+      '<nav class="vault-tabs home-vault-tabs" aria-label="Vault sections">' +
           '<button type="button" class="vault-tab active" data-action="show-groups">◉ &nbsp;Music Groups</button>' +
           '<button type="button" class="vault-tab" data-go="favorites">☆ &nbsp;Favorite Prompts</button>' +
-        '</nav>' +
-      '</section>' +
-      (homeSearchOpen ? '<div class="vault-compact-toolbar">' + searchMarkup('Search records or Suno styles...') +
-        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' : '') +
+      '</nav>' +
+      '<div class="vault-compact-toolbar">' + searchMarkup('Search groups or style prompts…') +
+        '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' +
       '<div class="section-bar mockup-section-bar" id="musicGroupsHeading">' +
         '<h2>Music Groups</h2><span class="section-note">' + matched.length + ' sleeves</span></div>' +
       '<section class="group-grid mockup-sleeve-grid" aria-label="Music group sleeves">' +
@@ -494,7 +490,6 @@ function renderFavorites() {
   function navigate(to, id = null, section = 'music') {
     page = to;
     groupSearchOpen = false;
-    homeSearchOpen = false;
     query = '';
     category = 'All';
     expanded.clear();
@@ -580,7 +575,7 @@ function renderFavorites() {
     return normalized;
   }
 
-  function processArtworkFile(file) {
+  function processArtworkFile(file, {maxSide = 900, maxLength = Infinity} = {}) {
     return new Promise((resolve, reject) => {
       if (!file) return resolve('');
       const reader = new FileReader();
@@ -589,15 +584,20 @@ function renderFavorites() {
         const img = new Image();
         img.onerror = () => reject(Error('Could not process the image file'));
         img.onload = () => {
-          const maxSide = 900;
           const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
           const canvas = document.createElement('canvas');
           canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
           canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.86);
-          resolve(dataUrl);
+          let quality = 0.86;
+          let dataUrl = canvas.toDataURL('image/jpeg', quality);
+          while (dataUrl.length > maxLength && quality > 0.36) {
+            quality -= 0.1;
+            dataUrl = canvas.toDataURL('image/jpeg', quality);
+          }
+          if (dataUrl.length > maxLength) reject(Error('Could not fit the image. Choose a smaller file.'));
+          else resolve(dataUrl);
         };
         img.src = reader.result;
       };
@@ -646,7 +646,6 @@ function renderFavorites() {
         break;
       case 'focus-vault-search':
         if(page==='group'&&!groupSearchOpen){groupSearchOpen=true;render();}
-        if(page==='home'&&!homeSearchOpen){homeSearchOpen=true;render();}
         document.getElementById('searchInput')?.focus();
         break;
       case 'show-groups':

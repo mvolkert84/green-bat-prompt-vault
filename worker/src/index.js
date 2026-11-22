@@ -150,9 +150,15 @@ async function handler(request, env) {
       if (albumId && !library.albums.some(a => a.id === albumId && a.groupId === track.groupId)) {
         return fail('Album not found in group');
       }
+      const artwork = body.artwork;
+      if (artwork !== undefined && (typeof artwork !== 'string' || artwork.length > 250000 ||
+        (artwork && !/^data:image\/(png|jpeg|webp);base64,[a-zA-Z0-9+/=]+$/.test(artwork)))) {
+        return fail('Invalid song cover image');
+      }
       Object.assign(track, {albumId, title:safe(body.title) || track.title,
-        artist:safe(body.artist), number:positive(body.number),
-        lyrics:safe(body.lyrics, 50000)});
+        artist:safe(body.artist), number:positive(body.number)});
+      if (body.lyrics !== undefined) track.lyrics = safe(body.lyrics, 50000);
+      if (artwork !== undefined) track.artwork = artwork;
       await save(env, library);
       return json({track});
     }
