@@ -48,6 +48,8 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim
           disable-animations: false
           script: node scripts/android-player-review.mjs
       - name: Check the current Cloudflare catalog and byte-range streaming

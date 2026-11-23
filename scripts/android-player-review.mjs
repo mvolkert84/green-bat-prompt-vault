@@ -17,13 +17,14 @@ async function waitFor(marker, attempts = 90) {
 }
 
 mkdirSync(output, {recursive: true});
-adb('shell', 'wm', 'size', '1080x2280');
-adb('shell', 'wm', 'density', '480');
+const resolution = adb('shell', 'wm', 'size').toString().match(/(\d+)x(\d+)/);
+if (!resolution) throw new Error('Cannot determine emulator screen size');
+const [, width, height] = resolution.map(Number);
 adb('logcat', '-c');
 adb('install', 'android/app/build/outputs/apk/debug/app-debug.apk');
 adb('shell', 'am', 'start', '-n', app + '/.MainActivity');
 await waitFor('VINYL_QA_ARMED');
-adb('shell', 'input', 'tap', '540', '1140');
+adb('shell', 'input', 'tap', String(Math.floor(width / 2)), String(Math.floor(height / 2)));
 await waitFor('VINYL_QA_CAPTURE');
 writeFileSync(output + '/Android-Player.png', adb('exec-out', 'screencap', '-p'));
 adb('shell', 'screenrecord', '--size', '720x1520', '--time-limit', '4', '/sdcard/vinyl-review.mp4');
