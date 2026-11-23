@@ -1,3 +1,5 @@
+import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
+
 (() => {
   'use strict';
   const icons = {
@@ -5,6 +7,9 @@
     pause: '<path d="M9 5v14m6-14v14" stroke-width="3"/>',
     prev: '<path d="M6 5v14m13-14L8 12l11 7z"/>',
     next: '<path d="M18 5v14M5 5l11 7-11 7z"/>',
+    shuffle: '<path d="M3 6h3c5 0 7 12 12 12h3m-3-3 3 3-3 3M3 18h3c1.6 0 2.9-1.3 4.1-3.1m3.8-5.8C15.1 7.3 16.4 6 18 6h3m-3-3 3 3-3 3"/>',
+    repeat: '<path d="m17 2 4 4-4 4m4-4H7a4 4 0 0 0-4 4v1m4 11-4-4 4-4m-4 4h14a4 4 0 0 0 4-4v-1"/>',
+    repeatOne: '<path d="m17 2 4 4-4 4m4-4H7a4 4 0 0 0-4 4v1m4 11-4-4 4-4m-4 4h14a4 4 0 0 0 4-4v-1m-10-2 1-1v4"/>',
     disc: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12a6 6 0 0 1 6-6m6 6a6 6 0 0 1-6 6"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
     more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
@@ -12,6 +17,7 @@
   const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
   const button = (action, name, graphic, extra = '') =>
     `<button type="button" class="deck-button" data-music="${action}" aria-label="${name}" title="${name}" ${extra}>${icon(graphic)}</button>`;
+  const modeButton = (action, name, label) => `<button type="button" class="deck-button playback-mode" data-music="${action}" aria-label="${name}" title="${name}" aria-pressed="false">${icon(action)}<span aria-hidden="true">${label}</span></button>`;
   const time = seconds => Number.isFinite(seconds) ?
     `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}` : '0:00';
   const nameFromFile = file => file.name.replace(/\.[^.]+$/, '');
@@ -95,6 +101,8 @@
     let currentAlbum = null;
     let currentGroup = null;
     let queue = [];
+    let shuffledIds = null;
+    let repeatMode = 'off';
     let source = '';
     let playRequest = 0;
     let albumFilter = '';
@@ -280,7 +288,14 @@
         <label class="field song-field"><span>Artist</span><input name="artist" maxlength="180" value="${esc(track.artist)}"></label>
         <label class="field song-field"><span>Album</span><select name="album">${albumOptions(track.albumId, Boolean(track.remote))}</select></label>
         <label class="field song-field"><span>Track number</span><input type="number" name="number" min="1" max="9999" value="${track.number || ''}"></label>
-        <label class="field song-lyrics-field"><span>Lyrics</span><textarea name="lyrics" rows="4" maxlength="50000">${esc(track.lyrics)}</textarea></label>
+        <label class="field song-lyrics-field"><span>Lyrics</span><textarea name="lyrics" rows="5" maxlength="50000" aria-describedby="lyricsEditHelp">${esc(track.lyrics)}</textarea></label>
+        <div id="lyricsEditHelp" class="music-form-note">Paste plain text or LRC. To add timing, start this song and place the cursor on a lyric line.</div>
+        <div class="lyric-edit-tools">
+          <button class="btn ghost sm" type="button" data-music="import-lrc">Import LRC</button>
+          <input type="file" accept=".lrc,.txt,text/plain" name="lrc" hidden>
+          <button class="btn ghost sm" type="button" data-music="stamp-lyric">Mark line at playback time</button>
+          <span class="lyric-edit-status" role="status"></span>
+        </div>
         <div class="music-form-actions">
           <button class="btn" type="button" data-action="close-modal">Cancel</button>
           <button class="btn primary" type="submit">Save Changes</button>
@@ -495,20 +510,69 @@
       <div class="turntable-stage" aria-hidden="true">
         <div class="turntable-scene">
           <img class="turntable-sleeve deck-cover" alt="">
-          <div class="turntable-record"></div>
+          <div class="turntable-platter-edge"></div>
+          <div class="turntable-record"><div class="turntable-rotor"></div></div>
           <div class="turntable-label"></div>
         </div>
       </div>
       <div class="turntable-title"><strong data-player-title></strong><small data-player-artist></small></div>
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>
       <div class="deck-controls" aria-label="Playback controls">
+        ${modeButton('shuffle', 'Shuffle', 'Shuffle')}
         ${button('previous', 'Previous track', 'prev')}${button('toggle', 'Play', 'play')}${button('next', 'Next track', 'next')}
+        ${modeButton('repeat', 'Repeat off', 'Repeat')}
       </div>
       <details class="turntable-lyrics" hidden><summary>Lyrics</summary><div tabindex="0" class="lyrics-sheet" aria-label="Track lyrics"></div></details>
     </div>`;
     const surfaces = [dock, deck];
+    const shuffleControl = deck.querySelector('[data-music="shuffle"]');
+    const repeatControl = deck.querySelector('[data-music="repeat"]');
     const lyricDetails = deck.querySelector('.turntable-lyrics');
     const lyricSheet = lyricDetails.querySelector('.lyrics-sheet');
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timedCues = [];
+    let highlightedLine = -1;
+
+    function followLyrics(behavior = 'smooth') {
+      if (!timedCues.length) return;
+      const next = activeLyric(timedCues, audio.currentTime);
+      if (next !== highlightedLine) {
+        lyricSheet.children[highlightedLine]?.removeAttribute('aria-current');
+        lyricSheet.children[next]?.setAttribute('aria-current', 'true');
+        highlightedLine = next;
+      } else if (behavior !== 'instant') return;
+      if (!deck.open || !lyricDetails.open) return;
+      const line = lyricSheet.children[next];
+      const top = line ? line.offsetTop - (lyricSheet.clientHeight - line.offsetHeight) / 2 : 0;
+      lyricSheet.scrollTo({top, behavior: motionPreference.matches ? 'instant' : behavior});
+    }
+
+    function renderLyrics(value) {
+      const {text, lines, cues} = parseLyrics(value);
+      lyricDetails.hidden = !text;
+      lyricDetails.open = Boolean(text);
+      lyricDetails.querySelector('summary').textContent = cues.length ? 'Synced Lyrics' : 'Lyrics';
+      lyricSheet.classList.toggle('has-timed-lyrics', Boolean(cues.length));
+      lyricSheet.replaceChildren();
+      timedCues = cues;
+      highlightedLine = -1;
+      if (cues.length) {
+        const fragment = document.createDocumentFragment();
+        for (const {line} of lines) {
+          const row = document.createElement('p');
+          row.textContent = line;
+          if (!line) row.className = 'lyric-instrumental-gap';
+          fragment.append(row);
+        }
+        lyricSheet.append(fragment);
+      } else lyricSheet.textContent = text;
+      lyricSheet.scrollTop = 0;
+      followLyrics('instant');
+    }
+
+    lyricDetails.addEventListener('toggle', () => {
+      if (lyricDetails.open) followLyrics('instant');
+    });
 
     function markTrack() {
       document.querySelectorAll('[data-track-row]').forEach((row, index) => {
@@ -540,13 +604,7 @@
         surface.querySelector('[data-player-artist]').textContent = [artist, currentAlbum?.title].filter(Boolean).join(' · ');
         for (const image of surface.querySelectorAll('.deck-cover')) image.src = artwork;
       }
-      const lyrics = String(current.lyrics || '').trim();
-      lyricDetails.hidden = !lyrics;
-      if (trackChanged) {
-        lyricDetails.open = Boolean(lyrics);
-        lyricSheet.textContent = lyrics;
-        lyricSheet.scrollTop = 0;
-      }
+      if (trackChanged) renderLyrics(current.lyrics);
       if ('mediaSession' in navigator && typeof MediaMetadata === 'function') {
         navigator.mediaSession.metadata = new MediaMetadata({title: current.title, artist,
           album: currentAlbum?.title || '', artwork: [{src: new URL(artwork, document.baseURI).href}]});
@@ -555,34 +613,69 @@
       updateTime();
     }
 
+    function shuffledOrder(firstId) {
+      const remaining = queue.map(track => track.id).filter(id => id !== firstId);
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+      }
+      return [firstId, ...remaining];
+    }
+
+    function setQueue(nextQueue, firstId) {
+      const changed = queue.length !== nextQueue.length || queue.some((track, i) => track.id !== nextQueue[i].id);
+      queue = nextQueue;
+      if (shuffledIds && changed) shuffledIds = shuffledOrder(firstId);
+    }
+
+    function neighbor(direction) {
+      const ids = queue.map(track => track.id);
+      const available = new Set(ids);
+      const order = shuffledIds ? shuffledIds.filter(id => available.has(id)) : ids;
+      const index = order.indexOf(current?.id);
+      if (index < 0) return null;
+      const next = index + direction;
+      const id = repeatMode === 'queue' ? order[(next + order.length) % order.length] : order[next];
+      return queue.find(track => track.id === id);
+    }
+
     function updateControls() {
       const playing = Boolean(current && !audio.paused);
       deck.classList.toggle('is-playing', playing);
-      const adjacent = queue.findIndex(track => track.id === current?.id);
+      const hasNext = Boolean(neighbor(1));
+      const hasPrevious = Boolean(neighbor(-1));
+      shuffleControl.setAttribute('aria-pressed', String(Boolean(shuffledIds)));
+      repeatControl.setAttribute('aria-pressed', String(repeatMode !== 'off'));
+      const repeatLabel = {off: 'Repeat off', queue: 'Repeat all', one: 'Repeat one'}[repeatMode];
+      repeatControl.setAttribute('aria-label', repeatLabel);
+      repeatControl.title = repeatLabel;
+      repeatControl.querySelector('svg').outerHTML = icon(repeatMode === 'one' ? 'repeatOne' : 'repeat');
+      repeatControl.querySelector('span').textContent = repeatMode === 'off' ? 'Repeat' : repeatLabel;
       for (const surface of surfaces) {
         const toggle = surface.querySelector('[data-music="toggle"]');
         const label = playing ? 'Pause' : 'Play';
         toggle.innerHTML = icon(playing ? 'pause' : 'play');
         toggle.setAttribute('aria-label', label);
         toggle.title = label;
-        surface.querySelector('[data-music="next"]').disabled = adjacent < 0 || adjacent >= queue.length - 1;
-        surface.querySelector('[data-music="previous"]').disabled = adjacent <= 0 && audio.currentTime < 3;
+        surface.querySelector('[data-music="next"]').disabled = !hasNext;
+        surface.querySelector('[data-music="previous"]').disabled = !hasPrevious && audio.currentTime < 3;
       }
       markTrack();
     }
 
     function updateTime() {
       const duration = Number.isFinite(audio.duration) ? audio.duration : current?.duration || 0;
+      const canGoBack = audio.currentTime >= 3 || Boolean(neighbor(-1));
       for (const surface of surfaces) {
         const slider = surface.querySelector('input[type="range"]');
         slider.max = duration;
         slider.value = Math.min(audio.currentTime, duration);
         slider.disabled = !source;
+        slider.setAttribute('aria-valuetext', `${time(audio.currentTime)} of ${time(duration)}`);
         slider.style.setProperty('--progress', `${duration ? audio.currentTime / duration * 100 : 0}%`);
         surface.querySelector('[data-player-time]').textContent = time(audio.currentTime);
         surface.querySelector('[data-player-duration]').textContent = time(duration);
-        surface.querySelector('[data-music="previous"]').disabled =
-          queue.findIndex(track => track.id === current?.id) <= 0 && audio.currentTime < 3;
+        surface.querySelector('[data-music="previous"]').disabled = !canGoBack;
       }
     }
 
@@ -618,7 +711,7 @@
         current = track;
         currentAlbum = album;
         currentGroup = getGroup(track.groupId);
-        queue = nextQueue;
+        setQueue(nextQueue, track.id);
         source = track.remote ? track.audioUrl : URL.createObjectURL(file);
         audio.src = source;
         updatePlayerInfo(true);
@@ -643,8 +736,11 @@
     function step(direction) {
       if (!current) return;
       if (direction < 0 && audio.currentTime >= 3) { audio.currentTime = 0; return; }
-      const index = queue.findIndex(track => track.id === current.id);
-      if (index >= 0) play(queue[index + direction], queue);
+      const track = neighbor(direction);
+      if (track?.id === current.id) {
+        audio.currentTime = 0;
+        playAudio(playRequest);
+      } else if (track) play(track, queue);
     }
 
     function toggle() {
@@ -655,6 +751,10 @@
 
     for (const event of ['play', 'pause', 'ended']) audio.addEventListener(event, updateControls);
     for (const event of ['loadedmetadata', 'timeupdate', 'durationchange']) audio.addEventListener(event, updateTime);
+    audio.addEventListener('timeupdate', () => followLyrics());
+    for (const event of ['seeking', 'seeked', 'loadedmetadata', 'play', 'pause']) {
+      audio.addEventListener(event, () => followLyrics('instant'));
+    }
     audio.addEventListener('ended', () => step(1));
     audio.addEventListener('error', () => { if (source) toast('The browser could not play this file.'); });
 
@@ -682,10 +782,22 @@
           if (current && !deck.open) {
             lyricDetails.open = !lyricDetails.hidden;
             deck.showModal();
+            followLyrics('instant');
           }
           break;
         case 'close-player': deck.close(); break;
         case 'toggle': toggle(); break;
+        case 'shuffle':
+          if (current) {
+            shuffledIds = shuffledIds ? null : shuffledOrder(current.id);
+            updateControls();
+          }
+          break;
+        case 'repeat':
+          repeatMode = {off: 'queue', queue: 'one', one: 'off'}[repeatMode];
+          audio.loop = repeatMode === 'one';
+          updateControls();
+          break;
         case 'previous': step(-1); break;
         case 'next': step(1); break;
         case 'play-list': {
@@ -696,7 +808,7 @@
         case 'track': {
           const nextQueue = playlist();
           if (current?.id === id) {
-            queue = nextQueue;
+            setQueue(nextQueue, id);
             updateControls();
             toggle();
           } else play(nextQueue.find(item => item.id === id), nextQueue);
@@ -716,8 +828,51 @@
         case 'new-album': albumDialog(null, control); break;
         case 'edit-album': albumDialog(albums.find(album => album.id === id), control); break;
         case 'edit-track': trackDialog(tracks.find(track => track.id === id), control); break;
+        case 'import-lrc': control.form.elements.lrc.click(); break;
+        case 'stamp-lyric': {
+          const form = control.form;
+          const field = form.elements.lyrics;
+          const status = form.querySelector('.lyric-edit-status');
+          if (current?.id !== form.dataset.id || !source || !Number.isFinite(audio.currentTime)) {
+            status.textContent = 'Play this song first to capture its playback time.';
+            break;
+          }
+          const mark = stampLyric(field.value, field.selectionStart, audio.currentTime);
+          if (field.value.length - (mark.finish - mark.start) + mark.value.length > field.maxLength) {
+            status.textContent = 'Lyrics have reached the 50,000-character limit.';
+            break;
+          }
+          field.setRangeText(mark.value, mark.start, mark.finish);
+          field.focus();
+          field.setSelectionRange(mark.next, mark.next);
+          status.textContent = 'Time marked. Select another line or save your changes.';
+          break;
+        }
         case 'delete-album':
         case 'delete-track': remove(action, id, control); break;
+      }
+    });
+
+    document.addEventListener('change', async event => {
+      const input = event.target;
+      if (!input.matches('#musicTrackForm input[name="lrc"]') || !input.files?.length) return;
+      const form = input.form;
+      const field = form.elements.lyrics;
+      const status = form.querySelector('.lyric-edit-status');
+      const file = input.files[0];
+      try {
+        if (file.size > field.maxLength * 4 + 3) throw new Error('The lyrics file is too large.');
+        const text = await file.text();
+        if (text.length > field.maxLength) throw new Error('Lyrics can contain up to 50,000 characters.');
+        if (!text.trim()) throw new Error('The lyrics file is empty.');
+        if (field.value.trim() && field.value.trim() !== text.trim()
+          && !confirm('Replace the lyrics in this unsaved editor with the selected file?')) return;
+        field.value = text;
+        status.textContent = 'Lyrics loaded. Save Changes to keep them.';
+      } catch (error) {
+        status.textContent = error.message;
+      } finally {
+        input.value = '';
       }
     });
 
@@ -729,7 +884,7 @@
     });
 
     for (const surface of surfaces) surface.querySelector('input[type="range"]').addEventListener('input', event => {
-      if (source) audio.currentTime = Number(event.target.value);
+      if (source) { audio.currentTime = Number(event.target.value); followLyrics('instant'); }
     });
     deck.addEventListener('click', event => { if (event.target === deck) deck.close(); });
     cloud?.start(() => {

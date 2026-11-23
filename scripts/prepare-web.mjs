@@ -6,7 +6,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const output = path.join(root, 'www');
 const files = [
   'index.html', '404.html', 'app.js', 'starter-data.js', 'starter-data.json',
-  'audio-tags.js', 'cloud-config.js', 'cloud-client.js', 'music-library.js',
+  'audio-tags.js', 'cloud-config.js', 'cloud-client.js', 'music-library.js', 'lyrics-sync.js',
   'styles.css', 'record-vault.css', 'music-library.css',
   'manifest.webmanifest', 'service-worker.js'
 ];

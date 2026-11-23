@@ -326,7 +326,8 @@
 
   function groupCover(g, large = false) {
     const sleeve = groupSleeve(g);
-    const image = large && sleeve === 'vertigo' ? 'vertigo-crate' : sleeve;
+    const image = sleeve === 'alan-walker-band' ? 'alan-walker-band-faded' :
+      large && sleeve === 'vertigo' ? 'vertigo-crate' : sleeve;
     return g.artwork || './assets/vault/' + image + '.webp';
   }
 
@@ -395,9 +396,7 @@ function renderHome() {
       '<div class="store-hero" aria-hidden="true"></div>' +
       (homeSearchOpen ? '<div class="vault-compact-toolbar">' + searchMarkup('Search groups or style prompts…') +
         '<button type="button" class="vault-small-add" data-action="add-group" title="Add group" aria-label="Add music group">+</button></div>' : '') +
-      '<div class="section-bar mockup-section-bar store-groups-heading" id="musicGroupsHeading">' +
-        '<h2>Groups</h2><span class="section-note">' + matched.length + (matched.length === 1 ? ' group' : ' groups') + '</span></div>' +
-      '<section class="group-grid mockup-sleeve-grid" aria-label="Music group sleeves">' +
+      '<section class="group-grid mockup-sleeve-grid" id="musicGroupsHeading" aria-label="Music group sleeves">' +
         matched.map(groupCard).join('') + '</section>' +
       (matched.length ? '' : '<div class="empty-state"><h3>No matching records</h3><p>Try a different search.</p></div>') +
       (q ? '' : '<section class="featured-section"><div class="section-bar"><h2>Favorite Presets</h2>' +

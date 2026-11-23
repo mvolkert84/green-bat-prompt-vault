@@ -312,32 +312,9 @@ body.vault-v3 {
   background: linear-gradient(0deg, #0d0a06a0, transparent 18%),
     url('./assets/vault/store-wall-mural.webp') center 52% / cover no-repeat;
 }
-.vault-v3 .store-groups-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 0 -3px 11px;
-  padding: 8px 8px 8px 10px;
-  border-block: 1px solid #62513b;
-  background: linear-gradient(105deg, #211c14, #0b0906 80%);
-}
-.vault-v3 .store-groups-heading h2 {
-  padding: 4px 9px;
-  border: 1px solid #9e8764;
-  border-radius: 2px;
-  color: #1d150a;
-  background: linear-gradient(120deg, #d5bc92, #e8d2ad 48%, #bfa17b);
-  box-shadow: inset 0 0 6px #4f32169c, 0 2px 6px #000;
-  font: 700 clamp(17px, 4.7vw, 25px)/1.12 var(--serif);
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.vault-v3 .store-groups-heading h2::after { display: none; }
-.vault-v3 .store-groups-heading .section-note {
-  color: #e0cda9;
-  letter-spacing: .09em;
-  text-transform: uppercase;
+#musicGroupsHeading {
+  margin-top: 11px;
+  scroll-margin-top: 78px;
 }
 [data-vault-page="home"] .group-grid.mockup-sleeve-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
