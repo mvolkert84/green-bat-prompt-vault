@@ -1,114 +1,33 @@
-import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {setTimeout as delay} from 'node:timers/promises';
 
 const app = 'com.greenbatmusic.player';
 const output = 'android-review-proof';
-const adb = (...args) => execFileSync('adb', args, {maxBuffer: 16 * 1024 * 1024});
-async function until(get, description, attempts = 60) {
+const adb = (...args) => execFileSync('adb', args, {maxBuffer: 16 * 1024 * 1024, timeout: 60000});
+async function waitFor(marker, attempts = 90) {
   for (let i = 0; i < attempts; i++) {
-    try {
-      const value = await get();
-      if (value) return value;
-    } catch (error) {
-      if (i === attempts - 1) throw new Error(description, {cause:error});
-    }
+    const logs = adb('logcat', '-d', '-t', '2500').toString();
+    const failure = logs.split('\n').find(l => l.includes('VINYL_QA_FAILED'));
+    if (failure) throw new Error(failure);
+    if (logs.includes(marker)) return;
     await delay(500);
   }
-  throw new Error('Timed out waiting for ' + description);
+  throw new Error('Emulator did not report ' + marker);
 }
+
 mkdirSync(output, {recursive: true});
 adb('shell', 'wm', 'size', '1080x2280');
 adb('shell', 'wm', 'density', '480');
+adb('logcat', '-c');
 adb('install', 'android/app/build/outputs/apk/debug/app-debug.apk');
 adb('shell', 'am', 'start', '-n', app + '/.MainActivity');
-const pid = await until(() => {
-  try { return adb('shell', 'pidof', app).toString().trim(); } catch { return ''; }
-}, 'Android app process');
-adb('forward', 'tcp:9222', 'localabstract:webview_devtools_remote_' + pid);
-async function evaluate(expression) {
-  const targets = await (await fetch('http://127.0.0.1:9222/json/list', {signal: AbortSignal.timeout(8000)})).json();
-  const target = targets.find(x => x.url.startsWith('https://localhost'));
-  if (!target) throw new Error('Capacitor WebView is still loading');
-  const socket = new WebSocket(target.webSocketDebuggerUrl);
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => finish(new Error('WebView evaluation timed out')), 8000);
-    function finish(error, result) {
-      clearTimeout(timeout);
-      socket.close();
-      if (error) reject(error);
-      else resolve(result);
-    }
-    socket.addEventListener('open', () => {
-      socket.send(JSON.stringify({id:1, method:'Runtime.evaluate',
-        params:{expression, awaitPromise:true, returnByValue:true, userGesture:true}}));
-    }, {once:true});
-    socket.addEventListener('close', () => finish(new Error('WebView DevTools disconnected')), {once:true});
-    socket.addEventListener('error', () => finish(new Error('WebView DevTools connection failed')), {once:true});
-    socket.addEventListener('message', ({data}) => {
-      const response = JSON.parse(data);
-      if (response.id !== 1) return;
-      const error = response.error || response.result?.exceptionDetails;
-      finish(error ? new Error(JSON.stringify(error)) : null, response.result?.result?.value);
-    });
-  });
-}
-const exists = selector => evaluate(`Boolean(document.querySelector(${JSON.stringify(selector)}))`);
-const click = async selector => {
-  await until(() => exists(selector), selector);
-  await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
-};
-
-await until(() => exists('[data-group="vertigo"]'), 'home');
-  await evaluate(`new Promise((resolve, reject) => {
-    const request = indexedDB.open('greenbat-music-library', 1);
-    request.onupgradeneeded = () => {
-      for (const store of ['tracks','albums']) request.result.createObjectStore(store,{keyPath:'id'}).createIndex('group','groupId');
-      request.result.createObjectStore('audio');
-    };
-    request.onerror = reject;
-    request.onsuccess = () => {
-      const samples = 960000;
-      const bytes = new ArrayBuffer(44 + samples * 2);
-      const dv = new DataView(bytes);
-      const str = (offset, text) => Array.from(text).forEach((ch,i) => dv.setUint8(offset+i,ch.charCodeAt(0)));
-      str(0,'RIFF'); dv.setUint32(4,bytes.byteLength-8,true); str(8,'WAVE'); str(12,'fmt ');
-      dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
-      dv.setUint32(24,8000,true); dv.setUint32(28,16000,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true);
-      str(36,'data'); dv.setUint32(40,samples*2,true);
-      const db = request.result;
-      const tx = db.transaction(['tracks','audio'], 'readwrite');
-      const lyrics = '[00:00.00]Stars unfold beyond the blue\\n[00:03.00]Sail the universe with you\\n[00:10.00]Through the spirals, breaking free\\n[00:16.00]A thousand worlds in harmony';
-      tx.objectStore('tracks').put({id:'qa-vinyl',groupId:'vertigo',albumId:'',title:'Sail The Universe',artist:'Vertigo',number:0,added:1,duration:120,lyrics});
-      tx.objectStore('audio').put(new Blob([bytes],{type:'audio/wav'}),'qa-vinyl');
-      tx.oncomplete = () => { db.close(); resolve(true); };
-      tx.onerror = reject;
-    };
-  })`);
-  await click('[data-group="vertigo"]');
-  await click('[data-music="track"][data-id="qa-vinyl"]');
-  await click('[data-music="open-player"]');
-  const active = () => evaluate("document.querySelector('.lyrics-sheet [aria-current=true]')?.textContent");
-  await until(async () => (await active()) === 'Sail the universe with you', 'second timed line');
-  const rotation = () => evaluate("getComputedStyle(document.querySelector('.turntable-rotor'), '::before').transform");
-  const before = await rotation();
-  await delay(200);
-  assert.notEqual(await rotation(), before);
-  writeFileSync(output + '/Android-Player.png', adb('exec-out','screencap','-p'));
-  adb('shell','screenrecord','--time-limit','4','/sdcard/green-bat-player.mp4');
-  adb('pull','/sdcard/green-bat-player.mp4',output + '/Android-Vinyl-Demo.mp4');
-  await click('#musicDeck [data-music="toggle"]');
-  await until(() => evaluate("!document.querySelector('#musicDeck').classList.contains('is-playing')"), 'paused player');
-  const paused = await rotation();
-  await delay(250);
-  assert.equal(await rotation(), paused);
-  async function seek(seconds) {
-    await evaluate(`(() => {const slider = document.querySelector('#musicDeck input[type=range]');
-      slider.value = ${seconds}; slider.dispatchEvent(new Event('input',{bubbles:true})); })()`);
-  }
-  await seek(17);
-  assert.equal(await active(), 'A thousand worlds in harmony');
-  await seek(1);
-  assert.equal(await active(), 'Stars unfold beyond the blue');
-  writeFileSync(output + '/Test-Results.txt', 'Passed on Android API 34 emulator at 1080 × 2280: playback, visible rotor motion, live cue advancement, pause, forward and backward seeking. Used synthetic local audio.\n');
+await waitFor('VINYL_QA_ARMED');
+adb('shell', 'input', 'tap', '540', '1140');
+await waitFor('VINYL_QA_CAPTURE');
+writeFileSync(output + '/Android-Player.png', adb('exec-out', 'screencap', '-p'));
+adb('shell', 'screenrecord', '--size', '720x1520', '--time-limit', '4', '/sdcard/vinyl-review.mp4');
+adb('pull', '/sdcard/vinyl-review.mp4', output + '/Android-Vinyl-Demo.mp4');
+await waitFor('VINYL_QA_PASSED');
+writeFileSync(output + '/Test-Results.txt',
+  'Android API 34 emulator: real touch start, live cue progression, moving grooves, pause, backward and forward seeking passed. Synthetic audio fixture.\n');

@@ -30,13 +30,8 @@ jobs:
           npm test
           npm run build:web
           printf '%s\n' 'window.GREEN_BAT_CLOUD_CONFIG = { endpoint: "" };' > www/cloud-config.js
-          node --input-type=module - <<'JS'
-          import fs from 'node:fs';
-          const file = 'capacitor.config.json';
-          const config = JSON.parse(fs.readFileSync(file, 'utf8'));
-          config.android = {...config.android, webContentsDebuggingEnabled: true};
-          fs.writeFileSync(file, JSON.stringify(config));
-          JS
+          cp scripts/android-player-fixture.js www/android-player-fixture.js
+          sed -i 's|</body>|<script type="module" src="./android-player-fixture.js"></script></body>|' www/index.html
           npx cap add android
           node scripts/install-android-icon.mjs
           npx cap sync android
