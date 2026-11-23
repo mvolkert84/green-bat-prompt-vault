@@ -8,8 +8,12 @@ const output = 'android-review-proof';
 const adb = (...args) => execFileSync('adb', args, {maxBuffer: 16 * 1024 * 1024});
 async function until(get, description, attempts = 60) {
   for (let i = 0; i < attempts; i++) {
-    const value = await get();
-    if (value) return value;
+    try {
+      const value = await get();
+      if (value) return value;
+    } catch (error) {
+      if (i === attempts - 1) throw new Error(description, {cause:error});
+    }
     await delay(500);
   }
   throw new Error('Timed out waiting for ' + description);
@@ -23,34 +27,32 @@ const pid = await until(() => {
   try { return adb('shell', 'pidof', app).toString().trim(); } catch { return ''; }
 }, 'Android app process');
 adb('forward', 'tcp:9222', 'localabstract:webview_devtools_remote_' + pid);
-const target = await until(async () => {
-  try {
-    const targets = await (await fetch('http://127.0.0.1:9222/json/list')).json();
-    return targets.find(x => x.url.startsWith('https://localhost'));
-  } catch { return undefined; }
-}, 'Capacitor WebView');
-const socket = new WebSocket(target.webSocketDebuggerUrl);
-await new Promise((resolve, reject) => {
-  socket.addEventListener('open', resolve, {once:true});
-  socket.addEventListener('error', reject, {once:true});
-});
-let nextId = 0;
-const pending = new Map();
-socket.addEventListener('message', ({data}) => {
-  const response = JSON.parse(data);
-  if (!pending.has(response.id)) return;
-  pending.get(response.id)(response);
-  pending.delete(response.id);
-});
 async function evaluate(expression) {
-  const id = ++nextId;
-  const response = await new Promise(resolve => {
-    pending.set(id, resolve);
-    socket.send(JSON.stringify({id, method:'Runtime.evaluate',
-      params:{expression, awaitPromise:true, returnByValue:true, userGesture:true}}));
+  const targets = await (await fetch('http://127.0.0.1:9222/json/list', {signal: AbortSignal.timeout(8000)})).json();
+  const target = targets.find(x => x.url.startsWith('https://localhost'));
+  if (!target) throw new Error('Capacitor WebView is still loading');
+  const socket = new WebSocket(target.webSocketDebuggerUrl);
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => finish(new Error('WebView evaluation timed out')), 8000);
+    function finish(error, result) {
+      clearTimeout(timeout);
+      socket.close();
+      if (error) reject(error);
+      else resolve(result);
+    }
+    socket.addEventListener('open', () => {
+      socket.send(JSON.stringify({id:1, method:'Runtime.evaluate',
+        params:{expression, awaitPromise:true, returnByValue:true, userGesture:true}}));
+    }, {once:true});
+    socket.addEventListener('close', () => finish(new Error('WebView DevTools disconnected')), {once:true});
+    socket.addEventListener('error', () => finish(new Error('WebView DevTools connection failed')), {once:true});
+    socket.addEventListener('message', ({data}) => {
+      const response = JSON.parse(data);
+      if (response.id !== 1) return;
+      const error = response.error || response.result?.exceptionDetails;
+      finish(error ? new Error(JSON.stringify(error)) : null, response.result?.result?.value);
+    });
   });
-  if (response.error || response.result.exceptionDetails) throw new Error(JSON.stringify(response));
-  return response.result.result.value;
 }
 const exists = selector => evaluate(`Boolean(document.querySelector(${JSON.stringify(selector)}))`);
 const click = async selector => {
@@ -58,8 +60,7 @@ const click = async selector => {
   await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
 };
 
-try {
-  await until(() => exists('[data-group="vertigo"]'), 'home');
+await until(() => exists('[data-group="vertigo"]'), 'home');
   await evaluate(`new Promise((resolve, reject) => {
     const request = indexedDB.open('greenbat-music-library', 1);
     request.onupgradeneeded = () => {
@@ -111,6 +112,3 @@ try {
   await seek(1);
   assert.equal(await active(), 'Stars unfold beyond the blue');
   writeFileSync(output + '/Test-Results.txt', 'Passed on Android API 34 emulator at 1080 × 2280: playback, visible rotor motion, live cue advancement, pause, forward and backward seeking. Used synthetic local audio.\n');
-} finally {
-  socket.close();
-}
