@@ -1,3 +1,5 @@
+import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
+
 (() => {
   'use strict';
   const icons = {
@@ -280,7 +282,14 @@
         <label class="field song-field"><span>Artist</span><input name="artist" maxlength="180" value="${esc(track.artist)}"></label>
         <label class="field song-field"><span>Album</span><select name="album">${albumOptions(track.albumId, Boolean(track.remote))}</select></label>
         <label class="field song-field"><span>Track number</span><input type="number" name="number" min="1" max="9999" value="${track.number || ''}"></label>
-        <label class="field song-lyrics-field"><span>Lyrics</span><textarea name="lyrics" rows="4" maxlength="50000">${esc(track.lyrics)}</textarea></label>
+        <label class="field song-lyrics-field"><span>Lyrics</span><textarea name="lyrics" rows="5" maxlength="50000" aria-describedby="lyricsEditHelp">${esc(track.lyrics)}</textarea></label>
+        <div id="lyricsEditHelp" class="music-form-note">Paste plain text or LRC. To add timing, start this song and place the cursor on a lyric line.</div>
+        <div class="lyric-edit-tools">
+          <button class="btn ghost sm" type="button" data-music="import-lrc">Import LRC</button>
+          <input type="file" accept=".lrc,.txt,text/plain" name="lrc" hidden>
+          <button class="btn ghost sm" type="button" data-music="stamp-lyric">Mark line at playback time</button>
+          <span class="lyric-edit-status" role="status"></span>
+        </div>
         <div class="music-form-actions">
           <button class="btn" type="button" data-action="close-modal">Cancel</button>
           <button class="btn primary" type="submit">Save Changes</button>
@@ -495,7 +504,8 @@
       <div class="turntable-stage" aria-hidden="true">
         <div class="turntable-scene">
           <img class="turntable-sleeve deck-cover" alt="">
-          <div class="turntable-record"></div>
+          <div class="turntable-stand"></div>
+          <div class="turntable-record"><div class="turntable-rotor"></div></div>
           <div class="turntable-label"></div>
         </div>
       </div>
@@ -509,6 +519,50 @@
     const surfaces = [dock, deck];
     const lyricDetails = deck.querySelector('.turntable-lyrics');
     const lyricSheet = lyricDetails.querySelector('.lyrics-sheet');
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timedCues = [];
+    let highlightedLine = -1;
+
+    function followLyrics(behavior = 'smooth') {
+      if (!timedCues.length) return;
+      const next = activeLyric(timedCues, audio.currentTime);
+      if (next !== highlightedLine) {
+        lyricSheet.children[highlightedLine]?.removeAttribute('aria-current');
+        lyricSheet.children[next]?.setAttribute('aria-current', 'true');
+        highlightedLine = next;
+      } else if (behavior !== 'instant') return;
+      if (!deck.open || !lyricDetails.open) return;
+      const line = lyricSheet.children[next];
+      const top = line ? line.offsetTop - (lyricSheet.clientHeight - line.offsetHeight) / 2 : 0;
+      lyricSheet.scrollTo({top, behavior: motionPreference.matches ? 'instant' : behavior});
+    }
+
+    function renderLyrics(value) {
+      const {text, lines, cues} = parseLyrics(value);
+      lyricDetails.hidden = !text;
+      lyricDetails.open = Boolean(text);
+      lyricDetails.querySelector('summary').textContent = cues.length ? 'Synced Lyrics' : 'Lyrics';
+      lyricSheet.classList.toggle('has-timed-lyrics', Boolean(cues.length));
+      lyricSheet.replaceChildren();
+      timedCues = cues;
+      highlightedLine = -1;
+      if (cues.length) {
+        const fragment = document.createDocumentFragment();
+        for (const {line} of lines) {
+          const row = document.createElement('p');
+          row.textContent = line;
+          if (!line) row.className = 'lyric-instrumental-gap';
+          fragment.append(row);
+        }
+        lyricSheet.append(fragment);
+      } else lyricSheet.textContent = text;
+      lyricSheet.scrollTop = 0;
+      followLyrics('instant');
+    }
+
+    lyricDetails.addEventListener('toggle', () => {
+      if (lyricDetails.open) followLyrics('instant');
+    });
 
     function markTrack() {
       document.querySelectorAll('[data-track-row]').forEach((row, index) => {
@@ -540,13 +594,7 @@
         surface.querySelector('[data-player-artist]').textContent = [artist, currentAlbum?.title].filter(Boolean).join(' · ');
         for (const image of surface.querySelectorAll('.deck-cover')) image.src = artwork;
       }
-      const lyrics = String(current.lyrics || '').trim();
-      lyricDetails.hidden = !lyrics;
-      if (trackChanged) {
-        lyricDetails.open = Boolean(lyrics);
-        lyricSheet.textContent = lyrics;
-        lyricSheet.scrollTop = 0;
-      }
+      if (trackChanged) renderLyrics(current.lyrics);
       if ('mediaSession' in navigator && typeof MediaMetadata === 'function') {
         navigator.mediaSession.metadata = new MediaMetadata({title: current.title, artist,
           album: currentAlbum?.title || '', artwork: [{src: new URL(artwork, document.baseURI).href}]});
@@ -655,6 +703,10 @@
 
     for (const event of ['play', 'pause', 'ended']) audio.addEventListener(event, updateControls);
     for (const event of ['loadedmetadata', 'timeupdate', 'durationchange']) audio.addEventListener(event, updateTime);
+    audio.addEventListener('timeupdate', () => followLyrics());
+    for (const event of ['seeking', 'seeked', 'loadedmetadata', 'play', 'pause']) {
+      audio.addEventListener(event, () => followLyrics('instant'));
+    }
     audio.addEventListener('ended', () => step(1));
     audio.addEventListener('error', () => { if (source) toast('The browser could not play this file.'); });
 
@@ -682,6 +734,7 @@
           if (current && !deck.open) {
             lyricDetails.open = !lyricDetails.hidden;
             deck.showModal();
+            followLyrics('instant');
           }
           break;
         case 'close-player': deck.close(); break;
@@ -716,8 +769,51 @@
         case 'new-album': albumDialog(null, control); break;
         case 'edit-album': albumDialog(albums.find(album => album.id === id), control); break;
         case 'edit-track': trackDialog(tracks.find(track => track.id === id), control); break;
+        case 'import-lrc': control.form.elements.lrc.click(); break;
+        case 'stamp-lyric': {
+          const form = control.form;
+          const field = form.elements.lyrics;
+          const status = form.querySelector('.lyric-edit-status');
+          if (current?.id !== form.dataset.id || !source || !Number.isFinite(audio.currentTime)) {
+            status.textContent = 'Play this song first to capture its playback time.';
+            break;
+          }
+          const mark = stampLyric(field.value, field.selectionStart, audio.currentTime);
+          if (field.value.length - (mark.finish - mark.start) + mark.value.length > field.maxLength) {
+            status.textContent = 'Lyrics have reached the 50,000-character limit.';
+            break;
+          }
+          field.setRangeText(mark.value, mark.start, mark.finish);
+          field.focus();
+          field.setSelectionRange(mark.next, mark.next);
+          status.textContent = 'Time marked. Select another line or save your changes.';
+          break;
+        }
         case 'delete-album':
         case 'delete-track': remove(action, id, control); break;
+      }
+    });
+
+    document.addEventListener('change', async event => {
+      const input = event.target;
+      if (!input.matches('#musicTrackForm input[name="lrc"]') || !input.files?.length) return;
+      const form = input.form;
+      const field = form.elements.lyrics;
+      const status = form.querySelector('.lyric-edit-status');
+      const file = input.files[0];
+      try {
+        if (file.size > field.maxLength * 4 + 3) throw new Error('The lyrics file is too large.');
+        const text = await file.text();
+        if (text.length > field.maxLength) throw new Error('Lyrics can contain up to 50,000 characters.');
+        if (!text.trim()) throw new Error('The lyrics file is empty.');
+        if (field.value.trim() && field.value.trim() !== text.trim()
+          && !confirm('Replace the lyrics in this unsaved editor with the selected file?')) return;
+        field.value = text;
+        status.textContent = 'Lyrics loaded. Save Changes to keep them.';
+      } catch (error) {
+        status.textContent = error.message;
+      } finally {
+        input.value = '';
       }
     });
 
@@ -729,7 +825,7 @@
     });
 
     for (const surface of surfaces) surface.querySelector('input[type="range"]').addEventListener('input', event => {
-      if (source) audio.currentTime = Number(event.target.value);
+      if (source) { audio.currentTime = Number(event.target.value); followLyrics('instant'); }
     });
     deck.addEventListener('click', event => { if (event.target === deck) deck.close(); });
     cloud?.start(() => {
