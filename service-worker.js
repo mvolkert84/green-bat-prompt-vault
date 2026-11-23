@@ -1,14 +1,14 @@
-const CACHE = 'green-bat-prompt-vault-vinyl-sync-v2';
+const CACHE = 'green-bat-prompt-vault-vinyl-sync-v3';
 const ASSETS = [
   './',
   './index.html',
   './styles.css?v=underground-photo-v1',
   './record-vault.css?v=vinyl-sync-1',
-  './music-library.css?v=vinyl-sync-2',
+  './music-library.css?v=vinyl-sync-3',
   './audio-tags.js?v=final-design-1',
   './cloud-config.js?v=1',
   './cloud-client.js?v=1',
-  './music-library.js?v=vinyl-sync-2',
+  './music-library.js?v=vinyl-sync-3',
   './lyrics-sync.js?v=1',
   './app.js?v=vinyl-sync-1',
   './starter-data.js?v=alan-walker-band-2026-11',

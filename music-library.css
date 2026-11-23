@@ -336,23 +336,75 @@
 .turntable-title { margin-block: 10px 5px; overflow-wrap: anywhere; }
 .turntable-title strong { font: 700 clamp(20px, 5.6vw, 28px)/1.15 var(--serif); }
 .turntable-title small { font: italic 15px/1.25 var(--serif); }
-.turntable .deck-timeline { margin-bottom: 3px; }
+.turntable .deck-timeline {
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-block: 6px 10px;
+  color: #d1c3a5;
+  font: 500 12px/1.15 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.turntable .deck-timeline input {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 30px;
+  border-radius: 12px;
+}
+.turntable .deck-timeline input::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--green) var(--progress, 0%), #6b5d46 var(--progress, 0%));
+}
+.turntable .deck-timeline input::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  margin-top: -5px;
+}
+.turntable .deck-timeline input::-moz-range-track { height: 5px; background: #6b5d46; }
+.turntable .deck-timeline input::-moz-range-progress { height: 5px; }
+.turntable .deck-timeline input::-moz-range-thumb { width: 15px; height: 15px; }
 .turntable .deck-controls {
   display: grid;
-  grid-template-columns: repeat(5, minmax(40px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
   justify-items: center;
   gap: 0;
 }
-.turntable .deck-controls [aria-pressed="true"] {
-  color: var(--green);
-  background: #a4b75e19;
+.turntable .deck-controls .deck-button:not(:disabled) { cursor: pointer; }
+.turntable .deck-controls .deck-button:disabled { opacity: .38; }
+.turntable .deck-controls .deck-button svg { width: 22px; height: 22px; }
+.turntable .playback-mode {
+  position: relative;
+  width: 100%;
+  min-height: 54px;
+  padding-bottom: 8px;
 }
+.turntable .playback-mode span {
+  position: absolute;
+  bottom: 2px;
+  pointer-events: none;
+  white-space: nowrap;
+  color: #c5b89b;
+  font: 500 10px/1.1 system-ui, sans-serif;
+}
+.turntable .playback-mode[aria-pressed="true"],
+.turntable .playback-mode[aria-pressed="true"] span {
+  color: var(--green);
+}
+.turntable .playback-mode[aria-pressed="true"] span { font-weight: 700; }
 .turntable .deck-button[data-music="toggle"] {
-  border: 1px solid #9da75b;
-  color: var(--text);
-  background: radial-gradient(ellipse, #2d2c17, #100e09);
-  box-shadow: 0 0 14px #92a33a4b, inset 0 0 6px #929e405a;
+  width: 54px;
+  height: 54px;
+  border: 1px solid #c0ce76;
+  color: #191b0e;
+  background: var(--green);
+}
+.turntable .deck-button[data-music="toggle"] svg { width: 26px; height: 26px; }
+.turntable .deck-button[data-music="toggle"]:hover { background: #cedc94; }
+.turntable .deck-controls .deck-button:focus-visible,
+.turntable .deck-timeline input:focus-visible {
+  outline: 2px solid #d8e6a0;
+  outline-offset: 2px;
 }
 .turntable-lyrics, .song-cover-editor, .song-lyrics-field textarea {
   border: 1px solid #756c42;

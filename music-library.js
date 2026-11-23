@@ -17,6 +17,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
   const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
   const button = (action, name, graphic, extra = '') =>
     `<button type="button" class="deck-button" data-music="${action}" aria-label="${name}" title="${name}" ${extra}>${icon(graphic)}</button>`;
+  const modeButton = (action, name, label) => `<button type="button" class="deck-button playback-mode" data-music="${action}" aria-label="${name}" title="${name}" aria-pressed="false">${icon(action)}<span aria-hidden="true">${label}</span></button>`;
   const time = seconds => Number.isFinite(seconds) ?
     `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}` : '0:00';
   const nameFromFile = file => file.name.replace(/\.[^.]+$/, '');
@@ -517,9 +518,9 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
       <div class="turntable-title"><strong data-player-title></strong><small data-player-artist></small></div>
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>
       <div class="deck-controls" aria-label="Playback controls">
-        ${button('shuffle', 'Shuffle', 'shuffle', 'aria-pressed="false"')}
+        ${modeButton('shuffle', 'Shuffle', 'Shuffle')}
         ${button('previous', 'Previous track', 'prev')}${button('toggle', 'Play', 'play')}${button('next', 'Next track', 'next')}
-        ${button('repeat', 'Repeat off', 'repeat', 'aria-pressed="false"')}
+        ${modeButton('repeat', 'Repeat off', 'Repeat')}
       </div>
       <details class="turntable-lyrics" hidden><summary>Lyrics</summary><div tabindex="0" class="lyrics-sheet" aria-label="Track lyrics"></div></details>
     </div>`;
@@ -645,9 +646,11 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
       const hasPrevious = Boolean(neighbor(-1));
       shuffleControl.setAttribute('aria-pressed', String(Boolean(shuffledIds)));
       repeatControl.setAttribute('aria-pressed', String(repeatMode !== 'off'));
-      repeatControl.setAttribute('aria-label', `Repeat ${repeatMode}`);
-      repeatControl.title = `Repeat ${repeatMode}`;
-      repeatControl.innerHTML = icon(repeatMode === 'one' ? 'repeatOne' : 'repeat');
+      const repeatLabel = {off: 'Repeat off', queue: 'Repeat all', one: 'Repeat one'}[repeatMode];
+      repeatControl.setAttribute('aria-label', repeatLabel);
+      repeatControl.title = repeatLabel;
+      repeatControl.querySelector('svg').outerHTML = icon(repeatMode === 'one' ? 'repeatOne' : 'repeat');
+      repeatControl.querySelector('span').textContent = repeatMode === 'off' ? 'Repeat' : repeatLabel;
       for (const surface of surfaces) {
         const toggle = surface.querySelector('[data-music="toggle"]');
         const label = playing ? 'Pause' : 'Play';
@@ -668,6 +671,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
         slider.max = duration;
         slider.value = Math.min(audio.currentTime, duration);
         slider.disabled = !source;
+        slider.setAttribute('aria-valuetext', `${time(audio.currentTime)} of ${time(duration)}`);
         slider.style.setProperty('--progress', `${duration ? audio.currentTime / duration * 100 : 0}%`);
         surface.querySelector('[data-player-time]').textContent = time(audio.currentTime);
         surface.querySelector('[data-player-duration]').textContent = time(duration);
