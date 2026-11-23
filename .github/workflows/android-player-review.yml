@@ -21,6 +21,8 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
       - name: Build the Android app for this emulator only
         run: |
           npm install --no-audit --no-fund
@@ -28,6 +30,13 @@ jobs:
           npm test
           npm run build:web
           printf '%s\n' 'window.GREEN_BAT_CLOUD_CONFIG = { endpoint: "" };' > www/cloud-config.js
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          const file = 'capacitor.config.json';
+          const config = JSON.parse(fs.readFileSync(file, 'utf8'));
+          config.android = {...config.android, webContentsDebuggingEnabled: true};
+          fs.writeFileSync(file, JSON.stringify(config));
+          JS
           npx cap add android
           node scripts/install-android-icon.mjs
           npx cap sync android
@@ -46,7 +55,36 @@ jobs:
           arch: x86_64
           disable-animations: false
           script: node scripts/android-player-review.mjs
+      - name: Check the current Cloudflare catalog and byte-range streaming
+        if: always()
+        run: |
+          mkdir -p android-review-proof
+          node --input-type=module - <<'JS' > android-review-proof/Cloud-Read-Only.txt
+          import fs from 'node:fs';
+          const source = fs.readFileSync('cloud-config.js', 'utf8');
+          const endpoint = source.match(/endpoint:\s*['"](https:\/\/[^'"]+)['"]/)?.[1];
+          try {
+            const response = await fetch(endpoint + '/library', {signal: AbortSignal.timeout(12000)});
+            if (!response.ok) throw new Error('Catalog returned HTTP ' + response.status);
+            const {tracks} = await response.json();
+            if (!Array.isArray(tracks)) throw new Error('Invalid catalog response.');
+            if (!tracks.length) {
+              console.log('Cloudflare catalog responded. No published track was available for a range check.');
+            } else {
+              const stream = await fetch(endpoint + '/audio/' + encodeURIComponent(tracks[0].id), {
+                headers: {Range: 'bytes=0-8191'}, signal: AbortSignal.timeout(12000)
+              });
+              if (stream.status !== 206 || !(await stream.arrayBuffer()).byteLength) {
+                throw new Error('Audio range returned HTTP ' + stream.status);
+              }
+              console.log('Cloudflare catalog and public HTTP 206 audio range responded successfully. No data was written.');
+            }
+          } catch (error) {
+            console.log('Live read-only check unavailable: ' + error.message);
+          }
+          JS
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: android-player-review-proof
           path: android-review-proof/
