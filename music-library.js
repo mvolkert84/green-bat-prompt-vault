@@ -7,6 +7,9 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
     pause: '<path d="M9 5v14m6-14v14" stroke-width="3"/>',
     prev: '<path d="M6 5v14m13-14L8 12l11 7z"/>',
     next: '<path d="M18 5v14M5 5l11 7-11 7z"/>',
+    shuffle: '<path d="M3 6h3c5 0 7 12 12 12h3m-3-3 3 3-3 3M3 18h3c1.6 0 2.9-1.3 4.1-3.1m3.8-5.8C15.1 7.3 16.4 6 18 6h3m-3-3 3 3-3 3"/>',
+    repeat: '<path d="m17 2 4 4-4 4m4-4H7a4 4 0 0 0-4 4v1m4 11-4-4 4-4m-4 4h14a4 4 0 0 0 4-4v-1"/>',
+    repeatOne: '<path d="m17 2 4 4-4 4m4-4H7a4 4 0 0 0-4 4v1m4 11-4-4 4-4m-4 4h14a4 4 0 0 0 4-4v-1m-10-2 1-1v4"/>',
     disc: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12a6 6 0 0 1 6-6m6 6a6 6 0 0 1-6 6"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
     more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
@@ -97,6 +100,8 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
     let currentAlbum = null;
     let currentGroup = null;
     let queue = [];
+    let shuffledIds = null;
+    let repeatMode = 'off';
     let source = '';
     let playRequest = 0;
     let albumFilter = '';
@@ -504,7 +509,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
       <div class="turntable-stage" aria-hidden="true">
         <div class="turntable-scene">
           <img class="turntable-sleeve deck-cover" alt="">
-          <div class="turntable-stand"></div>
+          <div class="turntable-platter-edge"></div>
           <div class="turntable-record"><div class="turntable-rotor"></div></div>
           <div class="turntable-label"></div>
         </div>
@@ -512,11 +517,15 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
       <div class="turntable-title"><strong data-player-title></strong><small data-player-artist></small></div>
       <label class="deck-timeline"><span data-player-time></span><input type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position"><span data-player-duration></span></label>
       <div class="deck-controls" aria-label="Playback controls">
+        ${button('shuffle', 'Shuffle', 'shuffle', 'aria-pressed="false"')}
         ${button('previous', 'Previous track', 'prev')}${button('toggle', 'Play', 'play')}${button('next', 'Next track', 'next')}
+        ${button('repeat', 'Repeat off', 'repeat', 'aria-pressed="false"')}
       </div>
       <details class="turntable-lyrics" hidden><summary>Lyrics</summary><div tabindex="0" class="lyrics-sheet" aria-label="Track lyrics"></div></details>
     </div>`;
     const surfaces = [dock, deck];
+    const shuffleControl = deck.querySelector('[data-music="shuffle"]');
+    const repeatControl = deck.querySelector('[data-music="repeat"]');
     const lyricDetails = deck.querySelector('.turntable-lyrics');
     const lyricSheet = lyricDetails.querySelector('.lyrics-sheet');
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -603,24 +612,57 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
       updateTime();
     }
 
+    function shuffledOrder(firstId) {
+      const remaining = queue.map(track => track.id).filter(id => id !== firstId);
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+      }
+      return [firstId, ...remaining];
+    }
+
+    function setQueue(nextQueue, firstId) {
+      const changed = queue.length !== nextQueue.length || queue.some((track, i) => track.id !== nextQueue[i].id);
+      queue = nextQueue;
+      if (shuffledIds && changed) shuffledIds = shuffledOrder(firstId);
+    }
+
+    function neighbor(direction) {
+      const ids = queue.map(track => track.id);
+      const available = new Set(ids);
+      const order = shuffledIds ? shuffledIds.filter(id => available.has(id)) : ids;
+      const index = order.indexOf(current?.id);
+      if (index < 0) return null;
+      const next = index + direction;
+      const id = repeatMode === 'queue' ? order[(next + order.length) % order.length] : order[next];
+      return queue.find(track => track.id === id);
+    }
+
     function updateControls() {
       const playing = Boolean(current && !audio.paused);
       deck.classList.toggle('is-playing', playing);
-      const adjacent = queue.findIndex(track => track.id === current?.id);
+      const hasNext = Boolean(neighbor(1));
+      const hasPrevious = Boolean(neighbor(-1));
+      shuffleControl.setAttribute('aria-pressed', String(Boolean(shuffledIds)));
+      repeatControl.setAttribute('aria-pressed', String(repeatMode !== 'off'));
+      repeatControl.setAttribute('aria-label', `Repeat ${repeatMode}`);
+      repeatControl.title = `Repeat ${repeatMode}`;
+      repeatControl.innerHTML = icon(repeatMode === 'one' ? 'repeatOne' : 'repeat');
       for (const surface of surfaces) {
         const toggle = surface.querySelector('[data-music="toggle"]');
         const label = playing ? 'Pause' : 'Play';
         toggle.innerHTML = icon(playing ? 'pause' : 'play');
         toggle.setAttribute('aria-label', label);
         toggle.title = label;
-        surface.querySelector('[data-music="next"]').disabled = adjacent < 0 || adjacent >= queue.length - 1;
-        surface.querySelector('[data-music="previous"]').disabled = adjacent <= 0 && audio.currentTime < 3;
+        surface.querySelector('[data-music="next"]').disabled = !hasNext;
+        surface.querySelector('[data-music="previous"]').disabled = !hasPrevious && audio.currentTime < 3;
       }
       markTrack();
     }
 
     function updateTime() {
       const duration = Number.isFinite(audio.duration) ? audio.duration : current?.duration || 0;
+      const canGoBack = audio.currentTime >= 3 || Boolean(neighbor(-1));
       for (const surface of surfaces) {
         const slider = surface.querySelector('input[type="range"]');
         slider.max = duration;
@@ -629,8 +671,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
         slider.style.setProperty('--progress', `${duration ? audio.currentTime / duration * 100 : 0}%`);
         surface.querySelector('[data-player-time]').textContent = time(audio.currentTime);
         surface.querySelector('[data-player-duration]').textContent = time(duration);
-        surface.querySelector('[data-music="previous"]').disabled =
-          queue.findIndex(track => track.id === current?.id) <= 0 && audio.currentTime < 3;
+        surface.querySelector('[data-music="previous"]').disabled = !canGoBack;
       }
     }
 
@@ -666,7 +707,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
         current = track;
         currentAlbum = album;
         currentGroup = getGroup(track.groupId);
-        queue = nextQueue;
+        setQueue(nextQueue, track.id);
         source = track.remote ? track.audioUrl : URL.createObjectURL(file);
         audio.src = source;
         updatePlayerInfo(true);
@@ -691,8 +732,11 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
     function step(direction) {
       if (!current) return;
       if (direction < 0 && audio.currentTime >= 3) { audio.currentTime = 0; return; }
-      const index = queue.findIndex(track => track.id === current.id);
-      if (index >= 0) play(queue[index + direction], queue);
+      const track = neighbor(direction);
+      if (track?.id === current.id) {
+        audio.currentTime = 0;
+        playAudio(playRequest);
+      } else if (track) play(track, queue);
     }
 
     function toggle() {
@@ -739,6 +783,17 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
           break;
         case 'close-player': deck.close(); break;
         case 'toggle': toggle(); break;
+        case 'shuffle':
+          if (current) {
+            shuffledIds = shuffledIds ? null : shuffledOrder(current.id);
+            updateControls();
+          }
+          break;
+        case 'repeat':
+          repeatMode = {off: 'queue', queue: 'one', one: 'off'}[repeatMode];
+          audio.loop = repeatMode === 'one';
+          updateControls();
+          break;
         case 'previous': step(-1); break;
         case 'next': step(1); break;
         case 'play-list': {
@@ -749,7 +804,7 @@ import {parseLyrics, activeLyric, stampLyric} from './lyrics-sync.js?v=1';
         case 'track': {
           const nextQueue = playlist();
           if (current?.id === id) {
-            queue = nextQueue;
+            setQueue(nextQueue, id);
             updateControls();
             toggle();
           } else play(nextQueue.find(item => item.id === id), nextQueue);

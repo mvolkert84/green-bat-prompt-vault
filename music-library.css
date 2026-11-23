@@ -236,21 +236,16 @@
     #18120a url('./assets/vault/turntable.webp') center / 100% 100% no-repeat;
   box-shadow: inset 0 -1px 5px #000c;
 }
-/* Sit the whole jacket on the photographed stand, just above the platter. */
+/* Fit the artwork inside the photographed jacket behind the platter. */
 .turntable-sleeve {
   position: absolute;
-  bottom: 54%;
-  left: 47.4%;
-  width: 49%;
-  aspect-ratio: 1;
-  translate: -50% 0;
-  transform-origin: center bottom;
-  transform: perspective(600px) rotateX(7deg);
-  object-fit: contain;
-  border: 1px solid #856846;
-  border-radius: 2px;
+  inset: 8.8% auto auto 24.9%;
+  width: 44.8%;
+  height: 40%;
+  object-fit: cover;
+  border-radius: 2px 2px 0 0;
   background: #130e09;
-  box-shadow: 2px 0 #47321f, 0 4px 10px #000d;
+  box-shadow: inset 0 0 4px #0009, 1px 0 2px #0009;
 }
 .turntable-record {
   position: absolute;
@@ -261,28 +256,15 @@
   border-radius: 50%;
   overflow: hidden;
 }
-/* The narrow lip sits above the jacket edge so the jacket rests on the stand. */
-.turntable-stand {
+/* Restore the photographed rear edge of the record in front of the jacket. */
+.turntable-platter-edge {
   position: absolute;
-  top: 45.6%;
-  left: 21.8%;
-  width: 51%;
-  height: 1.65%;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #b68653, #5c3921 27%, #25170e 82%);
-  box-shadow: 0 2px 4px #090500cf, inset 0 1px #d8a87580;
+  inset: 0;
+  background: inherit;
+  clip-path: polygon(24% 49%, 29% 47.7%, 35% 46.7%, 41% 46.1%,
+    47% 45.9%, 53% 46.1%, 59% 46.7%, 65% 47.7%, 71% 49.2%, 71% 52%, 24% 52%);
+  pointer-events: none;
 }
-.turntable-stand::before, .turntable-stand::after {
-  content: '';
-  position: absolute;
-  top: -52%;
-  width: 3%;
-  height: 184%;
-  border-radius: 2px;
-  background: linear-gradient(100deg, #4a2c19, #c89962 45%, #664123);
-  box-shadow: 1px 2px 4px #120903;
-}
-.turntable-stand::after { right: 0; }
 .turntable-record {
   overflow: hidden;
   /* This mask stays fixed with the photo's warm lamps and reflected highlights. */
@@ -355,7 +337,17 @@
 .turntable-title strong { font: 700 clamp(20px, 5.6vw, 28px)/1.15 var(--serif); }
 .turntable-title small { font: italic 15px/1.25 var(--serif); }
 .turntable .deck-timeline { margin-bottom: 3px; }
-.turntable .deck-controls { gap: clamp(15px, 7vw, 35px); }
+.turntable .deck-controls {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(40px, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 0;
+}
+.turntable .deck-controls [aria-pressed="true"] {
+  color: var(--green);
+  background: #a4b75e19;
+}
 .turntable .deck-button[data-music="toggle"] {
   border: 1px solid #9da75b;
   color: var(--text);
