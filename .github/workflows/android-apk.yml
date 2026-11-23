@@ -3,8 +3,7 @@ name: Green Bat Music Android APK
 on:
   push:
     branches:
-      - feature/green-bat-cloud-apk-2026-11
-      - main
+      - build/vinyl-phone-apk
   workflow_dispatch:
 
 concurrency:
@@ -21,9 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - artifact: green-bat-music-test-apk
-            alongside: false
-          - artifact: green-bat-music-alongside-apk
+          - artifact: green-bat-music-vinyl-apk
             alongside: true
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -66,8 +63,8 @@ jobs:
           import fs from 'node:fs';
           const path = 'capacitor.config.json';
           const config = JSON.parse(fs.readFileSync(path, 'utf8'));
-          config.appId += '.alongside';
-          config.appName += ' (New)';
+          config.appId += '.vinyl';
+          config.appName += ' (Vinyl)';
           fs.writeFileSync(path, JSON.stringify(config, null, 2) + '\n');
           JS
 
