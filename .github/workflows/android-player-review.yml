@@ -51,7 +51,7 @@ jobs:
           profile: Nexus 5
           emulator-options: -no-window -gpu off -feature -Vulkan -no-snapshot -noaudio -no-boot-anim
           disable-animations: false
-          emulator-build: 13807933
+          emulator-build: 13823996
           script: node scripts/android-player-review.mjs
       - name: Check the current Cloudflare catalog and byte-range streaming
         if: always()
